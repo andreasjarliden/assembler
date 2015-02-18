@@ -6,7 +6,7 @@ CXXFLAGS+=-g
 CFLAGS+=-g
 LDFLAGS+=-g
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o argumentHelpers.o MachineCode.o Instruction.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o argumentHelpers.o MachineCode.o Instruction.o Assembler.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 %.tab.c: %.y
@@ -19,7 +19,7 @@ lexer.o: lexer.c parser.tab.h Argument.h symbolTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
-main.o: main.cpp Commands.hpp Argument.h Argument.hpp argumentHelpers.hpp MachineCode.hpp Instruction.hpp
+main.o: main.cpp Commands.hpp Argument.h Argument.hpp argumentHelpers.hpp MachineCode.hpp Instruction.hpp Assembler.hpp
 
 Commands.o: Commands.cpp Commands.hpp
 
@@ -32,3 +32,5 @@ argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument
 MachineCode.o: MachineCode.cpp MachineCode.hpp
 
 Instruction.o: Instruction.cpp Instruction.hpp
+
+Assembler.o: Assembler.cpp Assembler.hpp Commands.hpp MachineCode.hpp Instruction.hpp
