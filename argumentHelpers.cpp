@@ -7,7 +7,7 @@ Argument identifierArg(const char* identifier) {
   return argument;
 }
 
-Argument byteArg(unsigned char byte) {
+Argument numberArg(int byte) {
   Argument argument;
   argument.type = VALUE_ARGUMENT;
   argument.value = byte;

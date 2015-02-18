@@ -55,4 +55,14 @@ void outInstruction(const Argument& arg, MachineCode& code) {
   code.add(byte);
 }
 
+void jpInstruction(const Argument& arg, MachineCode& code) {
+  code.add(0xc3);
+  assert(arg.type == VALUE_ARGUMENT);
+  Byte low = (Byte)arg.value & 0xff;
+  Byte high = (Byte)((arg.value >> 8) & 0xff);
+  code.add(low);
+  code.add(high);
+}
+
+
 

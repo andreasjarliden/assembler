@@ -8,6 +8,7 @@ Assembler::Assembler() {
   _nullaryInstructions[std::string("cpl")] = &myCplInstruction;
   _binaryInstructions[std::string("ld")] = &myLdInstruction;
   _unaryInstructions[std::string("out")] = &outInstruction;
+  _unaryInstructions[std::string("jp")] = &jpInstruction;
 }
 
 Assembler::~Assembler() {}

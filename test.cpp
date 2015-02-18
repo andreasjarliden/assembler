@@ -28,14 +28,14 @@ void testTwoInstructions() {
 
 void test_ld_a_byte() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("a"), byteArg(255));
+  assembler.command2("ld", identifierArg("a"), numberArg(255));
   Byte expectedBytes[] = { 0x3e, 0xff };
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
 void test_ld_d_byte() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("L"), byteArg(255));
+  assembler.command2("ld", identifierArg("L"), numberArg(255));
   Byte expectedBytes[] = { 0x2e, 0xff };
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
@@ -47,6 +47,13 @@ void test_out_20() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
+void testJpToNumericAddress() {
+  Assembler assembler;
+  assembler.command1("jp", numberArg(511));
+  Byte expectedBytes[] = { 0xc3, 0xff, 0x01 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 3));
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -56,5 +63,6 @@ int main() {
   test_ld_a_byte();
   test_ld_d_byte();
   test_out_20();
+  testJpToNumericAddress();
   std::cout << "Test passed" << std::endl;
 }
