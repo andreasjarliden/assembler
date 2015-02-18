@@ -80,9 +80,13 @@ class LdInstruction : public Instruction {
 class Assembler : public Commands {
 public:
   Assembler() {
-    addInstruction("neg", _negInstruction);
-    addInstruction("cpl", _cplInstruction);
-    addInstruction("ld", _ldInstruction);
+    static NegInstruction negInstruction;
+    static CplInstruction cplInstruction;
+    static LdInstruction ldInstruction;
+
+    addInstruction("neg", negInstruction);
+    addInstruction("cpl", cplInstruction);
+    addInstruction("ld", ldInstruction);
   }
 
   ~Assembler() {}
@@ -110,9 +114,6 @@ private:
     _mnemonics[std::string(mnemonic)] = &instruction;
   }
 
-  NegInstruction _negInstruction;
-  CplInstruction _cplInstruction;
-  LdInstruction _ldInstruction;
   std::map<std::string, const Instruction*> _mnemonics;
   MachineCode _machineCode;
 };
