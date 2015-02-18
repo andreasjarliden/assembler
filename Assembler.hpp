@@ -22,9 +22,9 @@ public:
   const MachineCode& machineCode() const;
 
 private:
-  void addInstruction(const char* mnemonic, const Instruction& instruction);
-
-  std::map<std::string, const Instruction*> _mnemonics;
+  std::map<std::string, const Instruction*> _nullaryInstructions;
+  std::map<std::string, const Instruction*> _unaryInstructions;
+  std::map<std::string, const Instruction*> _binaryInstructions;
   MachineCode _machineCode;
 };
 
