@@ -36,7 +36,7 @@ HEXNUMBER [0-9a-fA-F]+h
 	printf("label %s-\n", yytext);
 }
 
-;.*$ {
+;.*\n {
 	printf("comment %s\n", yytext);
 }
 
