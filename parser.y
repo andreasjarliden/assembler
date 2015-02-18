@@ -45,12 +45,12 @@ command:
 argument:
 	IDENTIFIER {
 		printf("argument with identifier %s\n", $1);
-		$$.type = 1;
+		$$.type = IDENTIFIER_ARGUMENT;
 		$$.identifier = $1;
 	}
 	| number {
 		printf("argument with number %d\n", $1);
-		$$.type = 2;
+		$$.type = VALUE_ARGUMENT;
 		$$.value = $1
 	}
 	;

@@ -69,7 +69,7 @@ class LdInstruction : public Instruction {
   void translate(MachineCode& code, const Argument& arg1, const Argument& arg2) const {
     // TODO ignore arg1 for know and hardcode regA
     code.add(0b00111110);
-    assert(arg2.type == 2); // numeric
+    assert(arg2.type == VALUE_ARGUMENT);
     // TODO: should check size of value
     Byte byte = (Byte)arg2.value;
     code.add(byte);
