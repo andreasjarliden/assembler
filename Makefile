@@ -27,7 +27,7 @@ lexer.o: lexer.c parser.tab.h Argument.h symbolTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
-main.o: main.cpp Commands.hpp MachineCode.hpp Instruction.hpp Assembler.hpp
+main.o: main.cpp Commands.hpp MachineCode.hpp instructions.hpp Assembler.hpp
 
 Commands.o: Commands.cpp Commands.hpp
 
@@ -39,7 +39,7 @@ argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument
 
 MachineCode.o: MachineCode.cpp MachineCode.hpp
 
-Instruction.o: Instruction.cpp Instruction.hpp
+instructions.o: instructions.cpp instructions.hpp
 
-Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp Instruction.hpp
+Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp instructions.hpp
 

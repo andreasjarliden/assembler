@@ -1,5 +1,5 @@
 #include "Assembler.hpp"
-#include "Instruction.hpp"
+#include "instructions.hpp"
 #include <cassert>
 
 Assembler::Assembler() {
