@@ -6,7 +6,7 @@ CXXFLAGS+=-g
 CFLAGS+=-g
 LDFLAGS+=-g
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 %.tab.c: %.y
@@ -15,14 +15,14 @@ asm: main.o parser.tab.o lexer.o command.o Commands.o
 parser.tab.h: parser.y
 	$(BISON) -d $+
 
-lexer.o: lexer.c parser.tab.h Argument.h
+lexer.o: lexer.c parser.tab.h Argument.h symbolTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
 main.cpp: Commands.h
 
-Commands.cpp: Commands.h
+Commands.o: Commands.cpp Commands.h
 
-command.cpp: command.hpp command.h Commands.h
+command.o: command.cpp command.hpp command.h Commands.h
 
-
+symbolTable.o: symbolTable.cpp symbolTable.hpp symbolTable.h

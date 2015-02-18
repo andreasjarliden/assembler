@@ -1,7 +1,8 @@
 %{
-#include <stdio.h>
 #include "Argument.h"
 #include "parser.tab.h"
+#include "symbolTable.h"
+#include <stdio.h>
 %}
 
 option nounput yylineno
@@ -15,9 +16,7 @@ HEXNUMBER [0-9a-fA-F]+h
 
 {IDENTIFIER} {
 	printf("identifier -%s-\n", yytext);
-	char* temp = malloc(64);
-	strcpy(temp, yytext);
-	yylval.symbol = temp;
+	yylval.symbol = addSymbol(yytext);
 	return IDENTIFIER;
 }
 

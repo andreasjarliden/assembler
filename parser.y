@@ -9,7 +9,7 @@ extern int yylineno;
 %}
 
 %union {
-	char* symbol;
+	const char* symbol;
 	int numberValue;
 	Argument argumentValue;
 };

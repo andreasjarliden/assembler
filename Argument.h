@@ -3,5 +3,5 @@
 typedef struct {
 	int type;
 	int value;
-	char* identifier;
+	const char* identifier;
 } Argument;

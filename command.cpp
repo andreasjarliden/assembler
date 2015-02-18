@@ -5,7 +5,7 @@
 
 extern Commands& COMMANDS;
 
-int command0(char* command) {
+int command0(const char* command) {
   COMMANDS.command0(command);
   return 1;
 }
@@ -22,7 +22,7 @@ void printArgument(Argument* arg) {
   }
 }
 
-int command2(char* command, Argument* arg1, Argument* arg2) {
+int command2(const char* command, Argument* arg1, Argument* arg2) {
   std::cout << "Command with 2 args:\n";
   printArgument(arg1);
   printArgument(arg2);
