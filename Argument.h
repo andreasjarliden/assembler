@@ -1,6 +1,6 @@
 #pragma once
 
-enum ArgumentType { IDENTIFIER_ARGUMENT, VALUE_ARGUMENT };
+enum ArgumentType { IDENTIFIER_ARGUMENT, VALUE_ARGUMENT, ADDRESS_ARGUMENT };
 
 struct Argument {
   enum ArgumentType type;

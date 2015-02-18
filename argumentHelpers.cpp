@@ -13,3 +13,10 @@ Argument byteArg(unsigned char byte) {
   argument.value = byte;
   return argument;
 }
+
+Argument addressArg(int address) {
+  Argument argument;
+  argument.type = ADDRESS_ARGUMENT;
+  argument.value = address;
+  return argument;
+}

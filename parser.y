@@ -39,7 +39,10 @@ command:
 		command2($1, &$2, &$4);
 		printf("p: 2 args command %s argument types %d, %d\n", $1, $2.type, $4.type);
 	}
-       	| IDENTIFIER argument NEWLINE { printf("p: 1 arg command %s argument type %d\n", $1, $2.type); }
+       	| IDENTIFIER argument NEWLINE {
+		command1($1, &$2);
+		printf("p: 1 arg command %s argument type %d\n", $1, $2.type);
+	}
 	;
 
 argument:
@@ -52,6 +55,11 @@ argument:
 		printf("argument with number %d\n", $1);
 		$$.type = VALUE_ARGUMENT;
 		$$.value = $1
+	}
+	| '(' number ')' {
+		printf("argument with address %d\n", $2);
+		$$.type = ADDRESS_ARGUMENT;
+		$$.value = $2
 	}
 	;
 

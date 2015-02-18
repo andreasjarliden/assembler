@@ -44,7 +44,7 @@ HEXNUMBER [0-9a-fA-F]+h
 
 ^[ \t]*\n { printf("ignoring empty line\n"); yylineno++; }
 
-, { return ','; }
+[,()] { return yytext[0]; }
 
 \n {
 	printf("newline\n");

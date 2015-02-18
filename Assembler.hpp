@@ -14,10 +14,8 @@ public:
   ~Assembler();
 
   void command0(const char* mnemonic);
-
-  virtual void command2(const char* mnemonic,
-      const Argument& arg1,
-      const Argument& arg2);
+  void command1(const char* mnemonic, const Argument&);
+  void command2(const char* mnemonic, const Argument&, const Argument&);
 
   const MachineCode& machineCode() const;
 

@@ -6,6 +6,7 @@ Assembler::Assembler() {
   _nullaryInstructions[std::string("neg")] = &myNegInstruction;
   _nullaryInstructions[std::string("cpl")] = &myCplInstruction;
   _binaryInstructions[std::string("ld")] = &myLdInstruction;
+  _unaryInstructions[std::string("out")] = &outInstruction;
 }
 
 Assembler::~Assembler() {}
@@ -14,6 +15,12 @@ void Assembler::command0(const char* mnemonic) {
   auto f = _nullaryInstructions[std::string(mnemonic)];
   assert(f);
   f(_machineCode);
+}
+
+void Assembler::command1(const char* mnemonic, const Argument& arg) {
+  auto f = _unaryInstructions[std::string(mnemonic)];
+  assert(f);
+  f(arg, _machineCode);
 }
 
 void Assembler::command2(const char* mnemonic,
