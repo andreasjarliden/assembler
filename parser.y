@@ -46,9 +46,7 @@ argument:
 	IDENTIFIER {
 		printf("argument with identifier %s\n", $1);
 		$$.type = 1;
-		/* TODO LEAKS */
-		$$.identifier = malloc(256);
-		strcpy($$.identifier, $1);
+		$$.identifier = $1;
 	}
 	| number {
 		printf("argument with number %d\n", $1);
