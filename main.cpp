@@ -1,8 +1,7 @@
 #include "Commands.hpp"
 #include "Argument.hpp"
 #include "argumentHelpers.hpp"
-#include <algorithm>
-#include <vector>
+#include "MachineCode.hpp"
 #include <cassert>
 #include <map>
 #include <string>
@@ -13,30 +12,6 @@ extern "C" {
 int yyparse();
 
 }
-
-typedef unsigned char Byte;
-
-class MachineCode {
-public:
-  void add(Byte b) {
-    _code.push_back(b);
-  }
-
-  bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const {
-    if (_code.size() != expectedSizeInBytes)
-      return false;
-    return std::equal(_code.begin(), _code.end(), expectedBytes);
-  }
-
-  void print() const {
-    for (int i = 0; i < _code.size(); ++i) {
-      std::cout << i << ": " << std::hex << (int)_code[i] << std::endl;
-    }
-  }
-
-private:
-  std::vector<Byte> _code;
-};
 
 
 class Instruction {
