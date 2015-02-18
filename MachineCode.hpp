@@ -13,6 +13,8 @@ public:
   bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const;
   void print() const;
 
+  size_t size() const;
+
 private:
   std::vector<Byte> _code;
 };

@@ -32,10 +32,6 @@ HEXNUMBER [0-9a-fA-F]+h
 	return HEXNUMBER;
 }
 
-{IDENTIFIER}: {
-	printf("label %s-\n", yytext);
-}
-
 ;.*\n {
 	printf("comment %s\n", yytext);
 }
@@ -44,7 +40,7 @@ HEXNUMBER [0-9a-fA-F]+h
 
 ^[ \t]*\n { printf("ignoring empty line\n"); yylineno++; }
 
-[,()] { return yytext[0]; }
+[,():] { return yytext[0]; }
 
 \n {
 	printf("newline\n");

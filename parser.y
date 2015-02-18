@@ -26,8 +26,13 @@ extern int yylineno;
 %%
 
 program:
-	program command
+	program statement
 	|
+	;
+
+statement:
+	  command
+	| label
 	;
 
 command:
@@ -42,6 +47,13 @@ command:
        	| IDENTIFIER argument NEWLINE {
 		command1($1, &$2);
 		printf("p: 1 arg command %s argument type %d\n", $1, $2.type);
+	}
+	;
+
+label:
+	IDENTIFIER ':' NEWLINE {
+		printf("label %s\n", $1);
+		label($1);
 	}
 	;
 

@@ -1,6 +1,7 @@
 #include "Assembler.hpp"
 #include "instructions.hpp"
 #include <cassert>
+#include <iostream>
 
 Assembler::Assembler() {
   _nullaryInstructions[std::string("neg")] = &myNegInstruction;
@@ -29,6 +30,12 @@ void Assembler::command2(const char* mnemonic,
   auto f = _binaryInstructions[std::string(mnemonic)];
   assert(f);
   f(arg1, arg2, _machineCode);
+}
+
+void Assembler::label(const char* label) {
+  size_t offset = machineCode().size();
+  _labels[label] = offset;
+  std::cout << "Storing label " << label << " to " << offset << std::endl;
 }
 
 const MachineCode& Assembler::machineCode() const {

@@ -11,5 +11,6 @@ public:
   virtual void command2(const char* mnemonic,
       const Argument& arg1,
       const Argument& arg2) = 0;
+  virtual void label(const char* label) = 0;
 };
 

@@ -13,3 +13,7 @@ void MachineCode::print() const {
     std::cout << i << ": " << std::hex << (int)_code[i] << std::endl;
   }
 }
+
+size_t MachineCode::size() const {
+  return _code.size();
+}

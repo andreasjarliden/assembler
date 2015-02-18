@@ -32,4 +32,8 @@ int command2(const char* command, Argument* arg1, Argument* arg2) {
   return 0;
 }
 
+void label(const char* label) {
+  COMMANDS.label(label);
+}
+
 
