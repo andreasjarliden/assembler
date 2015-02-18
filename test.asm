@@ -11,6 +11,4 @@ loop:
 	; Send 00h to PIO Data A
 	ld a, 00h
 	out (00h)
-	; TODO comments on line not working
-	; TODO would like to do jp loop
-	jp 8		
+	jp 8		; TODO would like to do jp loop

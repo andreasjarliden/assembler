@@ -32,17 +32,13 @@ HEXNUMBER [0-9a-fA-F]+h
 	return HEXNUMBER;
 }
 
-;.*\n {
-	printf("comment %s\n", yytext);
-}
-
 [ \t] /* ignore whitespace */
 
 ^[ \t]*\n { printf("ignoring empty line\n"); yylineno++; }
 
 [,():] { return yytext[0]; }
 
-\n {
+(;.*)?\n {
 	printf("newline\n");
 	++yylineno;
 	return NEWLINE;
