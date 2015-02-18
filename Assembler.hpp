@@ -22,9 +22,9 @@ public:
   const MachineCode& machineCode() const;
 
 private:
-  std::map<std::string, const Instruction*> _nullaryInstructions;
-  std::map<std::string, const Instruction*> _unaryInstructions;
-  std::map<std::string, const Instruction*> _binaryInstructions;
+  std::map<std::string, std::function<void (MachineCode&)>> _nullaryInstructions;
+  std::map<std::string, std::function<void (const Argument&, MachineCode&)>> _unaryInstructions;
+  std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&)>> _binaryInstructions;
   MachineCode _machineCode;
 };
 

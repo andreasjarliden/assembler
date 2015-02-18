@@ -1,30 +1,27 @@
 #include "Assembler.hpp"
 #include "Instruction.hpp"
+#include <cassert>
 
 Assembler::Assembler() {
-  static NegInstruction negInstruction;
-  static CplInstruction cplInstruction;
-  static LdInstruction ldInstruction;
-
-  _nullaryInstructions[std::string("neg")] = &negInstruction;
-  _nullaryInstructions[std::string("cpl")] = &cplInstruction;
-  _binaryInstructions[std::string("ld")] = &ldInstruction;
+  _nullaryInstructions[std::string("neg")] = &myNegInstruction;
+  _nullaryInstructions[std::string("cpl")] = &myCplInstruction;
+  _binaryInstructions[std::string("ld")] = &myLdInstruction;
 }
 
 Assembler::~Assembler() {}
 
 void Assembler::command0(const char* mnemonic) {
-  const Instruction* i = _nullaryInstructions[std::string(mnemonic)];
-  assert(i);
-  i->translate(_machineCode);
+  auto f = _nullaryInstructions[std::string(mnemonic)];
+  assert(f);
+  f(_machineCode);
 }
 
 void Assembler::command2(const char* mnemonic,
     const Argument& arg1,
     const Argument& arg2) {
-  const Instruction* i = _binaryInstructions[std::string(mnemonic)];
-  assert(i);
-  i->translate(_machineCode, arg1, arg2);
+  auto f = _binaryInstructions[std::string(mnemonic)];
+  assert(f);
+  f(arg1, arg2, _machineCode);
 }
 
 const MachineCode& Assembler::machineCode() const {

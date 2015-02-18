@@ -2,7 +2,7 @@ BISON:=bison
 
 LDLIBS+=-ll -ly
 
-CXXFLAGS+=-g
+CXXFLAGS+=-g -std=c++11
 CFLAGS+=-g
 LDFLAGS+=-g
 
@@ -33,4 +33,4 @@ MachineCode.o: MachineCode.cpp MachineCode.hpp
 
 Instruction.o: Instruction.cpp Instruction.hpp
 
-Assembler.o: Assembler.cpp Assembler.hpp Commands.hpp MachineCode.hpp Instruction.hpp
+Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp Instruction.hpp
