@@ -1,5 +1,5 @@
 #include "command.hpp"
-#include "Commands.h"
+#include "Commands.hpp"
 #include <iostream>
 #include <cassert>
 

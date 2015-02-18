@@ -19,11 +19,11 @@ lexer.o: lexer.c parser.tab.h Argument.h symbolTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
-main.o: main.cpp Commands.h Argument.h argumentHelpers.hpp
+main.o: main.cpp Commands.hpp Argument.h argumentHelpers.hpp
 
-Commands.o: Commands.cpp Commands.h
+Commands.o: Commands.cpp Commands.hpp
 
-command.o: command.cpp command.hpp command.h Commands.h
+command.o: command.cpp command.hpp command.h Commands.hpp
 
 symbolTable.o: symbolTable.cpp symbolTable.hpp symbolTable.h
 
