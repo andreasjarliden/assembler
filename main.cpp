@@ -1,4 +1,6 @@
 #include "Commands.h"
+#include "Argument.hpp"
+#include "argumentHelpers.hpp"
 #include <algorithm>
 #include <vector>
 #include <cassert>
@@ -41,6 +43,7 @@ class Instruction {
   public:
     virtual ~Instruction() = 0;
     virtual void translate(MachineCode& code) const = 0;
+    virtual void translate(MachineCode& code, const Argument& arg1, const Argument& arg2) const {}
 };
 
 Instruction::~Instruction() {}
@@ -58,11 +61,28 @@ class CplInstruction : public Instruction {
   }
 };
 
+class LdInstruction : public Instruction {
+  void translate(MachineCode& code) const {
+    assert(false); // TODO
+  }
+
+  void translate(MachineCode& code, const Argument& arg1, const Argument& arg2) const {
+    // TODO ignore arg1 for know and hardcode regA
+    code.add(0b00111110);
+    assert(arg2.type == 2); // numeric
+    // TODO: should check size of value
+    Byte byte = (Byte)arg2.value;
+    code.add(byte);
+  }
+};
+
+
 class Assembler : public Commands {
 public:
   Assembler() {
     addInstruction("neg", _negInstruction);
     addInstruction("cpl", _cplInstruction);
+    addInstruction("ld", _ldInstruction);
   }
 
   ~Assembler() {}
@@ -71,6 +91,14 @@ public:
     const Instruction* i = _mnemonics[std::string(mnemonic)];
     assert(i);
     i->translate(_machineCode);
+  }
+
+  virtual void command2(const char* mnemonic,
+      const Argument& arg1,
+      const Argument& arg2) {
+    const Instruction* i = _mnemonics[std::string(mnemonic)];
+    assert(i);
+    i->translate(_machineCode, arg1, arg2);
   }
 
   const MachineCode& machineCode() const {
@@ -84,6 +112,7 @@ private:
 
   NegInstruction _negInstruction;
   CplInstruction _cplInstruction;
+  LdInstruction _ldInstruction;
   std::map<std::string, const Instruction*> _mnemonics;
   MachineCode _machineCode;
 };
@@ -113,12 +142,20 @@ void testTwoInstructions() {
   assert(assembler.machineCode().isEqual(expectedBytes, 3));
 }
 
+void test_ld_a_byte() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("a"), byteArg(255));
+  Byte expectedBytes[] = { 0x3e, 0xff };
+  assert(assembler.machineCode().isEqual(expectedBytes, 2));
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
   testSingleOneByteInstruction();
   testSingleTwoByteInstruction();
   testTwoInstructions();
+  test_ld_a_byte();
   yyparse();
   ASSEMBLER.machineCode().print();
   return 0;

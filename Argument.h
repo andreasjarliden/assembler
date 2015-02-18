@@ -1,7 +1,7 @@
 #pragma once
 
-typedef struct {
-	int type;
-	int value;
-	const char* identifier;
-} Argument;
+struct Argument {
+  int type;
+  int value;
+  const char* identifier;
+};

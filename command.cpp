@@ -26,6 +26,7 @@ int command2(const char* command, Argument* arg1, Argument* arg2) {
   std::cout << "Command with 2 args:\n";
   printArgument(arg1);
   printArgument(arg2);
+  COMMANDS.command2(command, *arg1, *arg2);
   return 0;
 }
 
