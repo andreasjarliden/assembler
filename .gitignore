@@ -1,4 +1,5 @@
 asm
+test
 *.o
 lexer.c
 parser.tab.c
