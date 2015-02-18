@@ -9,10 +9,10 @@ LDFLAGS+=-g
 default: test asm
 	./test
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o argumentHelpers.o MachineCode.o Instruction.o Assembler.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-test: test.o Commands.o argumentHelpers.o MachineCode.o Instruction.o Assembler.o
+test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp Commands.hpp

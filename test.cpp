@@ -33,6 +33,14 @@ void test_ld_a_byte() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
+void test_ld_d_byte() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("L"), byteArg(255));
+  Byte expectedBytes[] = { 0x2e, 0xff };
+  assert(assembler.machineCode().isEqual(expectedBytes, 2));
+}
+
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -40,5 +48,6 @@ int main() {
   testSingleTwoByteInstruction();
   testTwoInstructions();
   test_ld_a_byte();
+  test_ld_d_byte();
   std::cout << "Test passed" << std::endl;
 }
