@@ -26,7 +26,7 @@ extern int yylineno;
 %%
 
 program:
-	program command { printf("p: Program %s\n", $1); }
+	program command
 	|
 	;
 
