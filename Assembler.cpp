@@ -7,11 +7,36 @@
 #include <functional>
 #include <cassert>
 
+namespace {
+
+} // unnamed namespace
+
 struct Assembler::Impl {
+  typedef std::function<void (MachineCode&)> NullaryInstruction;
+  typedef std::function<void (const Argument&, MachineCode&, const LabelTable&)> UnaryInstruction;
+
+  NullaryInstruction findNullaryInstruction(const char* mnemonic) {
+    auto f = nullaryInstructions[std::string(mnemonic)];
+    if (!f) {
+      throw std::logic_error(std::string("No nullary instruction ") + mnemonic);
+    }
+    return f;
+  }
+
+  UnaryInstruction findUnaryInstruction(const char* mnemonic) {
+    auto f = unaryInstructions[std::string(mnemonic)];
+    if (!f) {
+      throw std::logic_error(std::string("No unary instruction ") + mnemonic);
+    }
+    return f;
+  }
+
+  // TODO add binary find version
+
   LabelTable labelTable;
   MachineCode machineCode;
-  std::map<std::string, std::function<void (MachineCode&)>> nullaryInstructions;
-  std::map<std::string, std::function<void (const Argument&, MachineCode&, const LabelTable&)>> unaryInstructions;
+  std::map<std::string, NullaryInstruction> nullaryInstructions;
+  std::map<std::string, UnaryInstruction> unaryInstructions;
   std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)>> binaryInstructions;
 };
 
@@ -26,13 +51,12 @@ Assembler::Assembler()
 Assembler::~Assembler() {}
 
 void Assembler::command0(const char* mnemonic) {
-  auto f = _pimpl->nullaryInstructions[std::string(mnemonic)];
-  assert(f);
+  auto f = _pimpl->findNullaryInstruction(mnemonic);
   f(_pimpl->machineCode);
 }
 
 void Assembler::command1(const char* mnemonic, const Argument& arg) {
-  auto f = _pimpl->unaryInstructions[std::string(mnemonic)];
+  auto f = _pimpl->findUnaryInstruction(mnemonic);
   assert(f);
   f(arg, _pimpl->machineCode, _pimpl->labelTable);
 }
