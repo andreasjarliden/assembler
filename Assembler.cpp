@@ -4,11 +4,11 @@
 #include <iostream>
 
 Assembler::Assembler() {
-  _nullaryInstructions[std::string("neg")] = &myNegInstruction;
-  _nullaryInstructions[std::string("cpl")] = &myCplInstruction;
-  _binaryInstructions[std::string("ld")] = &myLdInstruction;
-  _unaryInstructions[std::string("out")] = &outInstruction;
-  _unaryInstructions[std::string("jp")] = &jpInstruction;
+  _nullaryInstructions[std::string("neg")] = negInstruction;
+  _nullaryInstructions[std::string("cpl")] = cplInstruction;
+  _binaryInstructions[std::string("ld")] = ldInstruction;
+  _unaryInstructions[std::string("out")] = outInstruction;
+  _unaryInstructions[std::string("jp")] = jpInstruction;
 }
 
 Assembler::~Assembler() {}

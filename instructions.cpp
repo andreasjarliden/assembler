@@ -30,16 +30,16 @@ Byte registerBits(const Argument& arg1) {
 
 } // unnamed namespace
 
-void myNegInstruction(MachineCode& code) {
+void negInstruction(MachineCode& code) {
   code.add(0xed);
   code.add(0x44);
 }
 
-void myCplInstruction(MachineCode& code) {
+void cplInstruction(MachineCode& code) {
   code.add(0x2f);
 }
 
-void myLdInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable&) {
+void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable&) {
   code.add(0b00000110 | registerBits(arg1));
   assert(arg2.type == VALUE_ARGUMENT);
   // TODO: should check size of value
