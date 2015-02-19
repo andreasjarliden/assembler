@@ -12,6 +12,7 @@ public:
 
   bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const;
   void print() const;
+  void printHex() const;
 
   size_t size() const;
 

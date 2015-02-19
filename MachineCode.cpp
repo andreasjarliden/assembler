@@ -1,6 +1,7 @@
 #include "MachineCode.hpp"
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 
 bool MachineCode::isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const {
   if (_code.size() != expectedSizeInBytes)
@@ -13,6 +14,18 @@ void MachineCode::print() const {
     std::cout << i << ": " << std::hex << (int)_code[i] << std::endl;
   }
 }
+
+// TODO: shouldn't be part of MachineCode
+void MachineCode::printHex() const {
+  for (int i = 0; i < _code.size(); ) {
+    std::cout << std::hex << std::setw(4) << std::setfill('0') << i << ": ";
+    for (int j = 0; j < 8 && i < _code.size(); ++j, ++i) {
+      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)_code[i] << " ";
+    }
+    std::cout << std::endl;
+  }
+}
+
 
 size_t MachineCode::size() const {
   return _code.size();

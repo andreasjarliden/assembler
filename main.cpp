@@ -13,7 +13,7 @@ Commands& COMMANDS = ASSEMBLER;
 
 int main() {
   yyparse();
-  ASSEMBLER.machineCode().print();
+  ASSEMBLER.machineCode().printHex();
   return 0;
 }
 
