@@ -42,11 +42,16 @@ struct Assembler::Impl {
 
 Assembler::Assembler()
   : _pimpl(new Impl) {
+  // TODO use macros? Could even declare as extern?
+  _pimpl->nullaryInstructions[std::string("ei")] = eiInstruction;
+  _pimpl->nullaryInstructions[std::string("halt")] = haltInstruction;
   _pimpl->nullaryInstructions[std::string("neg")] = negInstruction;
   _pimpl->nullaryInstructions[std::string("cpl")] = cplInstruction;
   _pimpl->binaryInstructions[std::string("ld")] = ldInstruction;
   _pimpl->unaryInstructions[std::string("out")] = outInstruction;
-  _pimpl->unaryInstructions[std::string("jp")] = jpInstruction; }
+  _pimpl->unaryInstructions[std::string("jp")] = jpInstruction;
+  _pimpl->unaryInstructions[std::string("im")] = imInstruction;
+}
 
 Assembler::~Assembler() {}
 

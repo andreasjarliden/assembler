@@ -30,6 +30,14 @@ Byte registerBits(const Argument& arg1) {
 
 } // unnamed namespace
 
+void eiInstruction(MachineCode& code) {
+  code.add(0xfb);
+}
+
+void haltInstruction(MachineCode& code) {
+  code.add(0x76);
+}
+
 void negInstruction(MachineCode& code) {
   code.add(0xed);
   code.add(0x44);
@@ -69,6 +77,14 @@ void jpInstruction(const Argument& arg, MachineCode& code, const LabelTable& tab
   Byte high = (Byte)((address >> 8) & 0xff);
   code.add(low);
   code.add(high);
+}
+
+void imInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
+  assert(arg.type == VALUE_ARGUMENT);
+  // TODO: add support for mode 0 and 2
+  assert(arg.value == 1);
+  code.add(0xed);
+  code.add(0x56);
 }
 
 
