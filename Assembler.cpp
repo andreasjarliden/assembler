@@ -1,7 +1,6 @@
 #include "Assembler.hpp"
 #include "instructions.hpp"
 #include <cassert>
-#include <iostream>
 
 Assembler::Assembler() {
   _nullaryInstructions[std::string("neg")] = negInstruction;
