@@ -39,8 +39,8 @@ argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument
 
 MachineCode.o: MachineCode.cpp MachineCode.hpp
 
-instructions.o: instructions.cpp instructions.hpp LabelTable.hpp
+instructions.o: instructions.cpp LabelTable.hpp
 
-Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp instructions.hpp LabelTable.hpp
+Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp
 
 LabelTable.o: LabelTable.cpp LabelTable.hpp

@@ -1,11 +1,12 @@
 #include "Assembler.hpp"
-#include "instructions.hpp"
 #include "LabelTable.hpp"
 #include "MachineCode.hpp"
 #include <map>
 #include <string>
 #include <functional>
 #include <cassert>
+
+class Argument;
 
 namespace {
 
@@ -40,17 +41,27 @@ struct Assembler::Impl {
   std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)>> binaryInstructions;
 };
 
+#define ASM_NULLARY_INSTRUCTION(X) extern void X ## Instruction(MachineCode& code); \
+  _pimpl->nullaryInstructions[std::string(#X)] = X ## Instruction;
+
+#define ASM_UNARY_INSTRUCTION(X) extern void X ## Instruction(const Argument&, MachineCode& code, const LabelTable&); \
+  _pimpl->unaryInstructions[std::string(#X)] = X ## Instruction;
+
+#define ASM_BINARY_INSTRUCTION(X) extern void X ## Instruction(const Argument&, const Argument&, MachineCode& code, const LabelTable&); \
+  _pimpl->binaryInstructions[std::string(#X)] = X ## Instruction;
+
+
 Assembler::Assembler()
   : _pimpl(new Impl) {
   // TODO use macros? Could even declare as extern?
-  _pimpl->nullaryInstructions[std::string("ei")] = eiInstruction;
-  _pimpl->nullaryInstructions[std::string("halt")] = haltInstruction;
-  _pimpl->nullaryInstructions[std::string("neg")] = negInstruction;
-  _pimpl->nullaryInstructions[std::string("cpl")] = cplInstruction;
-  _pimpl->binaryInstructions[std::string("ld")] = ldInstruction;
-  _pimpl->unaryInstructions[std::string("out")] = outInstruction;
-  _pimpl->unaryInstructions[std::string("jp")] = jpInstruction;
-  _pimpl->unaryInstructions[std::string("im")] = imInstruction;
+  ASM_NULLARY_INSTRUCTION(ei);
+  ASM_NULLARY_INSTRUCTION(halt);
+  ASM_NULLARY_INSTRUCTION(neg);
+  ASM_NULLARY_INSTRUCTION(cpl);
+  ASM_BINARY_INSTRUCTION(ld);
+  ASM_UNARY_INSTRUCTION(out);
+  ASM_UNARY_INSTRUCTION(jp);
+  ASM_UNARY_INSTRUCTION(im);
 }
 
 Assembler::~Assembler() {}
