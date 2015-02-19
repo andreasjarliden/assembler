@@ -15,7 +15,7 @@ asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelp
 test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp
+test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp
 
 %.tab.c: %.y
 	$(BISON) $+
@@ -27,7 +27,7 @@ lexer.o: lexer.c parser.tab.h Argument.h stringTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
-main.o: main.cpp Commands.hpp MachineCode.hpp instructions.hpp Assembler.hpp LabelTable.hpp
+main.o: main.cpp Commands.hpp MachineCode.hpp Assembler.hpp
 
 Commands.o: Commands.cpp Commands.hpp
 
