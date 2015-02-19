@@ -1,7 +1,6 @@
 #include "Commands.hpp"
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
-#include <cassert>
 
 extern "C" {
 
