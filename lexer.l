@@ -1,7 +1,7 @@
 %{
 #include "Argument.h"
 #include "parser.tab.h"
-#include "symbolTable.h"
+#include "stringTable.h"
 #include <stdio.h>
 %}
 

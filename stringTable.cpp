@@ -1,4 +1,4 @@
-#include "symbolTable.hpp"
+#include "stringTable.hpp"
 #include <set>
 #include <string>
 

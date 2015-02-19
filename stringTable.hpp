@@ -2,6 +2,6 @@
 
 extern "C" {
 
-#include "symbolTable.h"
+#include "stringTable.h"
 
 }

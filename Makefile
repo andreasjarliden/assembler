@@ -9,7 +9,7 @@ LDFLAGS+=-g
 default: test asm
 	./test
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o symbolTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
@@ -23,7 +23,7 @@ test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp Commands.hpp 
 parser.tab.h: parser.y
 	$(BISON) -d $+
 
-lexer.o: lexer.c parser.tab.h Argument.h symbolTable.h
+lexer.o: lexer.c parser.tab.h Argument.h stringTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
@@ -33,7 +33,7 @@ Commands.o: Commands.cpp Commands.hpp
 
 command.o: command.cpp command.hpp command.h Commands.hpp
 
-symbolTable.o: symbolTable.cpp symbolTable.hpp symbolTable.h
+stringTable.o: stringTable.cpp stringTable.hpp stringTable.h
 
 argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument.h
 
