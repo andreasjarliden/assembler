@@ -54,6 +54,14 @@ void testJpToNumericAddress() {
   assert(assembler.machineCode().isEqual(expectedBytes, 3));
 }
 
+void testJpBackwardsToLabel() {
+  Assembler assembler;
+  assembler.label("aLabel");
+  assembler.command1("jp", identifierArg("aLabel"));
+  Byte expectedBytes[] = { 0xc3, 0x00, 0x00 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 3));
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -64,5 +72,6 @@ int main() {
   test_ld_d_byte();
   test_out_20();
   testJpToNumericAddress();
+  testJpBackwardsToLabel();
   std::cout << "Test passed" << std::endl;
 }

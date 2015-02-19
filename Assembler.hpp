@@ -2,10 +2,10 @@
 
 #include "Commands.hpp"
 #include "MachineCode.hpp"
-#include <map>
+#include "LabelTable.hpp"
 #include <string>
 
-class Instruction;
+class LabelTable;
 
 class Assembler : public Commands {
 public:
@@ -22,9 +22,9 @@ public:
 
 private:
   std::map<std::string, std::function<void (MachineCode&)>> _nullaryInstructions;
-  std::map<std::string, std::function<void (const Argument&, MachineCode&)>> _unaryInstructions;
-  std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&)>> _binaryInstructions;
-  std::map<const char*, size_t> _labels;
+  std::map<std::string, std::function<void (const Argument&, MachineCode&, const LabelTable&)>> _unaryInstructions;
+  std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)>> _binaryInstructions;
+  LabelTable _labelTable;
   MachineCode _machineCode;
 };
 

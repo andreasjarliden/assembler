@@ -1,5 +1,6 @@
 #include "instructions.hpp"
 #include "MachineCode.hpp"
+#include "LabelTable.hpp"
 #include "Argument.hpp"
 #include <cassert>
 
@@ -38,7 +39,7 @@ void myCplInstruction(MachineCode& code) {
   code.add(0x2f);
 }
 
-void myLdInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code) {
+void myLdInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable&) {
   code.add(0b00000110 | registerBits(arg1));
   assert(arg2.type == VALUE_ARGUMENT);
   // TODO: should check size of value
@@ -46,7 +47,7 @@ void myLdInstruction(const Argument& arg1, const Argument& arg2, MachineCode& co
   code.add(byte);
 }
 
-void outInstruction(const Argument& arg, MachineCode& code) {
+void outInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
   code.add(0xd3);
   assert(arg.type == ADDRESS_ARGUMENT);
   assert(arg.value >= 0);
@@ -55,11 +56,17 @@ void outInstruction(const Argument& arg, MachineCode& code) {
   code.add(byte);
 }
 
-void jpInstruction(const Argument& arg, MachineCode& code) {
+void jpInstruction(const Argument& arg, MachineCode& code, const LabelTable& table) {
   code.add(0xc3);
-  assert(arg.type == VALUE_ARGUMENT);
-  Byte low = (Byte)arg.value & 0xff;
-  Byte high = (Byte)((arg.value >> 8) & 0xff);
+  int address;
+  if (arg.type == VALUE_ARGUMENT) {
+    address = arg.value;
+  }
+  else {
+    address = table.addressForLabel(arg.identifier);
+  }
+  Byte low = (Byte)address & 0xff;
+  Byte high = (Byte)((address >> 8) & 0xff);
   code.add(low);
   code.add(high);
 }
