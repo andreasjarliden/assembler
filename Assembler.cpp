@@ -53,7 +53,6 @@ struct Assembler::Impl {
 
 Assembler::Assembler()
   : _pimpl(new Impl) {
-  // TODO use macros? Could even declare as extern?
   ASM_NULLARY_INSTRUCTION(ei);
   ASM_NULLARY_INSTRUCTION(halt);
   ASM_NULLARY_INSTRUCTION(neg);
