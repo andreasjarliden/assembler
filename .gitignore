@@ -4,3 +4,4 @@ test
 lexer.c
 parser.tab.c
 parser.tab.h
+hex2i8hex

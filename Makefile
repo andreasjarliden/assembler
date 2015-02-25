@@ -9,6 +9,9 @@ LDFLAGS+=-g
 default: test asm
 	./test
 
+hex2i8hex: hex2i8hex.cpp
+	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
+
 asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
