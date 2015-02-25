@@ -42,6 +42,11 @@ void negInstruction(MachineCode& code) {
   code.add(0x44);
 }
 
+void retiInstruction(MachineCode& code) {
+  code.add(0xed);
+  code.add(0x4d);
+}
+
 void cplInstruction(MachineCode& code) {
   code.add(0x2f);
 }
@@ -56,6 +61,15 @@ void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code
 
 void outInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
   code.add(0xd3);
+  assert(arg.type == ADDRESS_ARGUMENT);
+  assert(arg.value >= 0);
+  assert(arg.value <= 255);
+  Byte byte = (Byte)arg.value;
+  code.add(byte);
+}
+
+void inInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
+  code.add(0xdb);
   assert(arg.type == ADDRESS_ARGUMENT);
   assert(arg.value >= 0);
   assert(arg.value <= 255);
