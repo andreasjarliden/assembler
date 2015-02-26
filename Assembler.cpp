@@ -2,6 +2,7 @@
 #include "LabelTable.hpp"
 #include "MachineCode.hpp"
 #include "Argument.hpp"
+#include "errorChecking.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -16,11 +17,12 @@ namespace {
 struct Assembler::Impl {
   typedef std::function<void (MachineCode&)> NullaryInstruction;
   typedef std::function<void (const Argument&, MachineCode&, const LabelTable&)> UnaryInstruction;
+  typedef std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)> BinaryInstruction;
 
   NullaryInstruction findNullaryInstruction(const char* mnemonic) {
     auto f = nullaryInstructions[std::string(mnemonic)];
     if (!f) {
-      throw std::logic_error(std::string("No nullary instruction ") + mnemonic);
+      error(std::string("No nullary instruction ") + mnemonic);
     }
     return f;
   }
@@ -28,7 +30,15 @@ struct Assembler::Impl {
   UnaryInstruction findUnaryInstruction(const char* mnemonic) {
     auto f = unaryInstructions[std::string(mnemonic)];
     if (!f) {
-      throw std::logic_error(std::string("No unary instruction ") + mnemonic);
+      error(std::string("No unary instruction ") + mnemonic);
+    }
+    return f;
+  }
+
+  BinaryInstruction findBinaryInstruction(const char* mnemonic) {
+    auto f = binaryInstructions[std::string(mnemonic)];
+    if (!f) {
+      error(std::string("No binary instruction ") + mnemonic);
     }
     return f;
   }
@@ -54,8 +64,6 @@ struct Assembler::Impl {
   void addEq(const char* identifier, const Argument& argument) {
     eqTable[identifier] = argument;
   }
-
-  // TODO add binary find version
 
   LabelTable labelTable;
   MachineCode machineCode;
@@ -98,7 +106,6 @@ void Assembler::command0(const char* mnemonic) {
 
 void Assembler::command1(const char* mnemonic, const Argument& arg) {
   auto f = _pimpl->findUnaryInstruction(mnemonic);
-  assert(f);
   Argument resolvedArg = _pimpl->resolveArgument(arg);
   f(resolvedArg, _pimpl->machineCode, _pimpl->labelTable);
 }
@@ -106,8 +113,7 @@ void Assembler::command1(const char* mnemonic, const Argument& arg) {
 void Assembler::command2(const char* mnemonic,
     const Argument& arg1,
     const Argument& arg2) {
-  auto f = _pimpl->binaryInstructions[std::string(mnemonic)];
-  assert(f);
+  auto f = _pimpl->findBinaryInstruction(mnemonic);
   Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
   Argument resolvedArg2 = _pimpl->resolveArgument(arg2);
   f(resolvedArg1, resolvedArg2, _pimpl->machineCode, _pimpl->labelTable);

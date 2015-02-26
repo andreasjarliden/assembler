@@ -14,3 +14,8 @@ void verifyIsValueArgument(const Argument& arg, int argumentNumber) {
   exit(-1);
 }
 
+void error(const std::string& message) {
+  fprintf(stderr, "%s:%d: error: %s\n", filename, yylineno, message.c_str());
+  exit(-1);
+}
+
