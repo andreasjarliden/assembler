@@ -10,6 +10,8 @@ public:
   Argument();
 
   bool isAddress() const;
+  bool is8BitRegister() const;
+  bool is16BitRegister() const;
   const char* identifier() const;
   int value() const;
   ArgumentType type() const;

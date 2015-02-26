@@ -33,6 +33,31 @@ Byte registerBits(const Argument& arg1) {
   throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier());
 }
 
+Byte register16Bits(const Argument& arg) {
+  assert(arg.type() == IDENTIFIER_ARGUMENT);
+  if (strlen(arg.identifier()) != 2) {
+    throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
+  }
+  if (strcmp(arg.identifier(), "bc") == 0)
+    return 0b00 << 4;
+  if (strcmp(arg.identifier(), "BC") == 0)
+    return 0b00 << 4;
+  if (strcmp(arg.identifier(), "de") == 0)
+    return 0b01 << 4;
+  if (strcmp(arg.identifier(), "DE") == 0)
+    return 0b01 << 4;
+  if (strcmp(arg.identifier(), "hl") == 0)
+    return 0b10 << 4;
+  if (strcmp(arg.identifier(), "HL") == 0)
+    return 0b10 << 4;
+  if (strcmp(arg.identifier(), "sp") == 0)
+    return 0b11 << 4;
+  if (strcmp(arg.identifier(), "SP") == 0)
+    return 0b11 << 4;
+  throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
+}
+
+
 } // unnamed namespace
 
 void nopInstruction(InstructionsHost& host) {
@@ -79,12 +104,24 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     host.addCode(high);
   }
   else {
-    // ld r, n
-    host.addCode(0b00000110 | registerBits(arg1));
-    verifyIsValueArgument(arg2, 2);
-    // TODO: should check size of value
-    Byte byte = (Byte)arg2.value();
-    host.addCode(byte);
+    if (arg1.is8BitRegister()) {
+      // ld r, n
+      host.addCode(0b00000110 | registerBits(arg1));
+      verifyIsValueArgument(arg2, 2);
+      // TODO: should check size of value
+      Byte byte = (Byte)arg2.value();
+      host.addCode(byte);
+    }
+    else if (arg1.is16BitRegister()) {
+      host.addCode(0b00000001 | register16Bits(arg1));
+      int value = arg2.value();
+      Byte low = (Byte)value & 0xff;
+      Byte high = (Byte)((value >> 8) & 0xff);
+      host.addCode(low);
+      host.addCode(high);
+    }
+    else
+      throw Error("Unknown form of LD instruction");
   }
 }
 

@@ -44,6 +44,13 @@ void test_ld_d_byte() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
+void test_ld_hl_word() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("HL"), numberArg(0x1234));
+  Byte expectedBytes[] = { 0x21, 0x34, 0x12 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 3));
+}
+
 void test_ld_addr_a() {
   Assembler assembler;
   assembler.command2("ld", addressArg(0x1234), identifierArg("a"));
@@ -106,6 +113,7 @@ int main() {
   testTwoInstructions();
   test_ld_a_byte();
   test_ld_d_byte();
+  test_ld_hl_word();
   test_ld_addr_a();
   test_out_20();
   testJpToNumericAddress();
