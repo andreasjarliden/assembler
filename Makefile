@@ -12,10 +12,10 @@ default: test asm
 hex2i8hex: hex2i8hex.cpp
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o
+test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp
@@ -47,3 +47,5 @@ instructions.o: instructions.cpp LabelTable.hpp
 Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp Argument.hpp Argument.h
 
 LabelTable.o: LabelTable.cpp LabelTable.hpp
+
+errorChecking.o: errorChecking.cpp errorChecking.hpp

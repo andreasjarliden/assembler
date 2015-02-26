@@ -4,6 +4,9 @@
 #include <cassert>
 #include <iostream>
 
+int yylineno; // Usually defined by lexer
+const char* filename = "test.txt";
+
 void testSingleOneByteInstruction() {
   Assembler assembler;
   assembler.command0("cpl");

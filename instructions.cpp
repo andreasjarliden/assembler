@@ -1,6 +1,7 @@
 #include "MachineCode.hpp"
 #include "LabelTable.hpp"
 #include "Argument.hpp"
+#include "errorChecking.hpp"
 #include <cassert>
 
 namespace {
@@ -53,7 +54,7 @@ void cplInstruction(MachineCode& code) {
 
 void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable&) {
   code.add(0b00000110 | registerBits(arg1));
-  assert(arg2.type == VALUE_ARGUMENT);
+  verifyIsValueArgument(arg2, 2);
   // TODO: should check size of value
   Byte byte = (Byte)arg2.value;
   code.add(byte);
@@ -93,7 +94,7 @@ void jpInstruction(const Argument& arg, MachineCode& code, const LabelTable& tab
 }
 
 void imInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
-  assert(arg.type == VALUE_ARGUMENT);
+  verifyIsValueArgument(arg, 1);
   // TODO: add support for mode 0 and 2
   assert(arg.value == 1);
   code.add(0xed);

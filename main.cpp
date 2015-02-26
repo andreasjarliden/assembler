@@ -10,6 +10,7 @@ int yyparse();
 
 Assembler ASSEMBLER;
 Commands& COMMANDS = ASSEMBLER;
+const char* filename = "STDIN";
 
 int main() {
   yyparse();
