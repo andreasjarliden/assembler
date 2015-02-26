@@ -57,7 +57,6 @@ Byte register16Bits(const Argument& arg) {
   throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
 }
 
-
 } // unnamed namespace
 
 void nopInstruction(InstructionsHost& host) {
@@ -90,15 +89,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   if (arg1.isAddress()) {
     // ld (nn), A
     host.addCode(0x32);
-    // TODO much duplication with jp
-    int address;
-    if (arg1.type() == ADDRESS_VALUE_ARGUMENT) {
-      address = arg1.value();
-    }
-    else {
-      address = host.addressForLabel(arg1.identifier());
-    }
-    host.add16BitValue(address);
+    host.add16BitAddress(arg1);
   }
   else {
     if (arg1.is8BitRegister()) {
@@ -130,20 +121,7 @@ void inInstruction(InstructionsHost& host, const Argument& arg) {
 
 void jpInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xc3);
-  int address;
-  if (arg.type() == VALUE_ARGUMENT) {
-    address = arg.value();
-  }
-  else {
-    if (host.containsLabel(arg.identifier())) {
-      address = host.addressForLabel(arg.identifier());
-    }
-    else {
-      address = 0;
-      host.addDelayed16BitValue(arg.identifier());
-    }
-  }
-  host.add16BitValue(address);
+  host.add16BitAddress(arg);
 }
 
 void imInstruction(InstructionsHost& host, const Argument& arg) {

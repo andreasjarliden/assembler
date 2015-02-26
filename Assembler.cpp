@@ -79,16 +79,21 @@ struct Assembler::Impl : public InstructionsHost {
     addCode(high);
   }
 
-  int addressForLabel(const char* label) {
-    return labelTable.addressForLabel(label);
-  }
-
-  bool containsLabel(const char* label) {
-    return labelTable.contains(label);
-  }
-
-  void addDelayed16BitValue(const char* identifier) {
-    return delayedAddresses.add16Bit(identifier, machineCode.size());
+  void add16BitAddress(const Argument& arg) {
+    int address;
+    if (arg.isValue()) {
+      address = arg.value();
+    }
+    else {
+      if (labelTable.contains(arg.identifier())) {
+        address = labelTable.addressForLabel(arg.identifier());
+      }
+      else {
+        address = 0; // Write zero for now
+        delayedAddresses.add16Bit(arg.identifier(), machineCode.size());
+      }
+    }
+    add16BitValue(address);
   }
 
   LabelTable labelTable;
