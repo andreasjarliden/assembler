@@ -1,5 +1,8 @@
 #include "Argument.hpp"
+#include "Error.hpp"
 #include <cassert>
+#include <cstring>
+#include <string>
 
 Argument::Argument()
   : _identifier(nullptr) {}
@@ -18,6 +21,15 @@ const char* Argument::identifier() const {
 
 int Argument::value() const {
   return _value;
+}
+
+unsigned char Argument::ioAddress() const {
+  if (type() == IDENTIFIER_ARGUMENT || type() == ADDRESS_IDENTIFIER_ARGUMENT) {
+    throw Error(std::string("Expected numeric IO address, but got ") + identifier());
+  }
+  assert(value() >= 0);
+  assert(value() <= 255);
+  return value();
 }
 
 ArgumentType Argument::type() const {

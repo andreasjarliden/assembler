@@ -14,6 +14,7 @@ public:
   bool is16BitRegister() const;
   const char* identifier() const;
   int value() const;
+  unsigned char ioAddress() const;
   ArgumentType type() const;
   Argument asAddressValue() const;
 

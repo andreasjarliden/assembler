@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Error {
 public:
   Error(std::string message) : _message(message) {}

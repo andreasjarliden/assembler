@@ -127,20 +127,12 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
 
 void outInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xd3);
-  assert(arg.type() == ADDRESS_VALUE_ARGUMENT);
-  assert(arg.value() >= 0);
-  assert(arg.value() <= 255);
-  Byte byte = (Byte)arg.value();
-  host.addCode(byte);
+  host.addCode(arg.ioAddress());
 }
 
 void inInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xdb);
-  assert(arg.type() == ADDRESS_VALUE_ARGUMENT);
-  assert(arg.value() >= 0);
-  assert(arg.value() <= 255);
-  Byte byte = (Byte)arg.value();
-  host.addCode(byte);
+  host.addCode(arg.ioAddress());
 }
 
 void jpInstruction(InstructionsHost& host, const Argument& arg) {
