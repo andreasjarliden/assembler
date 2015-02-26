@@ -10,11 +10,11 @@
 namespace {
 
 Byte registerBits(const Argument& arg1) {
-  assert(arg1.type == IDENTIFIER_ARGUMENT);
-  if (strlen(arg1.identifier) != 1) {
-    throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier);
+  assert(arg1.type() == IDENTIFIER_ARGUMENT);
+  if (strlen(arg1.identifier()) != 1) {
+    throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier());
   }
-  switch (arg1.identifier[0]) {
+  switch (arg1.identifier()[0]) {
     case 'a':
     case 'A': return 0b111 << 3;
     case 'b':
@@ -30,7 +30,7 @@ Byte registerBits(const Argument& arg1) {
     case 'l':
     case 'L': return 0b101 << 3;
   }
-  throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier);
+  throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier());
 }
 
 } // unnamed namespace
@@ -61,21 +61,17 @@ void cplInstruction(InstructionsHost& host) {
   host.addCode(0x2f);
 }
 
-bool isAddress(const Argument& arg) {
-  return arg.type == ADDRESS_VALUE_ARGUMENT || arg.type == ADDRESS_IDENTIFIER_ARGUMENT;
-}
-
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
-  if (isAddress(arg1)) {
+  if (arg1.isAddress()) {
     // ld (nn), A
     host.addCode(0x32);
     // TODO much duplication with jp
     int address;
-    if (arg1.type == ADDRESS_VALUE_ARGUMENT) {
-      address = arg1.value;
+    if (arg1.type() == ADDRESS_VALUE_ARGUMENT) {
+      address = arg1.value();
     }
     else {
-      address = host.addressForLabel(arg1.identifier);
+      address = host.addressForLabel(arg1.identifier());
     }
     Byte low = (Byte)address & 0xff;
     Byte high = (Byte)((address >> 8) & 0xff);
@@ -87,42 +83,42 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     host.addCode(0b00000110 | registerBits(arg1));
     verifyIsValueArgument(arg2, 2);
     // TODO: should check size of value
-    Byte byte = (Byte)arg2.value;
+    Byte byte = (Byte)arg2.value();
     host.addCode(byte);
   }
 }
 
 void outInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xd3);
-  assert(arg.type == ADDRESS_VALUE_ARGUMENT);
-  assert(arg.value >= 0);
-  assert(arg.value <= 255);
-  Byte byte = (Byte)arg.value;
+  assert(arg.type() == ADDRESS_VALUE_ARGUMENT);
+  assert(arg.value() >= 0);
+  assert(arg.value() <= 255);
+  Byte byte = (Byte)arg.value();
   host.addCode(byte);
 }
 
 void inInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xdb);
-  assert(arg.type == ADDRESS_VALUE_ARGUMENT);
-  assert(arg.value >= 0);
-  assert(arg.value <= 255);
-  Byte byte = (Byte)arg.value;
+  assert(arg.type() == ADDRESS_VALUE_ARGUMENT);
+  assert(arg.value() >= 0);
+  assert(arg.value() <= 255);
+  Byte byte = (Byte)arg.value();
   host.addCode(byte);
 }
 
 void jpInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xc3);
   int address;
-  if (arg.type == VALUE_ARGUMENT) {
-    address = arg.value;
+  if (arg.type() == VALUE_ARGUMENT) {
+    address = arg.value();
   }
   else {
-    if (host.containsLabel(arg.identifier)) {
-      address = host.addressForLabel(arg.identifier);
+    if (host.containsLabel(arg.identifier())) {
+      address = host.addressForLabel(arg.identifier());
     }
     else {
       address = 0;
-      host.addDelayed16BitValue(arg.identifier);
+      host.addDelayed16BitValue(arg.identifier());
     }
   }
   Byte low = (Byte)address & 0xff;
@@ -134,7 +130,7 @@ void jpInstruction(InstructionsHost& host, const Argument& arg) {
 void imInstruction(InstructionsHost& host, const Argument& arg) {
   verifyIsValueArgument(arg, 1);
   // TODO: add support for mode 0 and 2
-  assert(arg.value == 1);
+  assert(arg.value() == 1);
   host.addCode(0xed);
   host.addCode(0x56);
 }

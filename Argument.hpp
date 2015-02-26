@@ -4,11 +4,19 @@ extern "C" {
 #include "Argument.h"
 }
 
-struct Argument {
+class Argument {
+public:
   static Argument createWithRawArgument(const RawArgument&);
-  bool isAddress() const;
+  Argument();
 
-  enum ArgumentType type;
-  int value;
-  const char* identifier;
+  bool isAddress() const;
+  const char* identifier() const;
+  int value() const;
+  ArgumentType type() const;
+  Argument asAddressValue() const;
+
+private:
+  const char* _identifier;
+  int _value;
+  ArgumentType _type;
 };

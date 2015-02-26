@@ -98,7 +98,6 @@ void test_out_using_eq() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
-
 void testNoSuchInstruction() {}
 
 int main() {

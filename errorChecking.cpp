@@ -1,5 +1,5 @@
 #include "errorChecking.hpp"
-#include "Argument.h"
+#include "Argument.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -9,10 +9,10 @@ extern const char* filename;
 int NUMBER_OF_ERRORS;
 
 void verifyIsValueArgument(const Argument& arg, int argumentNumber) {
-  if (arg.type == VALUE_ARGUMENT)
+  if (arg.type() == VALUE_ARGUMENT)
     return;
   // TODO check if address
-  fprintf(stderr, "%s:%d: error: Expected argument %d to be a number, but received identifier %s\n", filename, yylineno, argumentNumber, arg.identifier);
+  fprintf(stderr, "%s:%d: error: Expected argument %d to be a number, but received identifier %s\n", filename, yylineno, argumentNumber, arg.identifier());
   ++NUMBER_OF_ERRORS;
 }
 

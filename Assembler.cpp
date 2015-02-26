@@ -56,9 +56,7 @@ struct Assembler::Impl : public InstructionsHost {
     else if (argument.type == ADDRESS_IDENTIFIER_ARGUMENT) {
       auto t = eqTable.find(std::string(argument.identifier));
       if (t != eqTable.end()) {
-        Argument resolved = t->second;
-        resolved.type = ADDRESS_VALUE_ARGUMENT;
-        return resolved;
+        return t->second.asAddressValue();
       }
     }
     return Argument::createWithRawArgument(argument);

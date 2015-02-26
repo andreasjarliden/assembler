@@ -42,13 +42,13 @@ argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument
 
 MachineCode.o: MachineCode.cpp MachineCode.hpp
 
-instructions.o: instructions.cpp LabelTable.hpp InstructionsHost.hpp Error.hpp
+instructions.o: instructions.cpp LabelTable.hpp InstructionsHost.hpp Error.hpp Argument.hpp
 
 Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp Argument.hpp Argument.h InstructionsHost.hpp Error.hpp
 
 LabelTable.o: LabelTable.cpp LabelTable.hpp
 
-errorChecking.o: errorChecking.cpp errorChecking.hpp
+errorChecking.o: errorChecking.cpp errorChecking.hpp Argument.hpp Argument.h
 
 DelayedAddresses.o: DelayedAddresses.cpp DelayedAddresses.hpp MachineCode.hpp LabelTable.hpp
 
