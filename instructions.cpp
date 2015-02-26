@@ -56,12 +56,35 @@ void cplInstruction(MachineCode& code) {
   code.add(0x2f);
 }
 
-void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable&) {
-  code.add(0b00000110 | registerBits(arg1));
-  verifyIsValueArgument(arg2, 2);
-  // TODO: should check size of value
-  Byte byte = (Byte)arg2.value;
-  code.add(byte);
+bool isAddress(const Argument& arg) {
+  return arg.type == ADDRESS_VALUE_ARGUMENT || arg.type == ADDRESS_IDENTIFIER_ARGUMENT;
+}
+
+void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable& table) {
+  if (isAddress(arg1)) {
+    // ld (nn), A
+    code.add(0x32);
+    // TODO much duplication with jp
+    int address;
+    if (arg1.type == ADDRESS_VALUE_ARGUMENT) {
+      address = arg1.value;
+    }
+    else {
+      address = table.addressForLabel(arg1.identifier);
+    }
+    Byte low = (Byte)address & 0xff;
+    Byte high = (Byte)((address >> 8) & 0xff);
+    code.add(low);
+    code.add(high);
+  }
+  else {
+    // ld r, n
+    code.add(0b00000110 | registerBits(arg1));
+    verifyIsValueArgument(arg2, 2);
+    // TODO: should check size of value
+    Byte byte = (Byte)arg2.value;
+    code.add(byte);
+  }
 }
 
 void outInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
