@@ -11,7 +11,7 @@ extern int yylineno;
 %union {
 	const char* symbol;
 	int numberValue;
-	struct Argument argumentValue;
+	struct RawArgument argumentValue;
 };
 
 %token <numberValue> DECNUMBER

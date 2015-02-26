@@ -13,12 +13,12 @@ public:
   ~Assembler();
 
   void command0(const char* mnemonic);
-  void command1(const char* mnemonic, const Argument&);
-  void command2(const char* mnemonic, const Argument&, const Argument&);
+  void command1(const char* mnemonic, const RawArgument&);
+  void command2(const char* mnemonic, const RawArgument&, const RawArgument&);
   void label(const char* label);
   void metaCommand2(const char* command,
       const char* identifier,
-      const Argument& argument);
+      const RawArgument& argument);
 
   void resolveRemaining();
 

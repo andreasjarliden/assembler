@@ -4,4 +4,11 @@ extern "C" {
 #include "Argument.h"
 }
 
-bool isAddress(const Argument&);
+struct Argument {
+  static Argument createWithRawArgument(const RawArgument&);
+  bool isAddress() const;
+
+  enum ArgumentType type;
+  int value;
+  const char* identifier;
+};

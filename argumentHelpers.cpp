@@ -1,28 +1,28 @@
 #include "argumentHelpers.hpp"
 
-Argument identifierArg(const char* identifier) {
-  Argument argument;
+RawArgument identifierArg(const char* identifier) {
+  RawArgument argument;
   argument.type = IDENTIFIER_ARGUMENT;
   argument.identifier = identifier;
   return argument;
 }
 
-Argument numberArg(int byte) {
-  Argument argument;
+RawArgument numberArg(int byte) {
+  RawArgument argument;
   argument.type = VALUE_ARGUMENT;
   argument.value = byte;
   return argument;
 }
 
-Argument addressArg(int address) {
-  Argument argument;
+RawArgument addressArg(int address) {
+  RawArgument argument;
   argument.type = ADDRESS_VALUE_ARGUMENT;
   argument.value = address;
   return argument;
 }
 
-Argument addressIdentifierArg(const char* identifier) {
-  Argument argument;
+RawArgument addressIdentifierArg(const char* identifier) {
+  RawArgument argument;
   argument.type = ADDRESS_IDENTIFIER_ARGUMENT;
   argument.identifier = identifier;
   return argument;

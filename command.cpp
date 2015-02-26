@@ -10,7 +10,7 @@ int command0(const char* command) {
   return 1;
 }
 
-void printArgument(Argument* arg) {
+void printArgument(RawArgument* arg) {
   if (arg->type == IDENTIFIER_ARGUMENT) {
     std::cout << "\tidentifier argument " << arg->identifier << std::endl;
   }
@@ -22,12 +22,12 @@ void printArgument(Argument* arg) {
   }
 }
 
-int command1(const char* command, Argument* arg) {
+int command1(const char* command, RawArgument* arg) {
   COMMANDS.command1(command, *arg);
   return 0;
 }
 
-int command2(const char* command, Argument* arg1, Argument* arg2) {
+int command2(const char* command, RawArgument* arg1, RawArgument* arg2) {
   COMMANDS.command2(command, *arg1, *arg2);
   return 0;
 }
@@ -36,7 +36,7 @@ void label(const char* label) {
   COMMANDS.label(label);
 }
 
-void metaCommand2(const char* metaCommand, const char* identifier, Argument* arg) {
+void metaCommand2(const char* metaCommand, const char* identifier, RawArgument* arg) {
   COMMANDS.metaCommand2(metaCommand, identifier, *arg);
 }
 

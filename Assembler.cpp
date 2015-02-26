@@ -46,7 +46,7 @@ struct Assembler::Impl : public InstructionsHost {
     return f;
   }
 
-  Argument resolveArgument(const Argument& argument) {
+  Argument resolveArgument(const RawArgument& argument) {
     if (argument.type == IDENTIFIER_ARGUMENT) {
       auto t = eqTable.find(std::string(argument.identifier));
       if (t != eqTable.end()) {
@@ -61,11 +61,11 @@ struct Assembler::Impl : public InstructionsHost {
         return resolved;
       }
     }
-    return argument;
+    return Argument::createWithRawArgument(argument);
   }
 
-  void addEq(const char* identifier, const Argument& argument) {
-    eqTable[identifier] = argument;
+  void addEq(const char* identifier, const RawArgument& argument) {
+    eqTable[identifier] = resolveArgument(argument);
   }
 
   void addCode(Byte byte) {
@@ -130,7 +130,7 @@ void Assembler::command0(const char* mnemonic) {
   }
 }
 
-void Assembler::command1(const char* mnemonic, const Argument& arg) {
+void Assembler::command1(const char* mnemonic, const RawArgument& arg) {
   try {
     auto f = _pimpl->findUnaryInstruction(mnemonic);
     Argument resolvedArg = _pimpl->resolveArgument(arg);
@@ -142,8 +142,8 @@ void Assembler::command1(const char* mnemonic, const Argument& arg) {
 }
 
 void Assembler::command2(const char* mnemonic,
-    const Argument& arg1,
-    const Argument& arg2) {
+    const RawArgument& arg1,
+    const RawArgument& arg2) {
   try {
     auto f = _pimpl->findBinaryInstruction(mnemonic);
     Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
@@ -162,7 +162,7 @@ void Assembler::label(const char* label) {
 
 void Assembler::metaCommand2(const char* command,
       const char* identifier,
-      const Argument& argument) {
+      const RawArgument& argument) {
   if (strcmp(command, "eq") == 0) {
     _pimpl->addEq(identifier, argument);
   }

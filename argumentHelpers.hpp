@@ -2,7 +2,7 @@
 
 #include "Argument.hpp"
 
-Argument identifierArg(const char* identifier);
-Argument numberArg(int byte);
-Argument addressArg(int address);
-Argument addressIdentifierArg(const char* identifier);
+RawArgument identifierArg(const char* identifier);
+RawArgument numberArg(int byte);
+RawArgument addressArg(int address);
+RawArgument addressIdentifierArg(const char* identifier);
