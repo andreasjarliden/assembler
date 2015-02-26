@@ -4,13 +4,16 @@
 #include "errorChecking.hpp"
 #include "InstructionsHost.hpp"
 #include "DelayedAddresses.hpp"
+#include "Error.hpp"
 #include <cassert>
 
 namespace {
 
 Byte registerBits(const Argument& arg1) {
   assert(arg1.type == IDENTIFIER_ARGUMENT);
-  assert(strlen(arg1.identifier) == 1);
+  if (strlen(arg1.identifier) != 1) {
+    throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier);
+  }
   switch (arg1.identifier[0]) {
     case 'a':
     case 'A': return 0b111 << 3;
@@ -27,7 +30,7 @@ Byte registerBits(const Argument& arg1) {
     case 'l':
     case 'L': return 0b101 << 3;
   }
-   assert(false);
+  throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier);
 }
 
 } // unnamed namespace

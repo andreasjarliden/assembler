@@ -1,6 +1,7 @@
 #include "Commands.hpp"
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
+#include "errorChecking.hpp"
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -29,7 +30,8 @@ int main(int argc, const char* argv[]) {
   }
   yyparse();
   ASSEMBLER.resolveRemaining();
-  ASSEMBLER.machineCode().printHex();
+  if (NUMBER_OF_ERRORS == 0)
+    ASSEMBLER.machineCode().printHex();
   return 0;
 }
 

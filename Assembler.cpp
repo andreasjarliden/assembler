@@ -5,6 +5,7 @@
 #include "errorChecking.hpp"
 #include "InstructionsHost.hpp"
 #include "DelayedAddresses.hpp"
+#include "Error.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -24,7 +25,7 @@ struct Assembler::Impl : public InstructionsHost {
   NullaryInstruction findNullaryInstruction(const char* mnemonic) {
     auto f = nullaryInstructions[std::string(mnemonic)];
     if (!f) {
-      error(std::string("No nullary instruction ") + mnemonic);
+      throw Error(std::string("No nullary instruction ") + mnemonic);
     }
     return f;
   }
@@ -32,7 +33,7 @@ struct Assembler::Impl : public InstructionsHost {
   UnaryInstruction findUnaryInstruction(const char* mnemonic) {
     auto f = unaryInstructions[std::string(mnemonic)];
     if (!f) {
-      error(std::string("No unary instruction ") + mnemonic);
+      throw Error(std::string("No unary instruction ") + mnemonic);
     }
     return f;
   }
@@ -40,7 +41,7 @@ struct Assembler::Impl : public InstructionsHost {
   BinaryInstruction findBinaryInstruction(const char* mnemonic) {
     auto f = binaryInstructions[std::string(mnemonic)];
     if (!f) {
-      error(std::string("No binary instruction ") + mnemonic);
+      throw Error(std::string("No binary instruction ") + mnemonic);
     }
     return f;
   }
@@ -120,23 +121,38 @@ Assembler::Assembler()
 Assembler::~Assembler() {}
 
 void Assembler::command0(const char* mnemonic) {
-  auto f = _pimpl->findNullaryInstruction(mnemonic);
-  f(*_pimpl);
+  try {
+    auto f = _pimpl->findNullaryInstruction(mnemonic);
+    f(*_pimpl);
+  }
+  catch (const Error& e) {
+    error(e.message());
+  }
 }
 
 void Assembler::command1(const char* mnemonic, const Argument& arg) {
-  auto f = _pimpl->findUnaryInstruction(mnemonic);
-  Argument resolvedArg = _pimpl->resolveArgument(arg);
-  f(*_pimpl, resolvedArg);
+  try {
+    auto f = _pimpl->findUnaryInstruction(mnemonic);
+    Argument resolvedArg = _pimpl->resolveArgument(arg);
+    f(*_pimpl, resolvedArg);
+  }
+  catch (const Error& e) {
+    error(e.message());
+  }
 }
 
 void Assembler::command2(const char* mnemonic,
     const Argument& arg1,
     const Argument& arg2) {
-  auto f = _pimpl->findBinaryInstruction(mnemonic);
-  Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
-  Argument resolvedArg2 = _pimpl->resolveArgument(arg2);
-  f(*_pimpl, resolvedArg1, resolvedArg2);
+  try {
+    auto f = _pimpl->findBinaryInstruction(mnemonic);
+    Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
+    Argument resolvedArg2 = _pimpl->resolveArgument(arg2);
+    f(*_pimpl, resolvedArg1, resolvedArg2);
+  }
+  catch (const Error& e) {
+    error(e.message());
+  }
 }
 
 void Assembler::label(const char* label) {
