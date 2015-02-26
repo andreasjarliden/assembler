@@ -70,6 +70,15 @@ struct Assembler::Impl : public InstructionsHost {
     machineCode.add(byte);
   }
 
+  void add16BitValue(int value) {
+    assert(value >= 0);
+    assert(value <= 0xffff);
+    Byte low = (Byte)value & 0xff;
+    Byte high = (Byte)((value >> 8) & 0xff);
+    addCode(low);
+    addCode(high);
+  }
+
   int addressForLabel(const char* label) {
     return labelTable.addressForLabel(label);
   }

@@ -98,10 +98,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     else {
       address = host.addressForLabel(arg1.identifier());
     }
-    Byte low = (Byte)address & 0xff;
-    Byte high = (Byte)((address >> 8) & 0xff);
-    host.addCode(low);
-    host.addCode(high);
+    host.add16BitValue(address);
   }
   else {
     if (arg1.is8BitRegister()) {
@@ -114,11 +111,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
     else if (arg1.is16BitRegister()) {
       host.addCode(0b00000001 | register16Bits(arg1));
-      int value = arg2.value();
-      Byte low = (Byte)value & 0xff;
-      Byte high = (Byte)((value >> 8) & 0xff);
-      host.addCode(low);
-      host.addCode(high);
+      host.add16BitValue(arg2.value());
     }
     else
       throw Error("Unknown form of LD instruction");
@@ -150,10 +143,7 @@ void jpInstruction(InstructionsHost& host, const Argument& arg) {
       host.addDelayed16BitValue(arg.identifier());
     }
   }
-  Byte low = (Byte)address & 0xff;
-  Byte high = (Byte)((address >> 8) & 0xff);
-  host.addCode(low);
-  host.addCode(high);
+  host.add16BitValue(address);
 }
 
 void imInstruction(InstructionsHost& host, const Argument& arg) {
@@ -163,6 +153,3 @@ void imInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xed);
   host.addCode(0x56);
 }
-
-
-
