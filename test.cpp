@@ -70,6 +70,15 @@ void test_ld_a_using_eq() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
+void test_out_using_eq() {
+  Assembler assembler;
+  assembler.metaCommand2("eq", "FOUR_TWO", numberArg(42));
+  assembler.command1("out", addressIdentifierArg("FOUR_TWO"));
+  Byte expectedBytes[] = { 0xd3, 42 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 2));
+}
+
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -82,5 +91,6 @@ int main() {
   testJpToNumericAddress();
   testJpBackwardsToLabel();
   test_ld_a_using_eq();
+  test_out_using_eq();
   std::cout << "Test passed" << std::endl;
 }

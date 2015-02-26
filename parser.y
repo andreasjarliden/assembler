@@ -81,8 +81,12 @@ argument:
 	}
 	| '(' number ')' {
 		printf("argument with address %d\n", $2);
-		$$.type = ADDRESS_ARGUMENT;
+		$$.type = ADDRESS_VALUE_ARGUMENT;
 		$$.value = $2
+	}
+	| '(' IDENTIFIER ')' {
+		$$.type = ADDRESS_IDENTIFIER_ARGUMENT;
+		$$.identifier = $2
 	}
 	;
 

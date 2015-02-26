@@ -40,6 +40,14 @@ struct Assembler::Impl {
         return t->second;
       }
     }
+    else if (argument.type == ADDRESS_IDENTIFIER_ARGUMENT) {
+      auto t = eqTable.find(std::string(argument.identifier));
+      if (t != eqTable.end()) {
+        Argument resolved = t->second;
+        resolved.type = ADDRESS_VALUE_ARGUMENT;
+        return resolved;
+      }
+    }
     return argument;
   }
 
@@ -91,7 +99,8 @@ void Assembler::command0(const char* mnemonic) {
 void Assembler::command1(const char* mnemonic, const Argument& arg) {
   auto f = _pimpl->findUnaryInstruction(mnemonic);
   assert(f);
-  f(arg, _pimpl->machineCode, _pimpl->labelTable);
+  Argument resolvedArg = _pimpl->resolveArgument(arg);
+  f(resolvedArg, _pimpl->machineCode, _pimpl->labelTable);
 }
 
 void Assembler::command2(const char* mnemonic,

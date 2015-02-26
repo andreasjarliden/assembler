@@ -16,7 +16,14 @@ Argument numberArg(int byte) {
 
 Argument addressArg(int address) {
   Argument argument;
-  argument.type = ADDRESS_ARGUMENT;
+  argument.type = ADDRESS_VALUE_ARGUMENT;
   argument.value = address;
+  return argument;
+}
+
+Argument addressIdentifierArg(const char* identifier) {
+  Argument argument;
+  argument.type = ADDRESS_IDENTIFIER_ARGUMENT;
+  argument.identifier = identifier;
   return argument;
 }
