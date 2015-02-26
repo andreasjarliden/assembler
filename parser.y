@@ -42,22 +42,18 @@ statement:
 
 command:
        	IDENTIFIER {
-		printf("p: command -%s-\n", $1);
 		(void)command0($1);
 	}
        	| IDENTIFIER argument ',' argument {
 		command2($1, &$2, &$4);
-		printf("p: 2 args command %s argument types %d, %d\n", $1, $2.type, $4.type);
 	}
        	| IDENTIFIER argument {
 		command1($1, &$2);
-		printf("p: 1 arg command %s argument type %d\n", $1, $2.type);
 	}
 	;
 
 label:
 	IDENTIFIER ':' {
-		printf("label %s\n", $1);
 		label($1);
 	}
 	;
@@ -70,17 +66,14 @@ metaCommand:
 
 argument:
 	IDENTIFIER {
-		printf("argument with identifier %s\n", $1);
 		$$.type = IDENTIFIER_ARGUMENT;
 		$$.identifier = $1;
 	}
 	| number {
-		printf("argument with number %d\n", $1);
 		$$.type = VALUE_ARGUMENT;
 		$$.value = $1
 	}
 	| '(' number ')' {
-		printf("argument with address %d\n", $2);
 		$$.type = ADDRESS_VALUE_ARGUMENT;
 		$$.value = $2
 	}

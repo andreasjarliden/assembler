@@ -15,31 +15,27 @@ HEXNUMBER [0-9a-fA-F]+h
 %%
 
 {IDENTIFIER} {
-	printf("identifier -%s-\n", yytext);
 	yylval.symbol = addSymbol(yytext);
 	return IDENTIFIER;
 }
 
 {DECNUMBER} {
-	printf("decnumber %s\n", yytext);
 	yylval.numberValue = atoi(yytext);
 	return DECNUMBER;
 }
 
 {HEXNUMBER} {
-	printf("hexnumber %s\n", yytext);
 	yylval.numberValue = strtol(yytext, NULL, 16);
 	return HEXNUMBER;
 }
 
 [ \t] /* ignore whitespace */
 
-^[ \t]*\n { printf("ignoring empty line\n"); yylineno++; }
+^[ \t]*\n { yylineno++; }
 
 [,():.] { return yytext[0]; }
 
 (;.*)?\n {
-	printf("newline\n");
 	++yylineno;
 	return NEWLINE;
 }
