@@ -7,7 +7,7 @@
 
 option nounput yylineno
 
-IDENTIFIER [a-z][a-z0-9]*
+IDENTIFIER [a-zA-Z_][a-zA-Z0-9_-]*
 DECNUMBER [0-9]+
 HEXNUMBER [0-9a-fA-F]+h
 
