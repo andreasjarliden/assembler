@@ -64,7 +64,7 @@ void testJpBackwardsToLabel() {
 
 void test_ld_a_using_eq() {
   Assembler assembler;
-  assembler.metaCommand3("eq", "FOUR_TWO", numberArg(42));
+  assembler.metaCommand2("eq", "FOUR_TWO", numberArg(42));
   assembler.command2("ld", identifierArg("a"), identifierArg("FOUR_TWO"));
   Byte expectedBytes[] = { 0x3e, 42 };
   assert(assembler.machineCode().isEqual(expectedBytes, 2));

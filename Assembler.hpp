@@ -16,7 +16,7 @@ public:
   void command1(const char* mnemonic, const Argument&);
   void command2(const char* mnemonic, const Argument&, const Argument&);
   void label(const char* label);
-  void metaCommand3(const char* command,
+  void metaCommand2(const char* command,
       const char* identifier,
       const Argument& argument);
 

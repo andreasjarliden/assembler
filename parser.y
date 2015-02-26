@@ -64,7 +64,7 @@ label:
 
 metaCommand:
 	'.' IDENTIFIER IDENTIFIER argument {
-		metaCommand3($2, $3, &$4);
+		metaCommand2($2, $3, &$4);
 	}
 	;
 

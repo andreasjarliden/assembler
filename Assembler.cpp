@@ -109,7 +109,7 @@ void Assembler::label(const char* label) {
   _pimpl->labelTable.addLabel(label, address);
 }
 
-void Assembler::metaCommand3(const char* command,
+void Assembler::metaCommand2(const char* command,
       const char* identifier,
       const Argument& argument) {
   if (strcmp(command, "eq") == 0) {
