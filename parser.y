@@ -14,8 +14,8 @@ extern int yylineno;
 	struct Argument argumentValue;
 };
 
-%token <number> DECNUMBER
-%token <number> HEXNUMBER
+%token <numberValue> DECNUMBER
+%token <numberValue> HEXNUMBER
 %token <symbol> IDENTIFIER
 %token <symbol> NEWLINE
 
@@ -27,7 +27,7 @@ extern int yylineno;
 
 program:
 	program line
-	|
+	| { /* empty rules have no default action, so this avoids a warning*/ }
 	;
 
 line:
