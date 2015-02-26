@@ -2,6 +2,7 @@
 #include "LabelTable.hpp"
 #include "Argument.hpp"
 #include "errorChecking.hpp"
+#include "InstructionsHost.hpp"
 #include <cassert>
 
 namespace {
@@ -30,102 +31,102 @@ Byte registerBits(const Argument& arg1) {
 
 } // unnamed namespace
 
-void nopInstruction(MachineCode& code) {
-  code.add(0x00);
+void nopInstruction(InstructionsHost& host) {
+  host.addCode(0x00);
 }
 
-void eiInstruction(MachineCode& code) {
-  code.add(0xfb);
+void eiInstruction(InstructionsHost& host) {
+  host.addCode(0xfb);
 }
 
-void haltInstruction(MachineCode& code) {
-  code.add(0x76);
+void haltInstruction(InstructionsHost& host) {
+  host.addCode(0x76);
 }
 
-void negInstruction(MachineCode& code) {
-  code.add(0xed);
-  code.add(0x44);
+void negInstruction(InstructionsHost& host) {
+  host.addCode(0xed);
+  host.addCode(0x44);
 }
 
-void retiInstruction(MachineCode& code) {
-  code.add(0xed);
-  code.add(0x4d);
+void retiInstruction(InstructionsHost& host) {
+  host.addCode(0xed);
+  host.addCode(0x4d);
 }
 
-void cplInstruction(MachineCode& code) {
-  code.add(0x2f);
+void cplInstruction(InstructionsHost& host) {
+  host.addCode(0x2f);
 }
 
 bool isAddress(const Argument& arg) {
   return arg.type == ADDRESS_VALUE_ARGUMENT || arg.type == ADDRESS_IDENTIFIER_ARGUMENT;
 }
 
-void ldInstruction(const Argument& arg1, const Argument& arg2, MachineCode& code, const LabelTable& table) {
+void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (isAddress(arg1)) {
     // ld (nn), A
-    code.add(0x32);
+    host.addCode(0x32);
     // TODO much duplication with jp
     int address;
     if (arg1.type == ADDRESS_VALUE_ARGUMENT) {
       address = arg1.value;
     }
     else {
-      address = table.addressForLabel(arg1.identifier);
+      address = host.addressForLabel(arg1.identifier);
     }
     Byte low = (Byte)address & 0xff;
     Byte high = (Byte)((address >> 8) & 0xff);
-    code.add(low);
-    code.add(high);
+    host.addCode(low);
+    host.addCode(high);
   }
   else {
     // ld r, n
-    code.add(0b00000110 | registerBits(arg1));
+    host.addCode(0b00000110 | registerBits(arg1));
     verifyIsValueArgument(arg2, 2);
     // TODO: should check size of value
     Byte byte = (Byte)arg2.value;
-    code.add(byte);
+    host.addCode(byte);
   }
 }
 
-void outInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
-  code.add(0xd3);
+void outInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0xd3);
   assert(arg.type == ADDRESS_VALUE_ARGUMENT);
   assert(arg.value >= 0);
   assert(arg.value <= 255);
   Byte byte = (Byte)arg.value;
-  code.add(byte);
+  host.addCode(byte);
 }
 
-void inInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
-  code.add(0xdb);
+void inInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0xdb);
   assert(arg.type == ADDRESS_VALUE_ARGUMENT);
   assert(arg.value >= 0);
   assert(arg.value <= 255);
   Byte byte = (Byte)arg.value;
-  code.add(byte);
+  host.addCode(byte);
 }
 
-void jpInstruction(const Argument& arg, MachineCode& code, const LabelTable& table) {
-  code.add(0xc3);
+void jpInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0xc3);
   int address;
   if (arg.type == VALUE_ARGUMENT) {
     address = arg.value;
   }
   else {
-    address = table.addressForLabel(arg.identifier);
+    address = host.addressForLabel(arg.identifier);
   }
   Byte low = (Byte)address & 0xff;
   Byte high = (Byte)((address >> 8) & 0xff);
-  code.add(low);
-  code.add(high);
+  host.addCode(low);
+  host.addCode(high);
 }
 
-void imInstruction(const Argument& arg, MachineCode& code, const LabelTable&) {
+void imInstruction(InstructionsHost& host, const Argument& arg) {
   verifyIsValueArgument(arg, 1);
   // TODO: add support for mode 0 and 2
   assert(arg.value == 1);
-  code.add(0xed);
-  code.add(0x56);
+  host.addCode(0xed);
+  host.addCode(0x56);
 }
 
 

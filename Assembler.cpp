@@ -3,6 +3,7 @@
 #include "MachineCode.hpp"
 #include "Argument.hpp"
 #include "errorChecking.hpp"
+#include "InstructionsHost.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -14,10 +15,10 @@ namespace {
 
 } // unnamed namespace
 
-struct Assembler::Impl {
-  typedef std::function<void (MachineCode&)> NullaryInstruction;
-  typedef std::function<void (const Argument&, MachineCode&, const LabelTable&)> UnaryInstruction;
-  typedef std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)> BinaryInstruction;
+struct Assembler::Impl : public InstructionsHost {
+  typedef std::function<void (InstructionsHost&)> NullaryInstruction;
+  typedef std::function<void (InstructionsHost&, const Argument&)> UnaryInstruction;
+  typedef std::function<void (InstructionsHost&, const Argument&, const Argument&)> BinaryInstruction;
 
   NullaryInstruction findNullaryInstruction(const char* mnemonic) {
     auto f = nullaryInstructions[std::string(mnemonic)];
@@ -65,21 +66,30 @@ struct Assembler::Impl {
     eqTable[identifier] = argument;
   }
 
+
+  void addCode(Byte byte) {
+    machineCode.add(byte);
+  }
+
+  int addressForLabel(const char* label) {
+    return labelTable.addressForLabel(label);
+  }
+
   LabelTable labelTable;
   MachineCode machineCode;
   std::map<std::string, NullaryInstruction> nullaryInstructions;
   std::map<std::string, UnaryInstruction> unaryInstructions;
-  std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)>> binaryInstructions;
+  std::map<std::string, BinaryInstruction> binaryInstructions;
   std::map<std::string, Argument> eqTable;
 };
 
-#define ASM_NULLARY_INSTRUCTION(X) extern void X ## Instruction(MachineCode& code); \
+#define ASM_NULLARY_INSTRUCTION(X) extern void X ## Instruction(InstructionsHost&); \
   _pimpl->nullaryInstructions[std::string(#X)] = X ## Instruction;
 
-#define ASM_UNARY_INSTRUCTION(X) extern void X ## Instruction(const Argument&, MachineCode& code, const LabelTable&); \
+#define ASM_UNARY_INSTRUCTION(X) extern void X ## Instruction(InstructionsHost&, const Argument&); \
   _pimpl->unaryInstructions[std::string(#X)] = X ## Instruction;
 
-#define ASM_BINARY_INSTRUCTION(X) extern void X ## Instruction(const Argument&, const Argument&, MachineCode& code, const LabelTable&); \
+#define ASM_BINARY_INSTRUCTION(X) extern void X ## Instruction(InstructionsHost&, const Argument&, const Argument&); \
   _pimpl->binaryInstructions[std::string(#X)] = X ## Instruction;
 
 
@@ -102,13 +112,13 @@ Assembler::~Assembler() {}
 
 void Assembler::command0(const char* mnemonic) {
   auto f = _pimpl->findNullaryInstruction(mnemonic);
-  f(_pimpl->machineCode);
+  f(*_pimpl);
 }
 
 void Assembler::command1(const char* mnemonic, const Argument& arg) {
   auto f = _pimpl->findUnaryInstruction(mnemonic);
   Argument resolvedArg = _pimpl->resolveArgument(arg);
-  f(resolvedArg, _pimpl->machineCode, _pimpl->labelTable);
+  f(*_pimpl, resolvedArg);
 }
 
 void Assembler::command2(const char* mnemonic,
@@ -117,7 +127,7 @@ void Assembler::command2(const char* mnemonic,
   auto f = _pimpl->findBinaryInstruction(mnemonic);
   Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
   Argument resolvedArg2 = _pimpl->resolveArgument(arg2);
-  f(resolvedArg1, resolvedArg2, _pimpl->machineCode, _pimpl->labelTable);
+  f(*_pimpl, resolvedArg1, resolvedArg2);
 }
 
 void Assembler::label(const char* label) {
