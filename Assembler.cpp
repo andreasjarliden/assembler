@@ -85,6 +85,7 @@ struct Assembler::Impl {
 
 Assembler::Assembler()
   : _pimpl(new Impl) {
+  ASM_NULLARY_INSTRUCTION(nop);
   ASM_NULLARY_INSTRUCTION(ei);
   ASM_NULLARY_INSTRUCTION(halt);
   ASM_NULLARY_INSTRUCTION(neg);

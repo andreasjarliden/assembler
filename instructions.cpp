@@ -30,6 +30,10 @@ Byte registerBits(const Argument& arg1) {
 
 } // unnamed namespace
 
+void nopInstruction(MachineCode& code) {
+  code.add(0x00);
+}
+
 void eiInstruction(MachineCode& code) {
   code.add(0xfb);
 }
