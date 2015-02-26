@@ -44,6 +44,6 @@ MachineCode.o: MachineCode.cpp MachineCode.hpp
 
 instructions.o: instructions.cpp LabelTable.hpp
 
-Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp
+Assembler.o: Assembler.cpp Assembler.hpp MachineCode.hpp Commands.hpp LabelTable.hpp Argument.hpp Argument.h
 
 LabelTable.o: LabelTable.cpp LabelTable.hpp

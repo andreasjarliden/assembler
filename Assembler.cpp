@@ -1,6 +1,7 @@
 #include "Assembler.hpp"
 #include "LabelTable.hpp"
 #include "MachineCode.hpp"
+#include "Argument.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -32,6 +33,20 @@ struct Assembler::Impl {
     return f;
   }
 
+  Argument resolveArgument(const Argument& argument) {
+    if (argument.type == IDENTIFIER_ARGUMENT) {
+      auto t = eqTable.find(std::string(argument.identifier));
+      if (t != eqTable.end()) {
+        return t->second;
+      }
+    }
+    return argument;
+  }
+
+  void addEq(const char* identifier, const Argument& argument) {
+    eqTable[identifier] = argument;
+  }
+
   // TODO add binary find version
 
   LabelTable labelTable;
@@ -39,6 +54,7 @@ struct Assembler::Impl {
   std::map<std::string, NullaryInstruction> nullaryInstructions;
   std::map<std::string, UnaryInstruction> unaryInstructions;
   std::map<std::string, std::function<void (const Argument&, const Argument&, MachineCode&, const LabelTable&)>> binaryInstructions;
+  std::map<std::string, Argument> eqTable;
 };
 
 #define ASM_NULLARY_INSTRUCTION(X) extern void X ## Instruction(MachineCode& code); \
@@ -83,12 +99,24 @@ void Assembler::command2(const char* mnemonic,
     const Argument& arg2) {
   auto f = _pimpl->binaryInstructions[std::string(mnemonic)];
   assert(f);
-  f(arg1, arg2, _pimpl->machineCode, _pimpl->labelTable);
+  Argument resolvedArg1 = _pimpl->resolveArgument(arg1);
+  Argument resolvedArg2 = _pimpl->resolveArgument(arg2);
+  f(resolvedArg1, resolvedArg2, _pimpl->machineCode, _pimpl->labelTable);
 }
 
 void Assembler::label(const char* label) {
   int address = machineCode().size();
   _pimpl->labelTable.addLabel(label, address);
+}
+
+void Assembler::metaCommand3(const char* command,
+      const char* identifier,
+      const Argument& argument) {
+  if (strcmp(command, "eq") == 0) {
+    _pimpl->addEq(identifier, argument);
+  }
+  else
+    assert(false);
 }
 
 const MachineCode& Assembler::machineCode() const {

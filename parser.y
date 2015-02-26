@@ -37,6 +37,7 @@ line:
 statement:
 	  command
 	| label
+	| metaCommand
 	;
 
 command:
@@ -58,6 +59,12 @@ label:
 	IDENTIFIER ':' {
 		printf("label %s\n", $1);
 		label($1);
+	}
+	;
+
+metaCommand:
+	'.' IDENTIFIER IDENTIFIER argument {
+		metaCommand3($2, $3, &$4);
 	}
 	;
 
