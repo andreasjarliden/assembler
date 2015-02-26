@@ -3,6 +3,7 @@
 #include "Argument.hpp"
 #include "errorChecking.hpp"
 #include "InstructionsHost.hpp"
+#include "DelayedAddresses.hpp"
 #include <cassert>
 
 namespace {
@@ -113,7 +114,13 @@ void jpInstruction(InstructionsHost& host, const Argument& arg) {
     address = arg.value;
   }
   else {
-    address = host.addressForLabel(arg.identifier);
+    if (host.containsLabel(arg.identifier)) {
+      address = host.addressForLabel(arg.identifier);
+    }
+    else {
+      address = 0;
+      host.addDelayed16BitValue(arg.identifier);
+    }
   }
   Byte low = (Byte)address & 0xff;
   Byte high = (Byte)((address >> 8) & 0xff);

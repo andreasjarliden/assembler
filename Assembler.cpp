@@ -4,6 +4,7 @@
 #include "Argument.hpp"
 #include "errorChecking.hpp"
 #include "InstructionsHost.hpp"
+#include "DelayedAddresses.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -66,7 +67,6 @@ struct Assembler::Impl : public InstructionsHost {
     eqTable[identifier] = argument;
   }
 
-
   void addCode(Byte byte) {
     machineCode.add(byte);
   }
@@ -75,8 +75,17 @@ struct Assembler::Impl : public InstructionsHost {
     return labelTable.addressForLabel(label);
   }
 
+  bool containsLabel(const char* label) {
+    return labelTable.contains(label);
+  }
+
+  void addDelayed16BitValue(const char* identifier) {
+    return delayedAddresses.add16Bit(identifier, machineCode.size());
+  }
+
   LabelTable labelTable;
   MachineCode machineCode;
+  DelayedAddresses delayedAddresses;
   std::map<std::string, NullaryInstruction> nullaryInstructions;
   std::map<std::string, UnaryInstruction> unaryInstructions;
   std::map<std::string, BinaryInstruction> binaryInstructions;
@@ -148,3 +157,8 @@ void Assembler::metaCommand2(const char* command,
 const MachineCode& Assembler::machineCode() const {
   return _pimpl->machineCode;
 }
+
+void Assembler::resolveRemaining() {
+  _pimpl->delayedAddresses.resolve(_pimpl->machineCode, _pimpl->labelTable);
+}
+

@@ -1,6 +1,7 @@
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
 #include "argumentHelpers.hpp"
+#include "DelayedAddresses.hpp"
 #include <cassert>
 #include <iostream>
 
@@ -72,6 +73,15 @@ void testJpBackwardsToLabel() {
   assert(assembler.machineCode().isEqual(expectedBytes, 3));
 }
 
+void testJpForwardsToLabel() {
+  Assembler assembler;
+  assembler.command1("jp", identifierArg("aLabel"));
+  assembler.label("aLabel");
+  assembler.resolveRemaining();
+  Byte expectedBytes[] = { 0xc3, 0x03, 0x00 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 3));
+}
+
 void test_ld_a_using_eq() {
   Assembler assembler;
   assembler.metaCommand2("eq", "FOUR_TWO", numberArg(42));
@@ -101,6 +111,7 @@ int main() {
   test_out_20();
   testJpToNumericAddress();
   testJpBackwardsToLabel();
+  testJpForwardsToLabel();
   test_ld_a_using_eq();
   test_out_using_eq();
   std::cout << "Test passed" << std::endl;

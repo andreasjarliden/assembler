@@ -1,6 +1,7 @@
 #include "Commands.hpp"
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
+#include "DelayedAddresses.hpp"
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -28,6 +29,8 @@ int main(int argc, const char* argv[]) {
     yyin = f;
   }
   yyparse();
+  extern DelayedAddresses DELAYED_ADDRESSES;
+  ASSEMBLER.resolveRemaining();
   ASSEMBLER.machineCode().printHex();
   return 0;
 }

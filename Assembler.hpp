@@ -20,6 +20,8 @@ public:
       const char* identifier,
       const Argument& argument);
 
+  void resolveRemaining();
+
   const MachineCode& machineCode() const;
 
 private:
