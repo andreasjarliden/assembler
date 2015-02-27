@@ -11,12 +11,6 @@
 #include <functional>
 #include <cassert>
 
-class Argument;
-
-namespace {
-
-} // unnamed namespace
-
 struct Assembler::Impl : public InstructionsHost {
   typedef std::function<void (InstructionsHost&)> NullaryInstruction;
   typedef std::function<void (InstructionsHost&, const Argument&)> UnaryInstruction;
