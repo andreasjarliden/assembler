@@ -92,6 +92,8 @@ number:
 
 void yyerror(char *s) {
 	extern const char* filename;
+	extern int NUMBER_OF_ERRORS;
 	fprintf(stderr, "%s:%d: error: %s\n", filename, yylineno, s);
+	++NUMBER_OF_ERRORS;
 }
 
