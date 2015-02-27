@@ -11,12 +11,14 @@ public:
 
   bool isAddress() const;
   bool isValue() const;
+  bool isIdentifier() const;
   bool is8BitRegister() const;
   bool is16BitRegister() const;
+  bool isHL() const;
   const char* identifier() const;
   int value() const;
   unsigned char ioAddress() const;
-  ArgumentType type() const;
+  ArgumentType type() const; // TODO remove?
   Argument asAddressValue() const;
 
 private:

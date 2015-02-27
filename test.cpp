@@ -140,6 +140,12 @@ void test_ld_c_d() {
   assert(assembler.machineCode().isEqual(expectedBytes, 1));
 }
 
+void test_ld_adr_hl_a() {
+  Assembler assembler;
+  assembler.command2("ld", addressIdentifierArg("hl"), identifierArg("a"));
+  Byte expectedBytes[] = { 0b01110111 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 1));
+}
 
 void testNoSuchInstruction() {}
 
@@ -152,6 +158,7 @@ int main() {
   test_ld_hl_word();
   test_ld_addr_a();
   test_ld_c_d();
+  test_ld_adr_hl_a();
   test_out_20();
   testJpToNumericAddress();
   testJpBackwardsToLabel();

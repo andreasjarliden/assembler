@@ -105,9 +105,14 @@ void cplInstruction(InstructionsHost& host) {
 
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (arg1.isAddress()) {
-    // ld (nn), A
-    host.addCode(0x32);
-    host.add16BitAddress(arg1);
+    if (arg1.isHL()) {
+      host.addCode(0b01110000 | registerBits(arg2));
+    }
+    else {
+      // ld (nn), A
+      host.addCode(0x32);
+      host.add16BitAddress(arg1);
+    }
   }
   else {
     if (arg1.is8BitRegister()) {

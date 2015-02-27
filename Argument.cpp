@@ -44,6 +44,10 @@ bool Argument::isValue() const {
   return _type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT;
 }
 
+bool Argument::isIdentifier() const {
+  return _type == IDENTIFIER_ARGUMENT || _type == ADDRESS_IDENTIFIER_ARGUMENT;
+}
+
 bool Argument::is8BitRegister() const {
   if (_type != IDENTIFIER_ARGUMENT)
     return false;
@@ -94,6 +98,9 @@ bool Argument::is16BitRegister() const {
   return false;
 }
 
+bool Argument::isHL() const {
+  return isIdentifier() && strcmp(identifier(), "hl") == 0;
+}
 
 Argument Argument::asAddressValue() const {
   assert(_type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT);
