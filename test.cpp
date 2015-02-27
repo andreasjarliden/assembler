@@ -126,6 +126,13 @@ void test_inc_hl() {
   assert(assembler.machineCode().isEqual(expectedBytes, 1));
 }
 
+void test_dec_b() {
+  Assembler assembler;
+  assembler.command1("dec", identifierArg("b"));
+  Byte expectedBytes[] = { 0b00000101 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 1));
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -145,5 +152,6 @@ int main() {
   test_cp_c();
   test_jp_z_nn();
   test_inc_hl();
+  test_dec_b();
   std::cout << "Test passed" << std::endl;
 }
