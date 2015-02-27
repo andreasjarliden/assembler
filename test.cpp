@@ -112,6 +112,12 @@ void test_cp_c() {
   assert(assembler.machineCode().isEqual(expectedBytes, 1));
 }
 
+void test_jp_z_nn() {
+  Assembler assembler;
+  assembler.command2("jp", identifierArg("z"), numberArg(0x1234));
+  Byte expectedBytes[] = { 0b11001010, 0x34, 0x12 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 3));
+}
 
 void testNoSuchInstruction() {}
 
@@ -130,5 +136,6 @@ int main() {
   test_ld_a_using_eq();
   test_out_using_eq();
   test_cp_c();
+  test_jp_z_nn();
   std::cout << "Test passed" << std::endl;
 }

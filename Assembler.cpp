@@ -126,9 +126,13 @@ Assembler::Assembler()
   ASM_BINARY_INSTRUCTION(ld);
   ASM_UNARY_INSTRUCTION(out);
   ASM_UNARY_INSTRUCTION(in);
-  ASM_UNARY_INSTRUCTION(jp);
   ASM_UNARY_INSTRUCTION(im);
   ASM_UNARY_INSTRUCTION(cp);
+  // Special handling of instructions which can have different arity
+  extern void jpUnaryInstruction(InstructionsHost&, const Argument&);
+  extern void jpBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);
+  _pimpl->unaryInstructions[std::string("jp")] = jpUnaryInstruction;
+  _pimpl->binaryInstructions[std::string("jp")] = jpBinaryInstruction;
 }
 
 Assembler::~Assembler() {}

@@ -35,9 +35,6 @@ Byte registerBits(const Argument& arg1) {
 
 Byte register16Bits(const Argument& arg) {
   assert(arg.type() == IDENTIFIER_ARGUMENT);
-  if (strlen(arg.identifier()) != 2) {
-    throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
-  }
   if (strcmp(arg.identifier(), "bc") == 0)
     return 0b00 << 4;
   if (strcmp(arg.identifier(), "BC") == 0)
@@ -54,6 +51,27 @@ Byte register16Bits(const Argument& arg) {
     return 0b11 << 4;
   if (strcmp(arg.identifier(), "SP") == 0)
     return 0b11 << 4;
+  throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
+}
+
+Byte conditionBits(const Argument& arg) {
+  assert(arg.type() == IDENTIFIER_ARGUMENT);
+  if (strcmp(arg.identifier(), "nz") == 0)
+    return 0b000 << 3;
+  if (strcmp(arg.identifier(), "z") == 0)
+    return 0b001 << 3;
+  if (strcmp(arg.identifier(), "nc") == 0)
+    return 0b010 << 3;
+  if (strcmp(arg.identifier(), "c") == 0)
+    return 0b011 << 3;
+  if (strcmp(arg.identifier(), "po") == 0)
+    return 0b100 << 3;
+  if (strcmp(arg.identifier(), "pe") == 0)
+    return 0b101 << 3;
+  if (strcmp(arg.identifier(), "p") == 0)
+    return 0b110 << 3;
+  if (strcmp(arg.identifier(), "m") == 0)
+    return 0b111 << 3;
   throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
 }
 
@@ -119,9 +137,14 @@ void inInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(arg.ioAddress());
 }
 
-void jpInstruction(InstructionsHost& host, const Argument& arg) {
+void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xc3);
   host.add16BitAddress(arg);
+}
+
+void jpBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  host.addCode(0b11000010 | conditionBits(arg1));
+  host.add16BitAddress(arg2);
 }
 
 void imInstruction(InstructionsHost& host, const Argument& arg) {
