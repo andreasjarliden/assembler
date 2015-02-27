@@ -111,12 +111,17 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   }
   else {
     if (arg1.is8BitRegister()) {
-      // ld r, n
-      host.addCode(0b00000110 | registerBits(arg1) << 3);
-      verifyIsValueArgument(arg2, 2);
-      // TODO: should check size of value
-      Byte byte = (Byte)arg2.value();
-      host.addCode(byte);
+      if (arg2.is8BitRegister()) {
+        host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
+      }
+      else {
+        // ld r, n
+        host.addCode(0b00000110 | registerBits(arg1) << 3);
+        verifyIsValueArgument(arg2, 2);
+        // TODO: should check size of value
+        Byte byte = (Byte)arg2.value();
+        host.addCode(byte);
+      }
     }
     else if (arg1.is16BitRegister()) {
       host.addCode(0b00000001 | register16Bits(arg1));
