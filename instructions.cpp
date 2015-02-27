@@ -163,3 +163,7 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
     assert(false);
   }
 }
+
+void incInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0b00000011 | register16Bits(arg));
+}

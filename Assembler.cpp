@@ -122,6 +122,7 @@ Assembler::Assembler()
   ASM_UNARY_INSTRUCTION(in);
   ASM_UNARY_INSTRUCTION(im);
   ASM_UNARY_INSTRUCTION(cp);
+  ASM_UNARY_INSTRUCTION(inc);
   // Special handling of instructions which can have different arity
   extern void jpUnaryInstruction(InstructionsHost&, const Argument&);
   extern void jpBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);
