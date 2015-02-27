@@ -16,19 +16,19 @@ Byte registerBits(const Argument& arg1) {
   }
   switch (arg1.identifier()[0]) {
     case 'a':
-    case 'A': return 0b111 << 3;
+    case 'A': return 0b111;
     case 'b':
-    case 'B': return 0b000 << 3;
+    case 'B': return 0b000;
     case 'c':
-    case 'C': return 0b001 << 3;
+    case 'C': return 0b001;
     case 'd':
-    case 'D': return 0b010 << 3;
+    case 'D': return 0b010;
     case 'e':
-    case 'E': return 0b011 << 3;
+    case 'E': return 0b011;
     case 'h':
-    case 'H': return 0b100 << 3;
+    case 'H': return 0b100;
     case 'l':
-    case 'L': return 0b101 << 3;
+    case 'L': return 0b101;
   }
   throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier());
 }
@@ -94,7 +94,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   else {
     if (arg1.is8BitRegister()) {
       // ld r, n
-      host.addCode(0b00000110 | registerBits(arg1));
+      host.addCode(0b00000110 | registerBits(arg1) << 3);
       verifyIsValueArgument(arg2, 2);
       // TODO: should check size of value
       Byte byte = (Byte)arg2.value();
@@ -130,4 +130,13 @@ void imInstruction(InstructionsHost& host, const Argument& arg) {
   assert(arg.value() == 1);
   host.addCode(0xed);
   host.addCode(0x56);
+}
+
+void cpInstruction(InstructionsHost& host, const Argument& arg) {
+  if (arg.is8BitRegister()) {
+    host.addCode(0b10111000 | registerBits(arg));
+  }
+  else {
+    assert(false);
+  }
 }

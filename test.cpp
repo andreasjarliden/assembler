@@ -105,6 +105,14 @@ void test_out_using_eq() {
   assert(assembler.machineCode().isEqual(expectedBytes, 2));
 }
 
+void test_cp_c() {
+  Assembler assembler;
+  assembler.command1("cp", identifierArg("c"));
+  Byte expectedBytes[] = { 0b10111001 };
+  assert(assembler.machineCode().isEqual(expectedBytes, 1));
+}
+
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -121,5 +129,6 @@ int main() {
   testJpForwardsToLabel();
   test_ld_a_using_eq();
   test_out_using_eq();
+  test_cp_c();
   std::cout << "Test passed" << std::endl;
 }

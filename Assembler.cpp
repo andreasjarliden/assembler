@@ -128,6 +128,7 @@ Assembler::Assembler()
   ASM_UNARY_INSTRUCTION(in);
   ASM_UNARY_INSTRUCTION(jp);
   ASM_UNARY_INSTRUCTION(im);
+  ASM_UNARY_INSTRUCTION(cp);
 }
 
 Assembler::~Assembler() {}
