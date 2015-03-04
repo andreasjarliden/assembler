@@ -21,26 +21,11 @@ void readLine(char* line, unsigned char bytes[], int* bytesRead, int* offset) {
     }
 }
 
-void outputI8HexDataRecord(unsigned char bytes[], int numBytes, int offset) {
-  unsigned char checksum = 0;
-  fputc(':', stdout);
-  fprintf(stdout, "%02X", numBytes);
-  checksum += numBytes;
-  fprintf(stdout, "%04X", offset);
-  checksum += offset & 0x0ff;
-  checksum += (offset >> 8) & 0x0ff;
-  fprintf(stdout, "%02X", 0); // Record type == DATA
+void outputLine(unsigned char bytes[], int numBytes, int offset) {
   for (int i = 0; i < numBytes; ++i) {
-    fprintf(stdout, "%02X", (int)bytes[i]);
-    checksum += bytes[i];
+    fprintf(stdout, "0x%02x, ", (int)bytes[i]);
   }
-  checksum = -checksum;
-  int checksumInt = checksum;
-  fprintf(stdout, "%02X\n", checksumInt);
-}
-
-void outputI8HexEndOfFileRecord() {
-  fprintf(stdout, ":00000001FF\n");
+  fprintf(stdout, "\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -53,12 +38,11 @@ int main(int argc, char* argv[]) {
     int offset;
     while (getline(&line, &len, f) != -1) {
       readLine(line, bytes, &bytesRead, &offset);
-      outputI8HexDataRecord(bytes, bytesRead, offset);
+      outputLine(bytes, bytesRead, offset);
       free(line);
       line = NULL;
     }
     fclose(f);
   }
-  outputI8HexEndOfFileRecord();
   return 0;
 }
