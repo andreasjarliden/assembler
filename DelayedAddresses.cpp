@@ -1,5 +1,4 @@
 #include "DelayedAddresses.hpp"
-
 #include "MachineCode.hpp"
 #include "LabelTable.hpp"
 #include "Error.hpp"
