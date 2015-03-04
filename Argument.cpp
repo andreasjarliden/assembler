@@ -20,6 +20,8 @@ const char* Argument::identifier() const {
 }
 
 int Argument::value() const {
+  if (!isValue())
+    throw Error(std::string("Expected a value"));
   return _value;
 }
 

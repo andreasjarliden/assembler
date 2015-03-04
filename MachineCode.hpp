@@ -16,6 +16,7 @@ public:
     _code[offset] = b;
   }
 
+  void setOrigin(int address);
   bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const;
   void print() const;
   void printHex() const;

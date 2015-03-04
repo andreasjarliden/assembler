@@ -36,6 +36,10 @@ void label(const char* label) {
   COMMANDS.label(label);
 }
 
+void metaCommand1(const char* metaCommand, RawArgument* arg) {
+  COMMANDS.metaCommand1(metaCommand, *arg);
+}
+
 void metaCommand2(const char* metaCommand, const char* identifier, RawArgument* arg) {
   COMMANDS.metaCommand2(metaCommand, identifier, *arg);
 }

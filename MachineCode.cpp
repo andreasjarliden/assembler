@@ -1,7 +1,15 @@
 #include "MachineCode.hpp"
+#include "Error.hpp"
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+
+void MachineCode::setOrigin(int address) {
+  if (address < size())
+    throw Error(std::string("Setting origin would cause memory to be overwritten."));
+  int padding = address - size();
+  _code.insert(_code.end(), padding, 0);
+}
 
 bool MachineCode::isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const {
   if (_code.size() != expectedSizeInBytes)

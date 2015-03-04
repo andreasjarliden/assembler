@@ -40,7 +40,7 @@ stringTable.o: stringTable.cpp stringTable.hpp stringTable.h
 
 argumentHelpers.o: argumentHelpers.cpp argumentHelpers.hpp Argument.hpp Argument.h
 
-MachineCode.o: MachineCode.cpp MachineCode.hpp
+MachineCode.o: MachineCode.cpp MachineCode.hpp Error.hpp
 
 instructions.o: instructions.cpp LabelTable.hpp InstructionsHost.hpp Error.hpp Argument.hpp
 

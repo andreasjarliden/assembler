@@ -56,8 +56,8 @@ struct Assembler::Impl : public InstructionsHost {
     return Argument::createWithRawArgument(argument);
   }
 
-  void addEq(const char* identifier, const RawArgument& argument) {
-    eqTable[identifier] = resolveArgument(argument);
+  void addEq(const char* identifier, const Argument& argument) {
+    eqTable[identifier] = argument;
   }
 
   void addCode(Byte byte) {
@@ -173,14 +173,23 @@ void Assembler::label(const char* label) {
   _pimpl->labelTable.addLabel(label, address);
 }
 
+void Assembler::metaCommand1(const char* command,
+      const RawArgument& argument) {
+  if (strcmp(command, "org") == 0) {
+    _pimpl->machineCode.setOrigin(_pimpl->resolveArgument(argument).value());
+  }
+  else
+    throw Error(std::string("Unknown single argument .command ") + command);
+}
+
 void Assembler::metaCommand2(const char* command,
       const char* identifier,
       const RawArgument& argument) {
   if (strcmp(command, "eq") == 0) {
-    _pimpl->addEq(identifier, argument);
+    _pimpl->addEq(identifier, _pimpl->resolveArgument(argument));
   }
   else
-    assert(false);
+    throw Error(std::string("Unknown double argument .command ") + command);
 }
 
 const MachineCode& Assembler::machineCode() const {
