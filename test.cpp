@@ -164,6 +164,23 @@ void test_ld_adr_hl_a() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void test_jr_number_address() {
+  Assembler assembler;
+  assembler.command1("jr", numberArg(0));
+  Byte expectedBytes[] = { 0x18, 0xfe };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void test_jr_forward_label() {
+  Assembler assembler;
+  assembler.command1("jr", identifierArg("label"));
+  assembler.command0("nop");
+  assembler.label("label");
+  assembler.resolveRemaining();
+  Byte expectedBytes[] = { 0x18, 0x01, 0x00 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -186,5 +203,7 @@ int main() {
   test_jp_z_nn();
   test_inc_hl();
   test_dec_b();
+  test_jr_number_address();
+  test_jr_forward_label();
   std::cout << "Test passed" << std::endl;
 }

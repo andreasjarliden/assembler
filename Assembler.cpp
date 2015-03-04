@@ -90,6 +90,29 @@ struct Assembler::Impl : public InstructionsHost {
     add16BitValue(address);
   }
 
+  void add8BitRelativeAddress(const Argument& arg) {
+    int address;
+    if (arg.isValue()) {
+      address = arg.value();
+    }
+    else {
+      if (labelTable.contains(arg.identifier())) {
+#if 0
+        address = labelTable.addressForLabel(arg.identifier());
+#endif
+      }
+      else {
+        address = 0; // Write zero for now
+        delayedAddresses.add8BitRelative(arg.identifier(), machineCode.size());
+      }
+    }
+    int currentPC = machineCode.size() - 1;
+    int delta = address - currentPC - 2;
+    assert(delta >= -128);
+    assert(delta <= 127);
+    addCode(delta);
+  }
+
   LabelTable labelTable;
   MachineCode machineCode;
   DelayedAddresses delayedAddresses;
@@ -124,6 +147,7 @@ Assembler::Assembler()
   ASM_UNARY_INSTRUCTION(cp);
   ASM_UNARY_INSTRUCTION(inc);
   ASM_UNARY_INSTRUCTION(dec);
+  ASM_UNARY_INSTRUCTION(jr);
   // Special handling of instructions which can have different arity
   extern void jpUnaryInstruction(InstructionsHost&, const Argument&);
   extern void jpBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);

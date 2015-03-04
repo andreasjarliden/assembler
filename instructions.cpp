@@ -147,6 +147,11 @@ void inInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(arg.ioAddress());
 }
 
+void jrInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0x18);
+  host.add8BitRelativeAddress(arg);
+}
+
 void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xc3);
   host.add16BitAddress(arg);
