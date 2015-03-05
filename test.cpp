@@ -171,6 +171,15 @@ void test_jr_number_address() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void test_jr_backwards_label() {
+  Assembler assembler;
+  assembler.label("label");
+  assembler.command1("jr", identifierArg("label"));
+  assembler.resolveRemaining();
+  Byte expectedBytes[] = { 0x18, 0xfe };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void test_jr_forward_label() {
   Assembler assembler;
   assembler.command1("jr", identifierArg("label"));
@@ -204,6 +213,7 @@ int main() {
   test_inc_hl();
   test_dec_b();
   test_jr_number_address();
+  test_jr_backwards_label();
   test_jr_forward_label();
   std::cout << "Test passed" << std::endl;
 }

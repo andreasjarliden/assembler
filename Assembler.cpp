@@ -97,9 +97,7 @@ struct Assembler::Impl : public InstructionsHost {
     }
     else {
       if (labelTable.contains(arg.identifier())) {
-#if 0
         address = labelTable.addressForLabel(arg.identifier());
-#endif
       }
       else {
         address = 0; // Write zero for now
