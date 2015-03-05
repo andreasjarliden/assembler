@@ -18,10 +18,8 @@ hex2h: hex2h.cpp
 asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o
+test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o testUtilities.cpp testJumpGroup.o testLoadGroup.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
-
-test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp
 
 %.tab.c: %.y
 	$(BISON) $+
@@ -56,3 +54,12 @@ errorChecking.o: errorChecking.cpp errorChecking.hpp Argument.hpp Argument.h
 DelayedAddresses.o: DelayedAddresses.cpp DelayedAddresses.hpp MachineCode.hpp LabelTable.hpp
 
 Argument.o: Argument.hpp Argument.h Argument.cpp
+
+test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp testUtilities.hpp testJumpGroup.hpp
+
+testUtilities.o: testUtilities.hpp testUtilities.cpp Assembler.hpp MachineCode.hpp
+
+testJumpGroup.o: testJumpGroup.hpp testJumpGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
+
+testLoadGroup.o: testJumpGroup.hpp testJumpGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
+
