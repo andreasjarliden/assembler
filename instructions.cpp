@@ -130,7 +130,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
     else if (arg1.is16BitRegister()) {
       host.addCode(0b00000001 | register16Bits(arg1));
-      host.add16BitValue(arg2.value());
+      host.add16BitAddress(arg2);
     }
     else
       throw Error("Unknown form of LD instruction");

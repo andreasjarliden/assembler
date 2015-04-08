@@ -105,7 +105,9 @@ bool Argument::isHL() const {
 }
 
 Argument Argument::asAddressValue() const {
-  assert(_type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT);
+  if (_type != VALUE_ARGUMENT && _type != ADDRESS_VALUE_ARGUMENT) {
+    throw Error(std::string("Expected VALUE_ARGUMENT or ADDRESS_VALUE_ARGUMENT"));
+  }
   Argument out = *this;
   out._type = ADDRESS_VALUE_ARGUMENT;
   return out;
