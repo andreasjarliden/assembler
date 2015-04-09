@@ -101,7 +101,11 @@ bool Argument::is16BitRegister() const {
 }
 
 bool Argument::isHL() const {
-  return isIdentifier() && strcmp(identifier(), "hl") == 0;
+  return isIdentifier() && strcasecmp(identifier(), "hl") == 0;
+}
+
+bool Argument::isA() const {
+  return isIdentifier() && strcasecmp(identifier(), "a") == 0;
 }
 
 Argument Argument::asAddressValue() const {

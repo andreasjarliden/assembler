@@ -106,12 +106,22 @@ void cplInstruction(InstructionsHost& host) {
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (arg1.isAddress()) {
     if (arg1.isHL()) {
+      // LD (hl), r
       host.addCode(0b01110000 | registerBits(arg2));
     }
     else {
-      // ld (nn), A
-      host.addCode(0x32);
-      host.add16BitAddress(arg1);
+      if (arg2.isA()) {
+        // LD (nn), A
+        host.addCode(0x32);
+        host.add16BitAddress(arg1);
+      }
+      else if (arg2.isHL()) {
+        host.addCode(0x22);
+        host.add16BitAddress(arg1);
+      }
+      else {
+        throw Error("Unknown form of LD (nn), ... instruction");
+      }
     }
   }
   else {
@@ -129,6 +139,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
       }
     }
     else if (arg1.is16BitRegister()) {
+      // LD dd, nn
       host.addCode(0b00000001 | register16Bits(arg1));
       host.add16BitAddress(arg2);
     }

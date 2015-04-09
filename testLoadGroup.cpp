@@ -43,6 +43,14 @@ void test_ld_addr_a() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void test_ld_addr_hl() {
+  Assembler assembler;
+  assembler.command2("ld", addressArg(0x1234), identifierArg("hl"));
+  Byte expectedBytes[] = { 0x22, 0x34, 0x12 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+
 void test_ld_a_using_eq() {
   Assembler assembler;
   assembler.metaCommand2("eq", "FOUR_TWO", numberArg(42));
@@ -73,6 +81,7 @@ void testLoadGroup() {
   test_ld_hl_word();
   test_ld_hl_word_following_label();
   test_ld_addr_a();
+  test_ld_addr_hl();
   test_ld_c_d();
   test_ld_adr_hl_a();
   test_ld_a_using_eq();
