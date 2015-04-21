@@ -16,6 +16,7 @@ public:
   bool is16BitRegister() const;
   bool isHL() const;
   bool isA() const;
+  bool isI() const;
   const char* identifier() const;
   int value() const;
   unsigned char ioAddress() const;

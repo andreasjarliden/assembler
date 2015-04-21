@@ -108,6 +108,10 @@ bool Argument::isA() const {
   return isIdentifier() && strcasecmp(identifier(), "a") == 0;
 }
 
+bool Argument::isI() const {
+  return isIdentifier() && strcasecmp(identifier(), "i") == 0;
+}
+
 Argument Argument::asAddressValue() const {
   if (_type != VALUE_ARGUMENT && _type != ADDRESS_VALUE_ARGUMENT) {
     throw Error(std::string("Expected VALUE_ARGUMENT or ADDRESS_VALUE_ARGUMENT"));

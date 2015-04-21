@@ -42,7 +42,6 @@ void MachineCode::printHex() const {
   }
 }
 
-
 size_t MachineCode::size() const {
   return _code.size();
 }

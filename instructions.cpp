@@ -125,7 +125,11 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
   }
   else {
-    if (arg1.is8BitRegister()) {
+    if (arg1.isI() && arg2.isA()) {
+      host.addCode(0xed);
+      host.addCode(0x47);
+    }
+    else if (arg1.is8BitRegister()) {
       if (arg2.is8BitRegister()) {
         host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
       }
