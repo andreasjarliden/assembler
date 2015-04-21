@@ -4,6 +4,7 @@
 #include "testUtilities.hpp"
 #include "testJumpGroup.hpp"
 #include "testLoadGroup.hpp"
+#include "testArithmeticGroup.hpp"
 #include <iostream>
 
 int yylineno; // Usually defined by lexer
@@ -81,5 +82,6 @@ int main() {
   test_dec_b();
   testLoadGroup();
   testJumpGroup();
+  testArithmeticGroup();
   std::cout << "Test passed" << std::endl;
 }

@@ -18,7 +18,7 @@ hex2h: hex2h.cpp
 asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o testUtilities.cpp testJumpGroup.o testLoadGroup.o
+test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o testUtilities.cpp testJumpGroup.o testLoadGroup.o testArithmeticGroup.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 %.tab.c: %.y
@@ -62,4 +62,6 @@ testUtilities.o: testUtilities.hpp testUtilities.cpp Assembler.hpp MachineCode.h
 testJumpGroup.o: testJumpGroup.hpp testJumpGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
 
 testLoadGroup.o: testJumpGroup.hpp testJumpGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
+
+testArithmeticGroup.o: testArithmeticGroup.hpp testArithmeticGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
 

@@ -148,6 +148,15 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   }
 }
 
+void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  if (arg1.isHL()) {
+    host.addCode(0b00001001 | register16Bits(arg2));
+  }
+  else {
+    throw Error("Uknown form of add instruction");
+  }
+}
+
 void outInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xd3);
   host.addCode(arg.ioAddress());
