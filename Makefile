@@ -15,6 +15,9 @@ hex2i8hex: hex2i8hex.cpp
 hex2h: hex2h.cpp
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
+hex2bin: hex2bin.cpp
+	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
+
 asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
