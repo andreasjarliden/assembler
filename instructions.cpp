@@ -187,11 +187,18 @@ void jpBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Arg
 }
 
 void imInstruction(InstructionsHost& host, const Argument& arg) {
-  verifyIsValueArgument(arg, 1);
-  // TODO: add support for mode 0 and 2
-  assert(arg.value() == 1);
-  host.addCode(0xed);
-  host.addCode(0x56);
+  // TODO: add support for mode 0
+  if (arg.value() == 1) {
+    host.addCode(0xed);
+    host.addCode(0x56);
+  }
+  else if (arg.value() == 2) {
+    host.addCode(0xed);
+    host.addCode(0x5e);
+  }
+  else {
+    throw Error("IM instruction with unhandled value");
+  }
 }
 
 void cpInstruction(InstructionsHost& host, const Argument& arg) {
