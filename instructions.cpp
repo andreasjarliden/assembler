@@ -94,6 +94,10 @@ void negInstruction(InstructionsHost& host) {
   host.addCode(0x44);
 }
 
+void retInstruction(InstructionsHost& host) {
+  host.addCode(0xc9);
+}
+
 void retiInstruction(InstructionsHost& host) {
   host.addCode(0xed);
   host.addCode(0x4d);
@@ -184,6 +188,11 @@ void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
 void jpBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   host.addCode(0b11000010 | conditionBits(arg1));
   host.add16BitAddress(arg2);
+}
+
+void callInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0xcd);
+  host.add16BitAddress(arg);
 }
 
 void imInstruction(InstructionsHost& host, const Argument& arg) {

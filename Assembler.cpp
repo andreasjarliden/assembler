@@ -137,6 +137,7 @@ Assembler::Assembler()
   ASM_NULLARY_INSTRUCTION(halt);
   ASM_NULLARY_INSTRUCTION(neg);
   ASM_NULLARY_INSTRUCTION(cpl);
+  ASM_NULLARY_INSTRUCTION(ret);
   ASM_NULLARY_INSTRUCTION(reti);
   ASM_BINARY_INSTRUCTION(ld);
   ASM_BINARY_INSTRUCTION(add);
@@ -147,6 +148,7 @@ Assembler::Assembler()
   ASM_UNARY_INSTRUCTION(inc);
   ASM_UNARY_INSTRUCTION(dec);
   ASM_UNARY_INSTRUCTION(jr);
+  ASM_UNARY_INSTRUCTION(call);
   // Special handling of instructions which can have different arity
   extern void jpUnaryInstruction(InstructionsHost&, const Argument&);
   extern void jpBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);
