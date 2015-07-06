@@ -31,10 +31,10 @@
 	out (PIO_B_CONTROL)
 
 	; TODO Bug in this bloc?
-	ld a, 0f7h		; Enable int, HIGH, AND, Mask follows
+	ld a, 0e7h		; Enable int, HIGH, AND, No Mask follows
 	out (PIO_B_CONTROL)
-	ld a, 0ffh		; Mask all bits
-	out (PIO_B_CONTROL)
+;	ld a, 0ffh		; Mask all bits
+;	out (PIO_B_CONTROL)
 
 	; Enable vectored interrupts
 	ld a, INTERRUPT_TABLE_HIGH
