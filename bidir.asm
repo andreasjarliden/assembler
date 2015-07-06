@@ -24,6 +24,12 @@
 	ld hl, inputInt	;
 	ld (INTERRUPT_VECTOR_4), hl
 
+	; Set PIO B in bit mode
+	ld a, PIO_COMMAND_SET_BIT_MODE	; Send 11xx (mode 3) | 1111 (set mode) to PIO Control A (IO addr 02h)
+	out (PIO_B_CONTROL)
+	ld a, 00h		; Next byte to PIO configures Input/Output. Set as all outputs.
+	out (PIO_B_CONTROL)
+
 	; Enable vectored interrupts
 	ld a, INTERRUPT_TABLE_HIGH
 	ld i, a
