@@ -30,12 +30,10 @@
 	ld a, 00h		; Next byte to PIO configures Input/Output. Set as all outputs.
 	out (PIO_B_CONTROL)
 
-	; TODO Bug in this bloc
-	ld a, 77h		; Disable int, HIGH, AND, Mask follows
+	; TODO Bug in this bloc?
+	ld a, 0f7h		; Enable int, HIGH, AND, Mask follows
 	out (PIO_B_CONTROL)
 	ld a, 0ffh		; Mask all bits
-	out (PIO_B_CONTROL)
-	ld a, 83h		; Enable interrupts PIO B (Actually bidir input on port A)
 	out (PIO_B_CONTROL)
 
 	; Enable vectored interrupts
