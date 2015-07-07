@@ -5,6 +5,7 @@
 
 class MachineCode;
 class LabelTable;
+class Segments;
 
 class Assembler : public Commands {
 public:
@@ -25,6 +26,8 @@ public:
   void resolveRemaining();
 
   const MachineCode& machineCode() const;
+
+  const Segments& segments() const;
 
 private:
   class Impl;

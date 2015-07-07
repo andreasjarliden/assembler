@@ -1,5 +1,6 @@
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
+#include "Segments.hpp"
 #include "argumentHelpers.hpp"
 #include "testUtilities.hpp"
 #include "testJumpGroup.hpp"
@@ -69,6 +70,24 @@ void test_dec_b() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testOneSegment() {
+  Assembler assembler;
+  assembler.command0("cpl");
+  assert(assembler.segments().numberOfSegments() == 1);
+}
+
+void testTwoSegments() {
+  Assembler assembler;
+  assembler.command0("cpl");
+  assembler.metaCommand1("org", addressArg(10));
+  assembler.command0("cpl");
+
+  assert(assembler.segments().numberOfSegments() == 2);
+  Byte expectedBytes[] = { 0x2f };
+  isEqualToBytes(assembler.segments().index(0), expectedBytes, 1);
+  // isEqualToBytes(assembler.segments().index(1), expectedBytes, 1);
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -83,5 +102,7 @@ int main() {
   testLoadGroup();
   testJumpGroup();
   testArithmeticGroup();
+  testOneSegment();
+  testTwoSegments();
   std::cout << "Test passed" << std::endl;
 }

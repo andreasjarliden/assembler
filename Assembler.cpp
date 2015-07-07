@@ -1,11 +1,12 @@
 #include "Assembler.hpp"
 #include "LabelTable.hpp"
-#include "MachineCode.hpp"
+#include "Segment.hpp"
 #include "Argument.hpp"
 #include "errorChecking.hpp"
 #include "InstructionsHost.hpp"
 #include "DelayedAddresses.hpp"
 #include "Error.hpp"
+#include "Segments.hpp"
 #include <map>
 #include <string>
 #include <functional>
@@ -61,7 +62,7 @@ struct Assembler::Impl : public InstructionsHost {
   }
 
   void addCode(Byte byte) {
-    machineCode.add(byte);
+    currentSegment().add(byte);
   }
 
   void add16BitValue(int value) {
@@ -84,7 +85,7 @@ struct Assembler::Impl : public InstructionsHost {
       }
       else {
         address = 0; // Write zero for now
-        delayedAddresses.add16Bit(arg.identifier(), machineCode.size());
+        delayedAddresses.add16Bit(arg.identifier(), currentSegment().size());
       }
     }
     add16BitValue(address);
@@ -101,18 +102,22 @@ struct Assembler::Impl : public InstructionsHost {
       }
       else {
         address = 0; // Write zero for now
-        delayedAddresses.add8BitRelative(arg.identifier(), machineCode.size());
+        delayedAddresses.add8BitRelative(arg.identifier(), currentSegment().size());
       }
     }
-    int currentPC = machineCode.size() - 1;
+    int currentPC = currentSegment().size() - 1;
     int delta = address - currentPC - 2;
     assert(delta >= -128);
     assert(delta <= 127);
     addCode(delta);
   }
 
+  MachineCode& currentSegment() {
+    return segments.index(segments.numberOfSegments()-1);
+  }
+
   LabelTable labelTable;
-  MachineCode machineCode;
+  Segments segments;
   DelayedAddresses delayedAddresses;
   std::map<std::string, NullaryInstruction> nullaryInstructions;
   std::map<std::string, UnaryInstruction> unaryInstructions;
@@ -194,14 +199,15 @@ void Assembler::command2(const char* mnemonic,
 }
 
 void Assembler::label(const char* label) {
-  int address = machineCode().size();
+  int address = _pimpl->currentSegment().size();
   _pimpl->labelTable.addLabel(label, address);
 }
 
 void Assembler::metaCommand1(const char* command,
-      const RawArgument& argument) {
+    const RawArgument& argument) {
   if (strcmp(command, "org") == 0) {
-    _pimpl->machineCode.setOrigin(_pimpl->resolveArgument(argument).value());
+    _pimpl->segments.addSegment();
+    _pimpl->currentSegment().setOrigin(_pimpl->resolveArgument(argument).value());
   }
   else
     throw Error(std::string("Unknown single argument .command ") + command);
@@ -217,11 +223,16 @@ void Assembler::metaCommand2(const char* command,
     throw Error(std::string("Unknown double argument .command ") + command);
 }
 
+// TODO keep?
 const MachineCode& Assembler::machineCode() const {
-  return _pimpl->machineCode;
+  return _pimpl->currentSegment();
+}
+
+const Segments& Assembler::segments() const {
+  return _pimpl->segments;
 }
 
 void Assembler::resolveRemaining() {
-  _pimpl->delayedAddresses.resolve(_pimpl->machineCode, _pimpl->labelTable);
+  _pimpl->delayedAddresses.resolve(_pimpl->currentSegment(), _pimpl->labelTable);
 }
 
