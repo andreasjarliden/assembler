@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 extern "C" {
 #include "Argument.h"
 }
@@ -11,6 +13,7 @@ public:
 
   bool isAddress() const;
   bool isValue() const;
+  bool isString() const;
   bool isIdentifier() const;
   bool is8BitRegister() const;
   bool is16BitRegister() const;
@@ -20,6 +23,7 @@ public:
   const char* identifier() const;
   int value() const;
   unsigned char ioAddress() const;
+  std::string string() const;
   ArgumentType type() const; // TODO remove?
   Argument asAddressValue() const;
 

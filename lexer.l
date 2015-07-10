@@ -12,10 +12,16 @@ option nounput yylineno
 
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_-]*
 DECNUMBER [0-9]+
+STRING \"[^"]*\"
 HEXNUMBER [0-9a-fA-F]+h
 
 /* rules */
 %%
+
+{STRING} {
+	yylval.symbol = addString(yytext);
+	return STRING;
+}
 
 {IDENTIFIER} {
 	yylval.symbol = addSymbol(yytext);

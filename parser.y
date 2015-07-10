@@ -18,6 +18,7 @@ extern int yylineno;
 %token <numberValue> HEXNUMBER
 %token <symbol> IDENTIFIER
 %token <symbol> NEWLINE
+%token <symbol> STRING
 
 %type <symbol> program
 %type <argumentValue> argument
@@ -35,8 +36,13 @@ line:
     | statement NEWLINE;
 
 statement:
-	  command
+	  label genericCommand
 	| label
+	| genericCommand
+	;
+
+genericCommand:
+          command
 	| metaCommand
 	;
 
@@ -84,6 +90,10 @@ argument:
 	| '(' IDENTIFIER ')' {
 		$$.type = ADDRESS_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2
+	}
+	| STRING {
+		$$.type = STRING_ARGUMENT;
+		$$.identifier = $1;
 	}
 	;
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <functional>
 #include <cassert>
+#include <iostream>
 
 struct Assembler::Impl : public InstructionsHost {
   typedef std::function<void (InstructionsHost&)> NullaryInstruction;
@@ -59,6 +60,12 @@ struct Assembler::Impl : public InstructionsHost {
 
   void addEq(const char* identifier, const Argument& argument) {
     eqTable[identifier] = argument;
+  }
+
+  void addString(const Argument& argument) {
+    for (char c : argument.string()) {
+      addCode(c);
+    }
   }
 
   void addCode(Byte byte) {
@@ -208,6 +215,9 @@ void Assembler::metaCommand1(const char* command,
   if (strcmp(command, "org") == 0) {
     size_t origin = _pimpl->resolveArgument(argument).value();
     _pimpl->segments.addSegment(origin);
+  }
+  else if (strcmp(command, "string") == 0) {
+    _pimpl->addString(_pimpl->resolveArgument(argument));
   }
   else
     throw Error(std::string("Unknown single argument .command ") + command);

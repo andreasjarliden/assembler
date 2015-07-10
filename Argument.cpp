@@ -25,6 +25,12 @@ int Argument::value() const {
   return _value;
 }
 
+std::string Argument::string() const {
+  if (!isString())
+    throw Error(std::string("Expected a string"));
+  return _identifier;
+}
+
 unsigned char Argument::ioAddress() const {
   if (type() == IDENTIFIER_ARGUMENT || type() == ADDRESS_IDENTIFIER_ARGUMENT) {
     throw Error(std::string("Expected numeric IO address, but got ") + identifier());
@@ -44,6 +50,10 @@ bool Argument::isAddress() const {
 
 bool Argument::isValue() const {
   return _type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT;
+}
+
+bool Argument::isString() const {
+  return _type == STRING_ARGUMENT;
 }
 
 bool Argument::isIdentifier() const {
