@@ -1,6 +1,6 @@
 %{
 #include "Argument.h"
-#include "parser.tab.h"
+#include "parser.h"
 #include "stringTable.h"
 #include <stdio.h>
 int yywrap() {
