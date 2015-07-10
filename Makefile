@@ -18,7 +18,7 @@ hex2h: hex2h.cpp
 hex2bin: hex2bin.cpp
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
-asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o Segments.o
+asm: main.o parser.tab.o lexer.o command.o Commands.o stringTable.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o Segments.o printHex.o
 	$(CXX) -o $@ $(LDFLAGS) $+ $(LDLIBS)
 
 test: test.o Commands.o argumentHelpers.o MachineCode.o instructions.o Assembler.o LabelTable.o errorChecking.o DelayedAddresses.o Argument.o testUtilities.cpp testJumpGroup.o testLoadGroup.o testArithmeticGroup.o Segments.o
@@ -34,7 +34,9 @@ lexer.o: lexer.c parser.tab.h Argument.h stringTable.h
 
 parser.tab.o: parser.tab.h parser.tab.c Argument.h command.h
 
-main.o: main.cpp Commands.hpp MachineCode.hpp Assembler.hpp errorChecking.hpp
+main.o: main.cpp Commands.hpp MachineCode.hpp Assembler.hpp errorChecking.hpp printHex.hpp
+
+printHex.o: Segments.hpp Segment.hpp printHex.cpp
 
 Commands.o: Commands.cpp Commands.hpp
 
@@ -60,7 +62,7 @@ Argument.o: Argument.hpp Argument.h Argument.cpp
 
 test.o: test.cpp argumentHelpers.hpp Assembler.hpp MachineCode.hpp testUtilities.hpp testJumpGroup.hpp
 
-testUtilities.o: testUtilities.hpp testUtilities.cpp Assembler.hpp MachineCode.hpp
+testUtilities.o: testUtilities.hpp testUtilities.cpp Assembler.hpp Segments.hpp Segment.hpp
 
 testJumpGroup.o: testJumpGroup.hpp testJumpGroup.cpp testUtilities.hpp Assembler.hpp MachineCode.hpp
 

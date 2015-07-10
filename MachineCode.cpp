@@ -1,8 +1,6 @@
 #include "MachineCode.hpp"
 #include "Error.hpp"
 #include <algorithm>
-#include <iostream>
-#include <iomanip>
 
 void MachineCode::setOrigin(int address) {
   if (address < size())
@@ -23,23 +21,6 @@ MachineCode::CodeIterator MachineCode::beginCode() const {
 
 MachineCode::CodeIterator MachineCode::endCode() const {
   return _code.end();
-}
-
-void MachineCode::print() const {
-  for (int i = 0; i < _code.size(); ++i) {
-    std::cout << i << ": " << std::hex << (int)_code[i] << std::endl;
-  }
-}
-
-// TODO: shouldn't be part of MachineCode
-void MachineCode::printHex() const {
-  for (int i = 0; i < _code.size(); ) {
-    std::cout << std::hex << std::setw(4) << std::setfill('0') << i << ": ";
-    for (int j = 0; j < 8 && i < _code.size(); ++j, ++i) {
-      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)_code[i] << " ";
-    }
-    std::cout << std::endl;
-  }
 }
 
 size_t MachineCode::size() const {

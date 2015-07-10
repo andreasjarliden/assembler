@@ -10,7 +10,6 @@ class Segments;
 class Assembler : public Commands {
 public:
   Assembler();
-
   ~Assembler();
 
   void command0(const char* mnemonic);
@@ -22,11 +21,7 @@ public:
   void metaCommand2(const char* command,
       const char* identifier,
       const RawArgument& argument);
-
   void resolveRemaining();
-
-  const MachineCode& machineCode() const;
-
   const Segments& segments() const;
 
 private:

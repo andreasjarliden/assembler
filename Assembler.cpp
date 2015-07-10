@@ -223,11 +223,6 @@ void Assembler::metaCommand2(const char* command,
     throw Error(std::string("Unknown double argument .command ") + command);
 }
 
-// TODO keep?
-const MachineCode& Assembler::machineCode() const {
-  return _pimpl->currentSegment();
-}
-
 const Segments& Assembler::segments() const {
   return _pimpl->segments;
 }

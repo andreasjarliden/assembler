@@ -1,6 +1,6 @@
 #include "testUtilities.hpp"
 #include "Assembler.hpp"
-#include "MachineCode.hpp"
+#include "Segments.hpp"
 #include "Segment.hpp"
 #include <iostream>
 
@@ -20,11 +20,12 @@ void isEqualToBytes(const Segment& segment,
 void isEqualToBytes(const Assembler& assembler,
     Byte expectedBytes[],
     int numberOfBytes) {
-  if (!assembler.machineCode().isEqual(expectedBytes, numberOfBytes)) {
+  const Segment& segment = assembler.segments().index(0);
+  if (!segment.isEqual(expectedBytes, numberOfBytes)) {
     std::cout << "Expected \n\t" << std::hex;
     std::copy(expectedBytes, expectedBytes + numberOfBytes, std::ostream_iterator<int>(std::cout, " "));
     std::cout << "but received \n\t" << std::hex;
-    std::copy(assembler.machineCode().beginCode(), assembler.machineCode().endCode(), std::ostream_iterator<int>(std::cout, " "));
+    std::copy(segment.beginCode(), segment.endCode(), std::ostream_iterator<int>(std::cout, " "));
     std::cout << std::endl;
     exit(-1);
   }
