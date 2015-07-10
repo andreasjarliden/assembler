@@ -3,19 +3,27 @@
 #include "Segment.hpp"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
-void printHex(const Segment& segment) {
+void printHex(const Segment& segment, std::ostream& stream) {
   for (int i = 0; i < segment.size(); ) {
-    std::cout << std::hex << std::setw(4) << std::setfill('0') << i << ": ";
+    stream << std::hex << std::setw(4) << std::setfill('0') << i + segment.offset() << ": ";
     for (int j = 0; j < 8 && i < segment.size(); ++j, ++i) {
-      std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)segment.get(i) << " ";
+      stream << std::hex << std::setw(2) << std::setfill('0') << (int)segment.get(i) << " ";
     }
-    std::cout << std::endl;
+    stream << std::endl;
   }
 }
 
-void printHex(const Segments& segments) {
+void printHex(const Segments& segments, std::ostream& stream) {
   for (int i = 0; i < segments.numberOfSegments(); ++i) {
-    printHex(segments.index(i));
+    printHex(segments.index(i), stream);
   }
 }
+
+std::string asHexString(const Segments& segments) {
+  std::stringstream stream;
+  printHex(segments, stream);
+  return stream.str();
+}
+

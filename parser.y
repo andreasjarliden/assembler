@@ -1,8 +1,8 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "command.h"
-#include "Argument.h"
+#include <command.h>
+#include <Argument.h>
 int yylex(void);
 void yyerror(char *s);
 extern int yylineno;

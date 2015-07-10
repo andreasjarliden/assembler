@@ -23,7 +23,6 @@ public:
     return _code[offset];
   }
 
-  void setOrigin(int address);
   bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const;
   CodeIterator beginCode() const;
   CodeIterator endCode() const;

@@ -206,8 +206,8 @@ void Assembler::label(const char* label) {
 void Assembler::metaCommand1(const char* command,
     const RawArgument& argument) {
   if (strcmp(command, "org") == 0) {
-    _pimpl->segments.addSegment();
-    _pimpl->currentSegment().setOrigin(_pimpl->resolveArgument(argument).value());
+    size_t origin = _pimpl->resolveArgument(argument).value();
+    _pimpl->segments.addSegment(origin);
   }
   else
     throw Error(std::string("Unknown single argument .command ") + command);

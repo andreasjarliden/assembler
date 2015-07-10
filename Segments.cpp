@@ -8,13 +8,13 @@ struct Segments::Impl {
 
 Segments::Segments()
   : _impl(new Impl) {
-  _impl->segments.push_back(Segment());
+  _impl->segments.push_back(Segment(0));
 }
 
 Segments::~Segments() {}
 
-void Segments::addSegment() {
-  _impl->segments.push_back(Segment());
+void Segments::addSegment(size_t origin) {
+  _impl->segments.push_back(Segment(origin));
 }
 
 int Segments::numberOfSegments() const {

@@ -3,6 +3,9 @@
 #include "parser.tab.h"
 #include "stringTable.h"
 #include <stdio.h>
+int yywrap() {
+return 1;
+}
 %}
 
 option nounput yylineno

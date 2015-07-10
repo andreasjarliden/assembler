@@ -1,7 +1,9 @@
 #include "Assembler.hpp"
 #include "MachineCode.hpp"
 #include "Segments.hpp"
+#include "Segment.hpp"
 #include "argumentHelpers.hpp"
+#include "printHex.hpp"
 #include "testUtilities.hpp"
 #include "testJumpGroup.hpp"
 #include "testLoadGroup.hpp"
@@ -88,6 +90,18 @@ void testTwoSegments() {
   // isEqualToBytes(assembler.segments().index(1), expectedBytes, 1);
 }
 
+void testPrintTwoSegments() {
+  Segments segments;
+  segments.index(0).add(0x42);
+  segments.addSegment(0x0010);
+  segments.index(1).add(0x42);
+  segments.index(1).add(0x06);
+
+  equalStrings(asHexString(segments),
+      "0000: 42 \n"
+      "0010: 42 06 \n");
+}
+
 void testNoSuchInstruction() {}
 
 int main() {
@@ -104,5 +118,6 @@ int main() {
   testArithmeticGroup();
   testOneSegment();
   testTwoSegments();
+  testPrintTwoSegments();
   std::cout << "Test passed" << std::endl;
 }

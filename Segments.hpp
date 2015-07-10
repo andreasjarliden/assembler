@@ -9,7 +9,7 @@ public:
     Segments();
     ~Segments();
 
-    void addSegment();
+    void addSegment(size_t index);
     int numberOfSegments() const;
     const Segment& index(size_t index) const;
     Segment& index(size_t index);

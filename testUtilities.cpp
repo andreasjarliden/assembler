@@ -30,3 +30,11 @@ void isEqualToBytes(const Assembler& assembler,
     exit(-1);
   }
 }
+
+void equalStrings(const std::string& actual,
+    const std::string& expected) {
+  if (actual != expected) {
+    std::cout << "Expected \n\t<" << expected << ">\nbut received \n\t<" << actual << ">" << std::endl;
+    exit(-1);
+  }
+}
