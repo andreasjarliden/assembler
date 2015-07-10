@@ -220,7 +220,7 @@ void Assembler::metaCommand1(const char* command,
     _pimpl->addString(_pimpl->resolveArgument(argument));
   }
   else
-    throw Error(std::string("Unknown single argument .command ") + command);
+    error(std::string("Unknown single argument .command ") + command);
 }
 
 void Assembler::metaCommand2(const char* command,
@@ -230,7 +230,7 @@ void Assembler::metaCommand2(const char* command,
     _pimpl->addEq(identifier, _pimpl->resolveArgument(argument));
   }
   else
-    throw Error(std::string("Unknown double argument .command ") + command);
+    error(std::string("Unknown double argument .command ") + command);
 }
 
 const Segments& Assembler::segments() const {
