@@ -33,6 +33,28 @@ Byte registerBits(const Argument& arg1) {
   throw Error(std::string("Expected 8 bit register, got ") + arg1.identifier());
 }
 
+Byte register16BitsQQ(const Argument& arg) {
+  assert(arg.type() == IDENTIFIER_ARGUMENT);
+  if (strcmp(arg.identifier(), "bc") == 0)
+    return 0b00 << 4;
+  if (strcmp(arg.identifier(), "BC") == 0)
+    return 0b00 << 4;
+  if (strcmp(arg.identifier(), "de") == 0)
+    return 0b01 << 4;
+  if (strcmp(arg.identifier(), "DE") == 0)
+    return 0b01 << 4;
+  if (strcmp(arg.identifier(), "hl") == 0)
+    return 0b10 << 4;
+  if (strcmp(arg.identifier(), "HL") == 0)
+    return 0b10 << 4;
+  if (strcmp(arg.identifier(), "af") == 0)
+    return 0b11 << 4;
+  if (strcmp(arg.identifier(), "AF") == 0)
+    return 0b11 << 4;
+  throw Error(std::string("Expected 16 bit register bc, de, hl, or af, got ") + arg.identifier());
+}
+
+
 Byte register16Bits(const Argument& arg) {
   assert(arg.type() == IDENTIFIER_ARGUMENT);
   if (strcmp(arg.identifier(), "bc") == 0)
@@ -51,7 +73,7 @@ Byte register16Bits(const Argument& arg) {
     return 0b11 << 4;
   if (strcmp(arg.identifier(), "SP") == 0)
     return 0b11 << 4;
-  throw Error(std::string("Expected 16 bit register, got ") + arg.identifier());
+  throw Error(std::string("Expected 16 bit register bc, de, hl, or sp, got ") + arg.identifier());
 }
 
 Byte conditionBits(const Argument& arg) {
@@ -79,6 +101,10 @@ Byte conditionBits(const Argument& arg) {
 
 void nopInstruction(InstructionsHost& host) {
   host.addCode(0x00);
+}
+
+void diInstruction(InstructionsHost& host) {
+  host.addCode(0xf3);
 }
 
 void eiInstruction(InstructionsHost& host) {
@@ -110,8 +136,17 @@ void cplInstruction(InstructionsHost& host) {
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (arg1.isAddress()) {
     if (arg1.isHL()) {
-      // LD (hl), r
-      host.addCode(0b01110000 | registerBits(arg2));
+      if (arg2.is8BitRegister()) {
+        // LD (hl), r
+        host.addCode(0b01110000 | registerBits(arg2));
+      }
+      else if (arg2.isAddress()) {
+        host.addCode(0x2a);
+        host.add16BitAddress(arg2);
+      }
+      else {
+        error("Unknown form of LD HL, ... instruction");
+      }
     }
     else {
       if (arg2.isA()) {
@@ -132,6 +167,10 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     if (arg1.isI() && arg2.isA()) {
       host.addCode(0xed);
       host.addCode(0x47);
+    }
+    else if (arg1.isA() && arg2.isI()) {
+      host.addCode(0xed);
+      host.addCode(0x57);
     }
     else if (arg1.is8BitRegister()) {
       if (arg2.is8BitRegister()) {
@@ -159,10 +198,32 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
 void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (arg1.isHL()) {
     host.addCode(0b00001001 | register16Bits(arg2));
+    return;
   }
-  else {
-    throw Error("Uknown form of add instruction");
+  if (arg1.isA()) {
+    if (arg2.is8BitRegister()) {
+      host.addCode(0b10000000 | registerBits(arg2));
+      return;
+    }
   }
+  error("Uknown form of add instruction");
+}
+
+void orInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0b10110 | registerBits(arg));
+}
+
+void sbcInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  if (!arg1.isHL()) {
+    error("First argument to sbc instruction should be hl register");
+    return;
+  }
+  host.addCode(0xed);
+  host.addCode(0b01000010 | register16Bits(arg2));
+}
+
+void pushInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0b11000101 | register16BitsQQ(arg));
 }
 
 void outInstruction(InstructionsHost& host, const Argument& arg) {

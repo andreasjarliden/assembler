@@ -73,6 +73,13 @@ void test_ld_i_a() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void test_ld_a_i() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("a"), identifierArg("i"));
+  Byte expectedBytes[] = { 0xed, 0x57 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void test_ld_adr_hl_a() {
   Assembler assembler;
   assembler.command2("ld", addressIdentifierArg("hl"), identifierArg("a"));
@@ -91,6 +98,7 @@ void testLoadGroup() {
   test_ld_addr_hl();
   test_ld_c_d();
   test_ld_i_a();
+  test_ld_a_i();
   test_ld_adr_hl_a();
   test_ld_a_using_eq();
 }
