@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 
 extern "C" {
 
@@ -18,10 +19,21 @@ int yyparse();
 Assembler ASSEMBLER;
 Commands& COMMANDS = ASSEMBLER;
 const char* filename = "STDIN";
+const char* outputFilename = "/dev/stdout";
+std::ofstream outputFileStream;
 
 int main(int argc, const char* argv[]) {
   try {
-    if (argc > 1) {
+    int numOptions = 0;
+    for (int i = 1; i < argc; ++i) {
+      if (argv[i][0] == '-') {
+        if (argv[i][1] == 'o') {
+          outputFilename = argv[i+1];
+          numOptions += 2;
+        }
+      }
+    }
+    if (argc > numOptions + 1) {
       extern FILE* yyin;
       FILE* f = fopen(argv[1], "r");
       if (!f) {
@@ -35,7 +47,8 @@ int main(int argc, const char* argv[]) {
     yyparse();
     ASSEMBLER.resolveRemaining();
     if (NUMBER_OF_ERRORS == 0)
-      printHex(ASSEMBLER.segments());
+      outputFileStream.open(outputFilename);
+      printHex(ASSEMBLER.segments(), outputFileStream);
     return 0;
   }
   catch (const Error& e) {
