@@ -140,10 +140,6 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         // LD (hl), r
         host.addCode(0b01110000 | registerBits(arg2));
       }
-      else if (arg2.isAddress()) {
-        host.addCode(0x2a);
-        host.add16BitAddress(arg2);
-      }
       else {
         error("Unknown form of LD HL, ... instruction");
       }
@@ -188,7 +184,11 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         host.addCode(byte);
       }
     }
-    else if (arg1.is16BitRegister()) {
+    else if (arg1.isHL() && arg2.isAddress()) {
+      host.addCode(0x2a);
+      host.add16BitAddress(arg2);
+    }
+    else if (arg1.is16BitRegister() && arg2.isValue()) {
       // LD dd, nn
       host.addCode(0b00000001 | register16Bits(arg1));
       host.add16BitAddress(arg2);

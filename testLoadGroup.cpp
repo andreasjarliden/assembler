@@ -36,6 +36,13 @@ void test_ld_hl_word_following_label() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void test_ld_hl_address() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("HL"), addressArg(0x1234));
+  Byte expectedBytes[] = { 0x2a, 0x34, 0x12 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
 void test_ld_addr_a() {
   Assembler assembler;
   assembler.command2("ld", addressArg(0x1234), identifierArg("a"));
@@ -101,6 +108,7 @@ void testLoadGroup() {
   test_ld_d_byte();
   test_ld_hl_word();
   test_ld_hl_word_following_label();
+  test_ld_hl_address();
   test_ld_addr_a();
   test_ld_addr_hl();
   test_ld_c_d();
