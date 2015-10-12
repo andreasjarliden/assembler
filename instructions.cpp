@@ -239,7 +239,7 @@ void inInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(arg.ioAddress());
 }
 
-void jrInstruction(InstructionsHost& host, const Argument& arg) {
+void jrUnaryInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0x18);
   host.add8BitRelativeAddress(arg);
 }
@@ -252,6 +252,19 @@ void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
 void jpBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   host.addCode(0b11000010 | conditionBits(arg1));
   host.add16BitAddress(arg2);
+}
+
+void jrBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  if (arg1.isFlag("z")) {
+    host.addCode(0x28);
+  }
+  else if (arg1.isFlag("nz")) {
+    host.addCode(0x20);
+  }
+  else {
+    throw Error(std::string("Uknown flag to JR instruction: ") + arg1.identifier());
+  }
+  host.add8BitRelativeAddress(arg2);
 }
 
 void callInstruction(InstructionsHost& host, const Argument& arg) {

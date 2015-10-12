@@ -156,6 +156,7 @@ Assembler::Assembler()
   ASM_BINARY_INSTRUCTION(add);
   ASM_BINARY_INSTRUCTION(sbc);
   ASM_UNARY_INSTRUCTION(push);
+  ASM_UNARY_INSTRUCTION(pop);
   ASM_UNARY_INSTRUCTION(or);
   ASM_UNARY_INSTRUCTION(out);
   ASM_UNARY_INSTRUCTION(in);
@@ -163,13 +164,16 @@ Assembler::Assembler()
   ASM_UNARY_INSTRUCTION(cp);
   ASM_UNARY_INSTRUCTION(inc);
   ASM_UNARY_INSTRUCTION(dec);
-  ASM_UNARY_INSTRUCTION(jr);
   ASM_UNARY_INSTRUCTION(call);
   // Special handling of instructions which can have different arity
   extern void jpUnaryInstruction(InstructionsHost&, const Argument&);
   extern void jpBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);
+  extern void jrUnaryInstruction(InstructionsHost&, const Argument&);
+  extern void jrBinaryInstruction(InstructionsHost&, const Argument&, const Argument&);
   _pimpl->unaryInstructions[std::string("jp")] = jpUnaryInstruction;
   _pimpl->binaryInstructions[std::string("jp")] = jpBinaryInstruction;
+  _pimpl->unaryInstructions[std::string("jr")] = jrUnaryInstruction;
+  _pimpl->binaryInstructions[std::string("jr")] = jrBinaryInstruction;
 }
 
 Assembler::~Assembler() {}

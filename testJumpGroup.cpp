@@ -63,6 +63,20 @@ void test_jr_forward_label() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void test_jr_z_number_address() {
+  Assembler assembler;
+  assembler.command2("jr", identifierArg("Z"), numberArg(0));
+  Byte expectedBytes[] = { 0x28, 0xfe };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void test_jr_nz_number_address() {
+  Assembler assembler;
+  assembler.command2("jr", identifierArg("nz"), numberArg(0));
+  Byte expectedBytes[] = { 0x20, 0xfe };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 } // anonymous namespace
 
 void testJumpGroup() {
@@ -73,4 +87,6 @@ void testJumpGroup() {
   test_jr_number_address();
   test_jr_backwards_label();
   test_jr_forward_label();
+  test_jr_z_number_address();
+  test_jr_nz_number_address();
 }

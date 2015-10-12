@@ -122,12 +122,24 @@ bool Argument::isDE() const {
   return isIdentifier() && strcasecmp(identifier(), "de") == 0;
 }
 
+bool Argument::isIX() const {
+  return isIdentifier() && strcasecmp(identifier(), "ix") == 0;
+}
+
+bool Argument::isIY() const {
+  return isIdentifier() && strcasecmp(identifier(), "iy") == 0;
+}
+
 bool Argument::isA() const {
   return isIdentifier() && strcasecmp(identifier(), "a") == 0;
 }
 
 bool Argument::isI() const {
   return isIdentifier() && strcasecmp(identifier(), "i") == 0;
+}
+
+bool Argument::isFlag(const char* flag) const {
+  return _type == IDENTIFIER_ARGUMENT && strcasecmp(identifier(), flag) == 0;
 }
 
 Argument Argument::asAddressValue() const {

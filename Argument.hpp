@@ -21,8 +21,11 @@ public:
   bool is16BitRegister() const;
   bool isHL() const;
   bool isDE() const;
+  bool isIX() const;
+  bool isIY() const;
   bool isA() const;
   bool isI() const;
+  bool isFlag(const char* flag) const;
   const char* identifier() const;
   int value() const;
   unsigned char ioAddress() const;
