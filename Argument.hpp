@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 extern "C" {
 #include "Argument.h"
@@ -33,3 +34,5 @@ private:
   int _value;
   ArgumentType _type;
 };
+
+std::ostream& operator<<(std::ostream& s, const Argument& arg);

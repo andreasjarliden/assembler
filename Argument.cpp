@@ -134,3 +134,32 @@ Argument Argument::asAddressValue() const {
   out._type = ADDRESS_VALUE_ARGUMENT;
   return out;
 }
+
+std::string argumentTypeAsString(ArgumentType t) {
+  switch (t) {
+    case IDENTIFIER_ARGUMENT: return "IDENTIFIER_ARGUMENT";
+    case VALUE_ARGUMENT: return "VALUE_ARGUMENT";
+    case ADDRESS_VALUE_ARGUMENT: return "ADDRESS_VALUE_ARGUMENT";
+    case ADDRESS_IDENTIFIER_ARGUMENT: return "ADDRESS_IDENTIFIER_ARGUMENT";
+    case STRING_ARGUMENT: return "STRING_ARGUMENT";
+    default: return "Unknown argument type";
+  }
+}
+
+std::ostream& operator<<(std::ostream& s, const Argument& arg) {
+  s << argumentTypeAsString(arg.type()) << " ";
+  if (arg.isAddress()) {
+    s << "address ";
+  }
+  if (arg.isValue()) {
+    s << "value ";
+  }
+  if (arg.hasValue()) {
+    s << "has value " << arg.value() << " ";
+  }
+  if (arg.isIdentifier()) {
+    s << "identifier " << arg.identifier() << " ";
+  }
+  return s;
+}
+
