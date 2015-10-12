@@ -20,6 +20,7 @@ public:
   bool is8BitRegister() const;
   bool is16BitRegister() const;
   bool isHL() const;
+  bool isDE() const;
   bool isA() const;
   bool isI() const;
   const char* identifier() const;

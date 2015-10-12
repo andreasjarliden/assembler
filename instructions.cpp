@@ -164,7 +164,10 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
   }
   else {
-    if (arg1.isI() && arg2.isA()) {
+    if (arg1.isA() && arg2.isAddress() && arg2.isDE()) {
+      host.addCode(0x1a);
+    }
+    else if (arg1.isI() && arg2.isA()) {
       host.addCode(0xed);
       host.addCode(0x47);
     }

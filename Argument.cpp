@@ -118,6 +118,10 @@ bool Argument::isHL() const {
   return isIdentifier() && strcasecmp(identifier(), "hl") == 0;
 }
 
+bool Argument::isDE() const {
+  return isIdentifier() && strcasecmp(identifier(), "de") == 0;
+}
+
 bool Argument::isA() const {
   return isIdentifier() && strcasecmp(identifier(), "a") == 0;
 }
