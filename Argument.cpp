@@ -20,7 +20,7 @@ const char* Argument::identifier() const {
 }
 
 int Argument::value() const {
-  if (!isValue())
+  if (!hasValue())
     throw Error(std::string("Expected a value"));
   return _value;
 }
@@ -49,6 +49,10 @@ bool Argument::isAddress() const {
 }
 
 bool Argument::isValue() const {
+  return _type == VALUE_ARGUMENT || _type == IDENTIFIER_ARGUMENT;
+}
+
+bool Argument::hasValue() const {
   return _type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT;
 }
 

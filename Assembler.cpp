@@ -83,7 +83,7 @@ struct Assembler::Impl : public InstructionsHost {
 
   void add16BitAddress(const Argument& arg) {
     int address;
-    if (arg.isValue()) {
+    if (arg.hasValue()) {
       address = arg.value();
     }
     else {
@@ -100,7 +100,7 @@ struct Assembler::Impl : public InstructionsHost {
 
   void add8BitRelativeAddress(const Argument& arg) {
     int address;
-    if (arg.isValue()) {
+    if (arg.hasValue()) {
       address = arg.value();
     }
     else {

@@ -13,6 +13,7 @@ public:
 
   bool isAddress() const;
   bool isValue() const;
+  bool hasValue() const;
   bool isString() const;
   bool isIdentifier() const;
   bool is8BitRegister() const;
