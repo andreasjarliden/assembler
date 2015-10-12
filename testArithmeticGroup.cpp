@@ -13,8 +13,16 @@ void testAddHlBc() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testOr() {
+  Assembler assembler;
+  assembler.command1("or", identifierArg("a"));
+  Byte expectedBytes[] = { 0b10110111 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 }
 
 void testArithmeticGroup() {
   testAddHlBc();
+  testOr();
 }

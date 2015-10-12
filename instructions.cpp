@@ -213,7 +213,7 @@ void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument
 }
 
 void orInstruction(InstructionsHost& host, const Argument& arg) {
-  host.addCode(0b10110 | registerBits(arg));
+  host.addCode(0b10110000 | registerBits(arg));
 }
 
 void sbcInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
