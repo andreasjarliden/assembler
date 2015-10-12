@@ -229,6 +229,20 @@ void pushInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b11000101 | register16BitsQQ(arg));
 }
 
+void popInstruction(InstructionsHost& host, const Argument& arg) {
+  if (arg.isIX()) {
+    host.addCode(0xdd);
+    host.addCode(0xe1);
+  }
+  else if (arg.isIY()) {
+    host.addCode(0xdd);
+    host.addCode(0xfd);
+  }
+  else {
+    host.addCode(0b11000001 | register16BitsQQ(arg));
+  }
+}
+
 void outInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0xd3);
   host.addCode(arg.ioAddress());

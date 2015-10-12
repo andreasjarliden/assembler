@@ -101,6 +101,27 @@ void test_ld_a_addr_de() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void test_pop_de() {
+  Assembler assembler;
+  assembler.command1("pop", identifierArg("de"));
+  Byte expectedBytes[] = { 0b11010001 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
+void test_pop_ix() {
+  Assembler assembler;
+  assembler.command1("pop", identifierArg("ix"));
+  Byte expectedBytes[] = { 0xdd, 0xe1 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void test_pop_iy() {
+  Assembler assembler;
+  assembler.command1("pop", identifierArg("iy"));
+  Byte expectedBytes[] = { 0xdd, 0xfd };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 }
 
 void testLoadGroup() {
@@ -117,4 +138,7 @@ void testLoadGroup() {
   test_ld_adr_hl_a();
   test_ld_a_using_eq();
   test_ld_a_addr_de();
+  test_pop_de();
+  test_pop_ix();
+  test_pop_iy();
 }
