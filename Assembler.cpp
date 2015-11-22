@@ -99,23 +99,27 @@ struct Assembler::Impl : public InstructionsHost {
   }
 
   void add8BitRelativeAddress(const Argument& arg) {
+    const int currentPC = currentSegment().size() - 1;
     int address;
+    int delta;
     if (arg.hasValue()) {
       address = arg.value();
+      delta = address - currentPC - 2;
     }
     else {
       if (labelTable.contains(arg.identifier())) {
-        address = labelTable.addressForLabel(arg.identifier());
+        const int address = labelTable.addressForLabel(arg.identifier());
+        delta = address - currentPC - 2;
       }
       else {
-        address = 0; // Write zero for now
+        delta = 0; // Write zero for now
         delayedAddresses.add8BitRelative(arg.identifier(), currentSegment().size());
       }
     }
-    int currentPC = currentSegment().size() - 1;
-    int delta = address - currentPC - 2;
-    assert(delta >= -128);
-    assert(delta <= 127);
+    if (delta < -128)
+      error("Delta <-128");
+    if (delta > 127)
+      error("Delta >127");
     addCode(delta);
   }
 
