@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types.hpp"
 #include <string>
 #include <ostream>
 
@@ -28,6 +29,7 @@ public:
   bool isFlag(const char* flag) const;
   const char* identifier() const;
   int value() const;
+  Byte byteValue() const;
   unsigned char ioAddress() const;
   std::string string() const;
   ArgumentType type() const; // TODO remove?

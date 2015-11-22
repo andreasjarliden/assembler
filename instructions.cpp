@@ -179,8 +179,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         // ld r, n
         host.addCode(0b00000110 | registerBits(arg1) << 3);
         verifyIsValueArgument(arg2, 2);
-        // TODO: should check size of value
-        Byte byte = (Byte)arg2.value();
+        Byte byte = arg2.byteValue();
         host.addCode(byte);
       }
     }

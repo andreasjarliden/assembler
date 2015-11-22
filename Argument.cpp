@@ -25,6 +25,17 @@ int Argument::value() const {
   return _value;
 }
 
+Byte Argument::byteValue() const {
+  int v = value();
+  if (v < -128) {
+    throw Error(std::string("8 bit value <-128: ") + std::to_string(v));
+  }
+  if (v > 255) {
+    throw Error(std::string("8 bit value >-128: ") + std::to_string(v));
+  }
+  return static_cast<unsigned char>(v);
+}
+
 std::string Argument::string() const {
   if (!isString())
     throw Error(std::string("Expected a string"));

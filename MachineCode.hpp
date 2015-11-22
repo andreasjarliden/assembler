@@ -1,9 +1,8 @@
 #pragma once
 
+#include "types.hpp"
 #include <vector>
 #include <cassert>
-
-typedef unsigned char Byte;
 
 class MachineCode {
   typedef std::vector<Byte> Code;
