@@ -216,6 +216,11 @@ void orInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b10110000 | registerBits(arg));
 }
 
+void srlInstruction(InstructionsHost& host, const Argument& arg) {
+  host.addCode(0b11001011);
+  host.addCode(0b00111000 | registerBits(arg));
+}
+
 void sbcInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (!arg1.isHL()) {
     error("First argument to sbc instruction should be hl register");

@@ -20,9 +20,18 @@ void testOr() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testSrl() {
+  Assembler assembler;
+  assembler.command1("srl", identifierArg("c"));
+  Byte expectedBytes[] = { 0xcb, 0b00111001 };
+  isEqualToBytes(assembler, expectedBytes, 2);
 }
+
+} // unnamed namespace
 
 void testArithmeticGroup() {
   testAddHlBc();
   testOr();
+  testSrl();
 }
+
