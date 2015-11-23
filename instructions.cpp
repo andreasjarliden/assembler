@@ -215,6 +215,15 @@ void orInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b10110000 | registerBits(arg));
 }
 
+void andInstruction(InstructionsHost& host, const Argument& arg) {
+  if (arg.isValue()) {
+    host.addCode(0xe6);
+    host.addCode(arg.byteValue());
+    return;
+  }
+  error("Unknown form of AND instruction");
+}
+
 void srlInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b11001011);
   host.addCode(0b00111000 | registerBits(arg));

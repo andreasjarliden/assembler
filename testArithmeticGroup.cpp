@@ -20,6 +20,13 @@ void testOr() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testAnd_nn() {
+  Assembler assembler;
+  assembler.command1("and", numberArg(0x13));
+  Byte expectedBytes[] = { 0xe6, 0x13 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void testSrl() {
   Assembler assembler;
   assembler.command1("srl", identifierArg("c"));
@@ -32,6 +39,7 @@ void testSrl() {
 void testArithmeticGroup() {
   testAddHlBc();
   testOr();
+  testAnd_nn();
   testSrl();
 }
 
