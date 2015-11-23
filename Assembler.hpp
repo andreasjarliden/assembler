@@ -3,8 +3,6 @@
 #include "Commands.hpp"
 #include <memory>
 
-class MachineCode;
-class LabelTable;
 class Segments;
 
 class Assembler : public Commands {
