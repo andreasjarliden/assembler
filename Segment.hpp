@@ -4,13 +4,13 @@
 
 class Segment : public MachineCode {
 public:
-  Segment(size_t offset)
-    : _offset(offset) {}
+  Segment(size_t base)
+    : _base(base) {}
 
-  size_t offset() const {
-    return _offset;
+  size_t base() const {
+    return _base;
   }
 
 private:
-  size_t _offset;
+  size_t _base;
 };
