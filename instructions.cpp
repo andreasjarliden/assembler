@@ -144,6 +144,9 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         error("Unknown form of LD HL, ... instruction");
       }
     }
+    else if (arg1.isDE() && arg2.isA()) {
+      host.addCode(0x12);
+    }
     else {
       if (arg2.isA()) {
         // LD (nn), A
@@ -176,11 +179,18 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
       }
       else {
-        // ld r, n
-        host.addCode(0b00000110 | registerBits(arg1) << 3);
-        verifyIsValueArgument(arg2, 2);
-        Byte byte = arg2.byteValue();
-        host.addCode(byte);
+        if (arg2.isValue()) {
+          // ld r, n
+          host.addCode(0b00000110 | registerBits(arg1) << 3);
+          verifyIsValueArgument(arg2, 2);
+          host.addCode(arg2.byteValue());
+        }
+        else if (arg2.isAddress() && arg2.isHL()) {
+          host.addCode(0b01000110 | registerBits(arg1) << 3);
+        }
+        else {
+          throw Error("Unknown form of LD r, XXX instruction");
+        }
       }
     }
     else if (arg1.isHL() && arg2.isAddress()) {
@@ -205,6 +215,12 @@ void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument
   if (arg1.isA()) {
     if (arg2.is8BitRegister()) {
       host.addCode(0b10000000 | registerBits(arg2));
+      return;
+    }
+    else {
+      host.addCode(0xc6);
+      Byte byte = arg2.byteValue();
+      host.addCode(byte);
       return;
     }
   }
@@ -328,5 +344,13 @@ void incInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void decInstruction(InstructionsHost& host, const Argument& arg) {
-  host.addCode(0b00000101 | registerBits(arg));
+  if (arg.is8BitRegister()) {
+    host.addCode(0b00000101 | registerBits(arg));
+  }
+  else if (arg.is16BitRegister()) {
+    host.addCode(0b00001011 | register16Bits(arg));
+  }
+  else {
+    throw Error("Unknown form of DEC instruction");
+  }
 }
