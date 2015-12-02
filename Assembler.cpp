@@ -236,6 +236,9 @@ void Assembler::metaCommand1(const char* command,
   else if (strcmp(command, "int16") == 0) {
     _pimpl->add16BitAddress(_pimpl->resolveArgument(argument));
   }
+  else if (strcmp(command, "int8") == 0) {
+    _pimpl->addCode(_pimpl->resolveArgument(argument).value());
+  }
   else
     error(std::string("Unknown single argument .command ") + command);
 }
