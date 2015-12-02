@@ -1,12 +1,12 @@
 #include "DelayedAddresses.hpp"
-#include "MachineCode.hpp"
+#include "Segment.hpp"
 #include "LabelTable.hpp"
 #include "Error.hpp"
 #include "errorChecking.hpp"
 #include <vector>
 
 struct DelayedAddresses::Impl {
-  void resolve16(MachineCode& code, const LabelTable& table) {
+  void resolve16(Segment& code, const LabelTable& table) {
     for (const auto& entry : entries16) {
       if (!table.contains(entry.identifier)) {
         error(std::string("Label ") + entry.identifier + " never defined");
@@ -20,7 +20,7 @@ struct DelayedAddresses::Impl {
     }
   }
 
-  void resolve8(MachineCode& code, const LabelTable& table) {
+  void resolve8(Segment& code, const LabelTable& table) {
     for (const auto& entry : entries8) {
       if (!table.contains(entry.identifier)) {
         error(std::string("Label ") + entry.identifier + " never defined");
@@ -63,7 +63,7 @@ void DelayedAddresses::add8BitRelative(const char* identifier, int offset) {
   _pimpl->entries8.push_back(entry);
 }
 
-void DelayedAddresses::resolve(MachineCode& code, const LabelTable& table) {
+void DelayedAddresses::resolve(Segment& code, const LabelTable& table) {
   _pimpl->resolve16(code, table);
   _pimpl->resolve8(code, table);
 }

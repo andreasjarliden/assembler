@@ -92,14 +92,14 @@ struct Assembler::Impl : public InstructionsHost {
       }
       else {
         address = 0; // Write zero for now
-        delayedAddresses.add16Bit(arg.identifier(), currentSegment().size());
+        delayedAddresses.add16Bit(arg.identifier(), currentSegment().currentOffset());
       }
     }
     add16BitValue(address);
   }
 
   void add8BitRelativeAddress(const Argument& arg) {
-    const int currentPC = currentSegment().size() - 1;
+    const int currentPC = currentSegment().currentOffset() - 1;
     int address;
     int delta;
     if (arg.hasValue()) {
@@ -123,7 +123,7 @@ struct Assembler::Impl : public InstructionsHost {
     addCode(delta);
   }
 
-  MachineCode& currentSegment() {
+  Segment& currentSegment() {
     return segments.index(segments.numberOfSegments()-1);
   }
 
@@ -220,7 +220,7 @@ void Assembler::command2(const char* mnemonic,
 }
 
 void Assembler::label(const char* label) {
-  int address = _pimpl->currentSegment().size();
+  int address = _pimpl->currentSegment().currentOffset();
   _pimpl->labelTable.addLabel(label, address);
 }
 

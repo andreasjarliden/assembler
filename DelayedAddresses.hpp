@@ -3,7 +3,7 @@
 #include <memory>
 
 class LabelTable;
-class MachineCode;
+class Segment;
 
 class DelayedAddresses {
 public:
@@ -12,7 +12,7 @@ public:
 
   void add16Bit(const char* identifier, int offset);
   void add8BitRelative(const char* identifier, int offset);
-  void resolve(MachineCode& code, const LabelTable& table);
+  void resolve(Segment& code, const LabelTable& table);
 
 private:
   class Impl;

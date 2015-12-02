@@ -6,9 +6,9 @@
 #include <sstream>
 
 void printHex(const Segment& segment, std::ostream& stream) {
-  for (int i = 0; i < segment.size(); ) {
-    stream << std::hex << std::setw(4) << std::setfill('0') << i + segment.base() << ": ";
-    for (int j = 0; j < 8 && i < segment.size(); ++j, ++i) {
+  for (int i = segment.base(); i < segment.base() + segment.size(); ) {
+    stream << std::hex << std::setw(4) << std::setfill('0') << i << ": ";
+    for (int j = 0; j < 8 && i < segment.base() + segment.size(); ++j, ++i) {
       stream << std::hex << std::setw(2) << std::setfill('0') << (int)segment.get(i) << " ";
     }
     stream << std::endl;
