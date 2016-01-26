@@ -152,6 +152,7 @@ struct Assembler::Impl : public InstructionsHost {
 Assembler::Assembler()
   : _pimpl(new Impl) {
   ASM_NULLARY_INSTRUCTION(nop);
+  ASM_NULLARY_INSTRUCTION(cpir);
   ASM_NULLARY_INSTRUCTION(di);
   ASM_NULLARY_INSTRUCTION(ei);
   ASM_NULLARY_INSTRUCTION(halt);

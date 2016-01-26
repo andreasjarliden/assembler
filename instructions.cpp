@@ -354,3 +354,8 @@ void decInstruction(InstructionsHost& host, const Argument& arg) {
     throw Error("Unknown form of DEC instruction");
   }
 }
+
+void cpirInstruction(InstructionsHost& host) {
+  host.addCode(0xed);
+  host.addCode(0xb1);
+}
