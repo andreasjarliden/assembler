@@ -21,3 +21,7 @@ void error(const std::string& message) {
   ++NUMBER_OF_ERRORS;
 }
 
+void warning(const std::string& message) {
+  fprintf(stderr, "%s:%d: warning: %s\n", filename, yylineno, message.c_str());
+}
+

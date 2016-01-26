@@ -59,6 +59,9 @@ struct Assembler::Impl : public InstructionsHost {
   }
 
   void addEq(const char* identifier, const Argument& argument) {
+    if (eqTable.count(identifier)) {
+      warning(std::string("Redefining ") + identifier);
+    }
     eqTable[identifier] = argument;
   }
 
