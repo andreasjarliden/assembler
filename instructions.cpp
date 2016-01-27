@@ -339,6 +339,10 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
   if (arg.is8BitRegister()) {
     host.addCode(0b10111000 | registerBits(arg));
   }
+  else if (arg.isValue()) {
+    host.addCode(0xfe);
+    host.addCode(arg.byteValue());
+  }
   else {
     assert(false);
   }
