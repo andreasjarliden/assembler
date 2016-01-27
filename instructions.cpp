@@ -288,8 +288,13 @@ void jrUnaryInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
-  host.addCode(0xc3);
-  host.add16BitAddress(arg);
+  if (arg.isAddress() && arg.isHL()) {
+    host.addCode(0xe9);
+  }
+  else {
+    host.addCode(0xc3);
+    host.add16BitAddress(arg);
+  }
 }
 
 void jpBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
