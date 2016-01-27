@@ -116,7 +116,7 @@ struct Assembler::Impl : public InstructionsHost {
       }
       else {
         delta = 0; // Write zero for now
-        delayedAddresses.add8BitRelative(arg.identifier(), currentSegment().size());
+        delayedAddresses.add8BitRelative(arg.identifier(), currentSegment().currentOffset());
       }
     }
     if (delta < -128)
