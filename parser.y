@@ -16,6 +16,7 @@ extern int yylineno;
 
 %token <numberValue> DECNUMBER
 %token <numberValue> HEXNUMBER
+%token <numberValue> CHARNUMBER
 %token <symbol> IDENTIFIER
 %token <symbol> NEWLINE
 %token <symbol> STRING
@@ -100,6 +101,7 @@ argument:
 number:
 	DECNUMBER
 	| HEXNUMBER
+	| CHARNUMBER
 	;
 
 %%

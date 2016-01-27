@@ -14,6 +14,7 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_-]*
 DECNUMBER [0-9]+
 STRING \"[^"]*\"
 HEXNUMBER [0-9a-fA-F]+h
+CHAR '[^']'
 
 /* rules */
 %%
@@ -36,6 +37,11 @@ HEXNUMBER [0-9a-fA-F]+h
 {HEXNUMBER} {
 	yylval.numberValue = strtol(yytext, NULL, 16);
 	return HEXNUMBER;
+}
+
+{CHAR} {
+	yylval.numberValue = yytext[1];
+	return CHARNUMBER;
 }
 
 [ \t] /* ignore whitespace */
