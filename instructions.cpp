@@ -352,6 +352,16 @@ void incInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b00000011 | register16Bits(arg));
 }
 
+void exInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  if (arg1.isDE() && arg2.isHL()) {
+    host.addCode(0xeb);
+  }
+  else {
+    error("Unknown form of EX instruction");
+  }
+}
+
+
 void decInstruction(InstructionsHost& host, const Argument& arg) {
   if (arg.is8BitRegister()) {
     host.addCode(0b00000101 | registerBits(arg));

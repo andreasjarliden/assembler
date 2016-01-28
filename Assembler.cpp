@@ -163,6 +163,7 @@ Assembler::Assembler()
   ASM_BINARY_INSTRUCTION(ld);
   ASM_BINARY_INSTRUCTION(add);
   ASM_BINARY_INSTRUCTION(sbc);
+  ASM_BINARY_INSTRUCTION(ex);
   ASM_UNARY_INSTRUCTION(push);
   ASM_UNARY_INSTRUCTION(pop);
   ASM_UNARY_INSTRUCTION(or);
@@ -263,5 +264,6 @@ const Segments& Assembler::segments() const {
 
 void Assembler::resolveRemaining() {
   _pimpl->delayedAddresses.resolve(_pimpl->currentSegment(), _pimpl->labelTable);
+  _pimpl->labelTable.print();
 }
 
