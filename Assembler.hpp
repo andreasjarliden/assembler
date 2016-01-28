@@ -2,6 +2,7 @@
 
 #include "Commands.hpp"
 #include <memory>
+#include <iosfwd>
 
 class Segments;
 
@@ -21,6 +22,7 @@ public:
       const RawArgument& argument);
   void resolveRemaining();
   const Segments& segments() const;
+  void printSymbolTable(std::ostream& stream);
 
 private:
   class Impl;

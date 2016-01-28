@@ -264,6 +264,9 @@ const Segments& Assembler::segments() const {
 
 void Assembler::resolveRemaining() {
   _pimpl->delayedAddresses.resolve(_pimpl->currentSegment(), _pimpl->labelTable);
-  _pimpl->labelTable.print();
+}
+
+void Assembler::printSymbolTable(std::ostream& stream) {
+  _pimpl->labelTable.print(stream);
 }
 

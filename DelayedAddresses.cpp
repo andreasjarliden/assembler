@@ -4,6 +4,7 @@
 #include "Error.hpp"
 #include "errorChecking.hpp"
 #include <vector>
+#include <iostream>
 
 struct DelayedAddresses::Impl {
   void resolve16(Segment& code, const LabelTable& table) {

@@ -46,9 +46,10 @@ int main(int argc, const char* argv[]) {
     }
     yyparse();
     ASSEMBLER.resolveRemaining();
-    if (NUMBER_OF_ERRORS == 0)
-      outputFileStream.open(outputFilename);
-      printHex(ASSEMBLER.segments(), outputFileStream);
+    if (NUMBER_OF_ERRORS > 0)
+      return 1;
+    outputFileStream.open(outputFilename);
+    printHex(ASSEMBLER.segments(), outputFileStream);
     return 0;
   }
   catch (const Error& e) {
