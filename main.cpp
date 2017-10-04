@@ -20,6 +20,8 @@ Assembler ASSEMBLER;
 Commands& COMMANDS = ASSEMBLER;
 const char* filename = "STDIN";
 const char* outputFilename = "/dev/stdout";
+const char* symbolsFilename = nullptr;
+const char* relocationsFilename = nullptr;
 std::ofstream outputFileStream;
 
 int main(int argc, const char* argv[]) {
@@ -31,17 +33,27 @@ int main(int argc, const char* argv[]) {
           outputFilename = argv[i+1];
           numOptions += 2;
         }
+        else if (argv[i][1] == 's') {
+          symbolsFilename = argv[i+1];
+          numOptions += 2;
+        }
+        else if (argv[i][1] == 'r') {
+          relocationsFilename = argv[i+1];
+          numOptions += 2;
+        }
+        else {
+          throw Error(std::string("Unknown command line option ") + argv[i]);
+        }
       }
     }
     if (argc > numOptions + 1) {
       extern FILE* yyin;
-      FILE* f = fopen(argv[1], "r");
+      filename = argv[numOptions + 1];
+      FILE* f = fopen(filename, "r");
       if (!f) {
         fprintf(stderr, "fatal error: could not open input file %s\n", argv[1]);
         exit(-1);
       }
-      assert(f);
-      filename = argv[1];
       yyin = f;
     }
     yyparse();
@@ -50,6 +62,13 @@ int main(int argc, const char* argv[]) {
       return 1;
     outputFileStream.open(outputFilename);
     printHex(ASSEMBLER.segments(), outputFileStream);
+    if (symbolsFilename) {
+      std::ofstream symbolsStream(symbolsFilename);
+      ASSEMBLER.printSymbolTable(symbolsStream);
+    }
+    if (relocationsFilename) {
+      ASSEMBLER.printRelocations(std::cout);
+    }
     return 0;
   }
   catch (const Error& e) {

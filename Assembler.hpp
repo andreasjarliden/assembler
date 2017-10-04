@@ -23,6 +23,7 @@ public:
   void resolveRemaining();
   const Segments& segments() const;
   void printSymbolTable(std::ostream& stream);
+  void printRelocations(std::ostream& stream);
 
 private:
   class Impl;

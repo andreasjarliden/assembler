@@ -13,6 +13,25 @@
 #include <cassert>
 #include <iostream>
 
+class RelocationsTable {
+public:
+  void add(int offset);
+  void print(std::ostream&) const;
+
+private:
+  std::vector<int> _offsets;
+};
+
+void RelocationsTable::add(int offset) {
+  _offsets.push_back(offset);
+}
+
+void RelocationsTable::print(std::ostream& stream) const {
+  for (int offset : _offsets) {
+    stream << std::hex << offset << std::endl;
+  }
+}
+
 struct Assembler::Impl : public InstructionsHost {
   typedef std::function<void (InstructionsHost&)> NullaryInstruction;
   typedef std::function<void (InstructionsHost&, const Argument&)> UnaryInstruction;
@@ -98,6 +117,7 @@ struct Assembler::Impl : public InstructionsHost {
         delayedAddresses.add16Bit(arg.identifier(), currentSegment().currentOffset());
       }
     }
+    relocationsTable.add(currentSegment().currentOffset());
     add16BitValue(address);
   }
 
@@ -130,6 +150,7 @@ struct Assembler::Impl : public InstructionsHost {
     return segments.index(segments.numberOfSegments()-1);
   }
 
+  RelocationsTable relocationsTable;
   LabelTable labelTable;
   Segments segments;
   DelayedAddresses delayedAddresses;
@@ -268,5 +289,9 @@ void Assembler::resolveRemaining() {
 
 void Assembler::printSymbolTable(std::ostream& stream) {
   _pimpl->labelTable.print(stream);
+}
+
+void Assembler::printRelocations(std::ostream& stream) {
+  _pimpl->relocationsTable.print(stream);
 }
 
