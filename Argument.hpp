@@ -13,7 +13,8 @@ public:
   static Argument createWithRawArgument(const RawArgument&);
   Argument();
 
-  bool isAddress() const;
+  // (nnnn) or (identifier)
+  bool isDereferenced() const;
   bool isValue() const;
   bool hasValue() const;
   bool isString() const;

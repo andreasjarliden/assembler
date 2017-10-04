@@ -22,7 +22,7 @@ void test_ld_d_byte() {
 
 void test_ld_a_address_hl() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("a"), addressIdentifierArg("hl"));
+  assembler.command2("ld", identifierArg("a"), dereferencedIdentifierArg("hl"));
   Byte expectedBytes[] = { 0b01111110 };
   isEqualToBytes(assembler, expectedBytes, 1);
 }
@@ -45,21 +45,21 @@ void test_ld_hl_word_following_label() {
 
 void test_ld_hl_address() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("HL"), addressArg(0x1234));
+  assembler.command2("ld", identifierArg("HL"), dereferencedValueArg(0x1234));
   Byte expectedBytes[] = { 0x2a, 0x34, 0x12 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
 void test_ld_addr_a() {
   Assembler assembler;
-  assembler.command2("ld", addressArg(0x1234), identifierArg("a"));
+  assembler.command2("ld", dereferencedValueArg(0x1234), identifierArg("a"));
   Byte expectedBytes[] = { 0x32, 0x34, 0x12 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
 void test_ld_addr_hl() {
   Assembler assembler;
-  assembler.command2("ld", addressArg(0x1234), identifierArg("hl"));
+  assembler.command2("ld", dereferencedValueArg(0x1234), identifierArg("hl"));
   Byte expectedBytes[] = { 0x22, 0x34, 0x12 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
@@ -96,14 +96,14 @@ void test_ld_a_i() {
 
 void test_ld_adr_hl_a() {
   Assembler assembler;
-  assembler.command2("ld", addressIdentifierArg("hl"), identifierArg("a"));
+  assembler.command2("ld", dereferencedIdentifierArg("hl"), identifierArg("a"));
   Byte expectedBytes[] = { 0b01110111 };
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
 void test_ld_a_addr_de() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("a"), addressIdentifierArg("de"));
+  assembler.command2("ld", identifierArg("a"), dereferencedIdentifierArg("de"));
   Byte expectedBytes[] = { 0x1a };
   isEqualToBytes(assembler, expectedBytes, 1);
 }

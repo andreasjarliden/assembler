@@ -14,16 +14,16 @@ RawArgument numberArg(int byte) {
   return argument;
 }
 
-RawArgument addressArg(int address) {
+RawArgument dereferencedValueArg(int address) {
   RawArgument argument;
-  argument.type = ADDRESS_VALUE_ARGUMENT;
+  argument.type = DEREFERENCED_VALUE_ARGUMENT;
   argument.value = address;
   return argument;
 }
 
-RawArgument addressIdentifierArg(const char* identifier) {
+RawArgument dereferencedIdentifierArg(const char* identifier) {
   RawArgument argument;
-  argument.type = ADDRESS_IDENTIFIER_ARGUMENT;
+  argument.type = DEREFERENCED_IDENTIFIER_ARGUMENT;
   argument.identifier = identifier;
   return argument;
 }

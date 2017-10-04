@@ -4,5 +4,5 @@
 
 RawArgument identifierArg(const char* identifier);
 RawArgument numberArg(int byte);
-RawArgument addressArg(int address);
-RawArgument addressIdentifierArg(const char* identifier);
+RawArgument dereferencedValueArg(int address);
+RawArgument dereferencedIdentifierArg(const char* identifier);

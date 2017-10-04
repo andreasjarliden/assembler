@@ -134,7 +134,7 @@ void cplInstruction(InstructionsHost& host) {
 }
 
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
-  if (arg1.isAddress()) {
+  if (arg1.isDereferenced()) {
     if (arg1.isHL()) {
       if (arg2.is8BitRegister()) {
         // LD (hl), r
@@ -163,7 +163,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
   }
   else {
-    if (arg1.isA() && arg2.isAddress() && arg2.isDE()) {
+    if (arg1.isA() && arg2.isDereferenced() && arg2.isDE()) {
       host.addCode(0x1a);
     }
     else if (arg1.isI() && arg2.isA()) {
@@ -185,7 +185,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
           verifyIsValueArgument(arg2, 2);
           host.addCode(arg2.byteValue());
         }
-        else if (arg2.isAddress() && arg2.isHL()) {
+        else if (arg2.isDereferenced() && arg2.isHL()) {
           host.addCode(0b01000110 | registerBits(arg1) << 3);
         }
         else {
@@ -193,7 +193,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
         }
       }
     }
-    else if (arg1.isHL() && arg2.isAddress()) {
+    else if (arg1.isHL() && arg2.isDereferenced()) {
       host.addCode(0x2a);
       host.add16BitAddress(arg2);
     }
@@ -288,7 +288,7 @@ void jrUnaryInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
-  if (arg.isAddress() && arg.isHL()) {
+  if (arg.isDereferenced() && arg.isHL()) {
     host.addCode(0xe9);
   }
   else {

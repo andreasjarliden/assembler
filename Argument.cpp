@@ -43,7 +43,7 @@ std::string Argument::string() const {
 }
 
 unsigned char Argument::ioAddress() const {
-  if (type() == IDENTIFIER_ARGUMENT || type() == ADDRESS_IDENTIFIER_ARGUMENT) {
+  if (type() == IDENTIFIER_ARGUMENT || type() == DEREFERENCED_IDENTIFIER_ARGUMENT) {
     throw Error(std::string("Expected numeric IO address, but got ") + identifier());
   }
   assert(value() >= 0);
@@ -55,8 +55,8 @@ ArgumentType Argument::type() const {
   return _type;
 }
 
-bool Argument::isAddress() const {
-  return _type == ADDRESS_VALUE_ARGUMENT || _type == ADDRESS_IDENTIFIER_ARGUMENT;
+bool Argument::isDereferenced() const {
+  return _type == DEREFERENCED_VALUE_ARGUMENT || _type == DEREFERENCED_IDENTIFIER_ARGUMENT;
 }
 
 bool Argument::isValue() const {
@@ -64,7 +64,7 @@ bool Argument::isValue() const {
 }
 
 bool Argument::hasValue() const {
-  return _type == VALUE_ARGUMENT || _type == ADDRESS_VALUE_ARGUMENT;
+  return _type == VALUE_ARGUMENT || _type == DEREFERENCED_VALUE_ARGUMENT;
 }
 
 bool Argument::isString() const {
@@ -72,7 +72,7 @@ bool Argument::isString() const {
 }
 
 bool Argument::isIdentifier() const {
-  return _type == IDENTIFIER_ARGUMENT || _type == ADDRESS_IDENTIFIER_ARGUMENT;
+  return _type == IDENTIFIER_ARGUMENT || _type == DEREFERENCED_IDENTIFIER_ARGUMENT;
 }
 
 bool Argument::is8BitRegister() const {
@@ -154,11 +154,11 @@ bool Argument::isFlag(const char* flag) const {
 }
 
 Argument Argument::asAddressValue() const {
-  if (_type != VALUE_ARGUMENT && _type != ADDRESS_VALUE_ARGUMENT) {
-    throw Error(std::string("Expected VALUE_ARGUMENT or ADDRESS_VALUE_ARGUMENT"));
+  if (_type != VALUE_ARGUMENT && _type != DEREFERENCED_VALUE_ARGUMENT) {
+    throw Error(std::string("Expected VALUE_ARGUMENT or DEREFERENCED_VALUE_ARGUMENT"));
   }
   Argument out = *this;
-  out._type = ADDRESS_VALUE_ARGUMENT;
+  out._type = DEREFERENCED_VALUE_ARGUMENT;
   return out;
 }
 
@@ -166,8 +166,8 @@ std::string argumentTypeAsString(ArgumentType t) {
   switch (t) {
     case IDENTIFIER_ARGUMENT: return "IDENTIFIER_ARGUMENT";
     case VALUE_ARGUMENT: return "VALUE_ARGUMENT";
-    case ADDRESS_VALUE_ARGUMENT: return "ADDRESS_VALUE_ARGUMENT";
-    case ADDRESS_IDENTIFIER_ARGUMENT: return "ADDRESS_IDENTIFIER_ARGUMENT";
+    case DEREFERENCED_VALUE_ARGUMENT: return "DEREFERENCED_VALUE_ARGUMENT";
+    case DEREFERENCED_IDENTIFIER_ARGUMENT: return "DEREFERENCED_IDENTIFIER_ARGUMENT";
     case STRING_ARGUMENT: return "STRING_ARGUMENT";
     default: return "Unknown argument type";
   }
@@ -175,8 +175,8 @@ std::string argumentTypeAsString(ArgumentType t) {
 
 std::ostream& operator<<(std::ostream& s, const Argument& arg) {
   s << argumentTypeAsString(arg.type()) << " ";
-  if (arg.isAddress()) {
-    s << "address ";
+  if (arg.isDereferenced()) {
+    s << "dereferenced ";
   }
   if (arg.isValue()) {
     s << "value ";

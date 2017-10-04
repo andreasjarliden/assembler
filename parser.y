@@ -85,11 +85,11 @@ argument:
 		$$.value = $1
 	}
 	| '(' number ')' {
-		$$.type = ADDRESS_VALUE_ARGUMENT;
+		$$.type = DEREFERENCED_VALUE_ARGUMENT;
 		$$.value = $2
 	}
 	| '(' IDENTIFIER ')' {
-		$$.type = ADDRESS_IDENTIFIER_ARGUMENT;
+		$$.type = DEREFERENCED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2
 	}
 	| STRING {

@@ -68,7 +68,7 @@ struct Assembler::Impl : public InstructionsHost {
         return t->second;
       }
     }
-    else if (argument.type == ADDRESS_IDENTIFIER_ARGUMENT) {
+    else if (argument.type == DEREFERENCED_IDENTIFIER_ARGUMENT) {
       auto t = eqTable.find(std::string(argument.identifier));
       if (t != eqTable.end()) {
         return t->second.asAddressValue();

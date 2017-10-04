@@ -37,7 +37,7 @@ void testTwoInstructions() {
 
 void test_out_20() {
   Assembler assembler;
-  assembler.command1("out", addressArg(255));
+  assembler.command1("out", dereferencedValueArg(255));
   Byte expectedBytes[] = { 0xd3, 0xff };
   isEqualToBytes(assembler, expectedBytes, 2);
 }
@@ -45,7 +45,7 @@ void test_out_20() {
 void test_out_using_eq() {
   Assembler assembler;
   assembler.metaCommand2("eq", "FOUR_TWO", numberArg(42));
-  assembler.command1("out", addressIdentifierArg("FOUR_TWO"));
+  assembler.command1("out", dereferencedIdentifierArg("FOUR_TWO"));
   Byte expectedBytes[] = { 0xd3, 42 };
   isEqualToBytes(assembler, expectedBytes, 2);
 }
@@ -81,7 +81,7 @@ void testOneSegment() {
 void testTwoSegments() {
   Assembler assembler;
   assembler.command0("cpl");
-  assembler.metaCommand1("org", addressArg(10));
+  assembler.metaCommand1("org", dereferencedValueArg(10));
   assembler.command0("cpl");
 
   assert(assembler.segments().numberOfSegments() == 2);
