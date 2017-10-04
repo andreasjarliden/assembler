@@ -18,7 +18,9 @@ public:
   bool hasValue() const;
   bool isString() const;
   bool isIdentifier() const;
+  // 8 bit register, possibly dereference (e.g. C or (C))
   bool is8BitRegister() const;
+  // 16 bit register, possibly dereference (e.g. BC or (BC))
   bool is16BitRegister() const;
   bool isHL() const;
   bool isDE() const;

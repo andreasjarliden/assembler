@@ -76,7 +76,7 @@ bool Argument::isIdentifier() const {
 }
 
 bool Argument::is8BitRegister() const {
-  if (_type != IDENTIFIER_ARGUMENT)
+  if (!isIdentifier())
     return false;
   if (strlen(_identifier) != 1)
     return false;
@@ -102,7 +102,7 @@ bool Argument::is8BitRegister() const {
 }
 
 bool Argument::is16BitRegister() const {
-  if (_type != IDENTIFIER_ARGUMENT)
+  if (!isIdentifier())
     return false;
   if (strlen(_identifier) != 2)
     return false;
