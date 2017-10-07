@@ -119,5 +119,5 @@ int main() {
   testOneSegment();
   testTwoSegments();
   testPrintTwoSegments();
-  std::cout << "Test passed" << std::endl;
+  printTestSummary();
 }

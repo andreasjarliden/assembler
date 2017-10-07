@@ -5,6 +5,10 @@
 class Assembler;
 class Segment;
 
+extern int NUM_FAILURES;
+
+void printTestSummary();
+
 void _isEqualToBytes(const Segment& segment,
     unsigned char expectedBytes[],
     int numberOfBytes,
