@@ -6,6 +6,13 @@
 
 namespace {
 
+void test_ld_deref_hl_8bitReg() {
+  Assembler assembler;
+  assembler.command2("ld", dereferencedIdentifierArg("hl"), identifierArg("a"));
+  Byte expectedBytes[] = { 0b01110111 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 void test_ld_a_byte() {
   Assembler assembler;
   assembler.command2("ld", identifierArg("a"), numberArg(255));
@@ -54,6 +61,13 @@ void test_ld_addr_a() {
   Assembler assembler;
   assembler.command2("ld", dereferencedValueArg(0x1234), identifierArg("a"));
   Byte expectedBytes[] = { 0x32, 0x34, 0x12 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void test_ld_a_addr() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("a"), numberArg(0x1234));
+  Byte expectedBytes[] = { 0x3a, 0x34, 0x12 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
@@ -132,6 +146,7 @@ void test_pop_iy() {
 }
 
 void testLoadGroup() {
+  test_ld_deref_hl_8bitReg(); // ld (hl),r
   test_ld_a_byte();
   test_ld_d_byte();
   test_ld_a_address_hl();
@@ -139,6 +154,7 @@ void testLoadGroup() {
   test_ld_hl_word_following_label();
   test_ld_hl_address();
   test_ld_addr_a();
+  // test_ld_a_addr();
   test_ld_addr_hl();
   test_ld_c_d();
   test_ld_i_a();

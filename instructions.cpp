@@ -134,12 +134,11 @@ void cplInstruction(InstructionsHost& host) {
 }
 
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
-#if 0
   if (arg1.isHL(DEREFERENCED) && arg2.is8BitRegister(NOT_DEREFERENCED)) {
     // LD (hl), r
     host.addCode(0b01110000 | registerBits(arg2));
+    return;
   }
-#endif
   if (arg1.isDereferenced()) {
     if (arg1.isHL(DEREFERENCED)) {
       if (arg2.is8BitRegister()) {
