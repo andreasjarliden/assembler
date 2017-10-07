@@ -5,13 +5,22 @@
 class Assembler;
 class Segment;
 
-void isEqualToBytes(const Segment& segment,
+void _isEqualToBytes(const Segment& segment,
     unsigned char expectedBytes[],
-    int numberOfBytes);
+    int numberOfBytes,
+    const char* testFunction);
 
-void isEqualToBytes(const Assembler& assembler,
+void _isEqualToBytes(const Assembler& assembler,
     unsigned char expectedBytes[],
-    int numberOfBytes);
+    int numberOfBytes,
+    const char* testFunction);
 
-void equalStrings(const std::string& actual,
-    const std::string& expected);
+void _equalStrings(const std::string& actual,
+    const std::string& expected,
+    const char* testFunction);
+
+#define isEqualToBytes(segmentOrAssembler, expectedBytes, numberOfBytes) \
+  _isEqualToBytes(segmentOrAssembler, expectedBytes, numberOfBytes, __func__)
+
+#define equalStrings(actual, expected) \
+  _equalStrings(actual, expected, __func__)
