@@ -75,8 +75,13 @@ bool Argument::isIdentifier() const {
   return _type == IDENTIFIER_ARGUMENT || _type == DEREFERENCED_IDENTIFIER_ARGUMENT;
 }
 
-bool Argument::is8BitRegister() const {
-  if (!isIdentifier())
+bool Argument::isIdentifier(Dereferenced deref) const {
+  return (deref == DEREFERENCED && _type == DEREFERENCED_IDENTIFIER_ARGUMENT) || 
+    (deref == NOT_DEREFERENCED && _type == IDENTIFIER_ARGUMENT);
+}
+
+bool Argument::is8BitRegister(Dereferenced deref) const {
+  if (!isIdentifier(deref))
     return false;
   if (strlen(_identifier) != 1)
     return false;
@@ -101,8 +106,8 @@ bool Argument::is8BitRegister() const {
   }
 }
 
-bool Argument::is16BitRegister() const {
-  if (!isIdentifier())
+bool Argument::is16BitRegister(Dereferenced deref) const {
+  if (!isIdentifier(deref))
     return false;
   if (strlen(_identifier) != 2)
     return false;
@@ -125,28 +130,28 @@ bool Argument::is16BitRegister() const {
   return false;
 }
 
-bool Argument::isHL() const {
-  return isIdentifier() && strcasecmp(identifier(), "hl") == 0;
+bool Argument::isHL(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "hl") == 0;
 }
 
-bool Argument::isDE() const {
-  return isIdentifier() && strcasecmp(identifier(), "de") == 0;
+bool Argument::isDE(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "de") == 0;
 }
 
-bool Argument::isIX() const {
-  return isIdentifier() && strcasecmp(identifier(), "ix") == 0;
+bool Argument::isIX(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "ix") == 0;
 }
 
-bool Argument::isIY() const {
-  return isIdentifier() && strcasecmp(identifier(), "iy") == 0;
+bool Argument::isIY(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "iy") == 0;
 }
 
-bool Argument::isA() const {
-  return isIdentifier() && strcasecmp(identifier(), "a") == 0;
+bool Argument::isA(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "a") == 0;
 }
 
-bool Argument::isI() const {
-  return isIdentifier() && strcasecmp(identifier(), "i") == 0;
+bool Argument::isI(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "i") == 0;
 }
 
 bool Argument::isFlag(const char* flag) const {

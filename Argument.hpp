@@ -8,6 +8,8 @@ extern "C" {
 #include "Argument.h"
 }
 
+enum Dereferenced { NOT_DEREFERENCED, DEREFERENCED };
+
 class Argument {
 public:
   static Argument createWithRawArgument(const RawArgument&);
@@ -15,20 +17,24 @@ public:
 
   // (nnnn) or (identifier)
   bool isDereferenced() const;
+  // A value or address
   bool isValue() const;
+  // A numeric value or dereferenced address
   bool hasValue() const;
   bool isString() const;
+  // identifier or dereferenced identifier
   bool isIdentifier() const;
+  bool isIdentifier(Dereferenced deref) const;
   // 8 bit register, possibly dereference (e.g. C or (C))
-  bool is8BitRegister() const;
+  bool is8BitRegister(Dereferenced deref = NOT_DEREFERENCED) const;
   // 16 bit register, possibly dereference (e.g. BC or (BC))
-  bool is16BitRegister() const;
-  bool isHL() const;
-  bool isDE() const;
-  bool isIX() const;
-  bool isIY() const;
-  bool isA() const;
-  bool isI() const;
+  bool is16BitRegister(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isHL(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isDE(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isIX(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isIY(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isA(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isI(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isFlag(const char* flag) const;
   const char* identifier() const;
   int value() const;

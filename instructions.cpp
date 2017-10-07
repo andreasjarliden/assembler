@@ -134,8 +134,14 @@ void cplInstruction(InstructionsHost& host) {
 }
 
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+#if 0
+  if (arg1.isHL(DEREFERENCED) && arg2.is8BitRegister(NOT_DEREFERENCED)) {
+    // LD (hl), r
+    host.addCode(0b01110000 | registerBits(arg2));
+  }
+#endif
   if (arg1.isDereferenced()) {
-    if (arg1.isHL()) {
+    if (arg1.isHL(DEREFERENCED)) {
       if (arg2.is8BitRegister()) {
         // LD (hl), r
         host.addCode(0b01110000 | registerBits(arg2));
@@ -163,7 +169,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     }
   }
   else {
-    if (arg1.isA() && arg2.isDereferenced() && arg2.isDE()) {
+    if (arg1.isA() && arg2.isDE(DEREFERENCED)) {
       host.addCode(0x1a);
     }
     else if (arg1.isI() && arg2.isA()) {
@@ -185,7 +191,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
           verifyIsValueArgument(arg2, 2);
           host.addCode(arg2.byteValue());
         }
-        else if (arg2.isDereferenced() && arg2.isHL()) {
+        else if (arg2.isHL(DEREFERENCED)) {
           host.addCode(0b01000110 | registerBits(arg1) << 3);
         }
         else {
