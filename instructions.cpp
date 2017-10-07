@@ -134,82 +134,65 @@ void cplInstruction(InstructionsHost& host) {
 }
 
 void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
-  if (arg1.isHL(DEREFERENCED) && arg2.is8BitRegister(NOT_DEREFERENCED)) {
-    // LD (hl), r
+  if (arg1.is8BitRegister(NOT_DEREFERENCED) && arg2.is8BitRegister(NOT_DEREFERENCED)) {
+    // ld r, r'
+    host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
+  }
+  else if (arg1.is8BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
+    // ld r, n
+    host.addCode(0b00000110 | registerBits(arg1) << 3);
+    host.addCode(arg2.byteValue());
+  }
+  else if (arg1.is8BitRegister(NOT_DEREFERENCED) && arg2.isHL(DEREFERENCED)) {
+    // ld r, (HL)
+    host.addCode(0b01000110 | registerBits(arg1) << 3);
+  }
+  else if (arg1.isHL(DEREFERENCED) && arg2.is8BitRegister(NOT_DEREFERENCED)) {
+    // ld (hl), r
     host.addCode(0b01110000 | registerBits(arg2));
-    return;
   }
-  if (arg1.isDereferenced()) {
-    if (arg1.isHL(DEREFERENCED)) {
-      if (arg2.is8BitRegister()) {
-        // LD (hl), r
-        host.addCode(0b01110000 | registerBits(arg2));
-      }
-      else {
-        error("Unknown form of LD HL, ... instruction");
-      }
-    }
-    else if (arg1.isDE() && arg2.isA()) {
-      host.addCode(0x12);
-    }
-    else {
-      if (arg2.isA()) {
-        // LD (nn), A
-        host.addCode(0x32);
-        host.add16BitAddress(arg1);
-      }
-      else if (arg2.isHL()) {
-        host.addCode(0x22);
-        host.add16BitAddress(arg1);
-      }
-      else {
-        throw Error("Unknown form of LD (nn), ... instruction");
-      }
-    }
+
+
+  else if (arg1.isDE(DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
+    // ld (DE), A
+    host.addCode(0x12);
   }
-  else {
-    if (arg1.isA() && arg2.isDE(DEREFERENCED)) {
-      host.addCode(0x1a);
-    }
-    else if (arg1.isI() && arg2.isA()) {
-      host.addCode(0xed);
-      host.addCode(0x47);
-    }
-    else if (arg1.isA() && arg2.isI()) {
-      host.addCode(0xed);
-      host.addCode(0x57);
-    }
-    else if (arg1.is8BitRegister()) {
-      if (arg2.is8BitRegister()) {
-        host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
-      }
-      else {
-        if (arg2.isValue()) {
-          // ld r, n
-          host.addCode(0b00000110 | registerBits(arg1) << 3);
-          verifyIsValueArgument(arg2, 2);
-          host.addCode(arg2.byteValue());
-        }
-        else if (arg2.isHL(DEREFERENCED)) {
-          host.addCode(0b01000110 | registerBits(arg1) << 3);
-        }
-        else {
-          throw Error("Unknown form of LD r, XXX instruction");
-        }
-      }
-    }
-    else if (arg1.isHL() && arg2.isDereferenced()) {
-      host.addCode(0x2a);
-      host.add16BitAddress(arg2);
-    }
-    else if (arg1.is16BitRegister() && arg2.isValue()) {
-      // LD dd, nn
-      host.addCode(0b00000001 | register16Bits(arg1));
-      host.add16BitAddress(arg2);
-    }
-    else
-      throw Error("Unknown form of LD instruction");
+  else if (arg1.isDereferenced() && arg2.isA(NOT_DEREFERENCED)) {
+    // LD (nn), A
+    host.addCode(0x32);
+    host.add16BitAddress(arg1);
   }
+  else if (arg1.isDereferenced() && arg2.isHL(NOT_DEREFERENCED)) {
+    // LD (nn), hl
+    host.addCode(0x22);
+    host.add16BitAddress(arg1);
+  }
+  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isDE(DEREFERENCED)) {
+    // ld a, (DE)
+    host.addCode(0x1a);
+  }
+  else if (arg1.isI(NOT_DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
+    // ld I, A
+    host.addCode(0xed);
+    host.addCode(0x47);
+  }
+  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isI(NOT_DEREFERENCED)) {
+    // ld A, I
+    host.addCode(0xed);
+    host.addCode(0x57);
+  }
+  else if (arg1.isHL(NOT_DEREFERENCED) && arg2.isDereferenced()) {
+    // ld hl, (nn)
+    host.addCode(0x2a);
+    host.add16BitAddress(arg2);
+  }
+  else if (arg1.is16BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
+    // LD dd, nn
+    host.addCode(0b00000001 | register16Bits(arg1));
+    host.add16BitAddress(arg2);
+  }
+  else
+    throw Error("Unknown form of LD instruction");
 }
 
 void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
