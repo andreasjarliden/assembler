@@ -120,4 +120,5 @@ int main() {
   testTwoSegments();
   testPrintTwoSegments();
   printTestSummary();
+  return NUM_FAILURES;
 }

@@ -44,3 +44,9 @@ set_property(TARGET asm PROPERTY CXX_STANDARD_REQUIRED ON)
 set_property(TARGET unitTests PROPERTY CXX_STANDARD 11)
 set_property(TARGET unitTests PROPERTY CXX_STANDARD_REQUIRED ON)
 
+enable_testing()
+
+add_test(unit unitTests)
+
+set(CTEST_OUTPUT_ON_FAILURE ON)
+
