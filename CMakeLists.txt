@@ -48,5 +48,4 @@ enable_testing()
 
 add_test(unit unitTests)
 
-set(CTEST_OUTPUT_ON_FAILURE ON)
 

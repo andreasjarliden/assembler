@@ -139,6 +139,17 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     // ld r, r'
     host.addCode(0b01000000 | registerBits(arg1) << 3 | registerBits(arg2));
   }
+  else if (arg1.isI(NOT_DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
+    // ld I, A
+    host.addCode(0xed);
+    host.addCode(0x47);
+  }
+  // TODO this must currently come before ld A, nn as we treat registers as any identifiers (and in this case a value).
+  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isI(NOT_DEREFERENCED)) {
+    // ld A, I
+    host.addCode(0xed);
+    host.addCode(0x57);
+  }
   else if (arg1.is8BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
     // ld r, n
     host.addCode(0b00000110 | registerBits(arg1) << 3);
@@ -152,8 +163,6 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     // ld (hl), r
     host.addCode(0b01110000 | registerBits(arg2));
   }
-
-
   else if (arg1.isDE(DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
     // ld (DE), A
     host.addCode(0x12);
@@ -171,16 +180,6 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   else if (arg1.isA(NOT_DEREFERENCED) && arg2.isDE(DEREFERENCED)) {
     // ld a, (DE)
     host.addCode(0x1a);
-  }
-  else if (arg1.isI(NOT_DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
-    // ld I, A
-    host.addCode(0xed);
-    host.addCode(0x47);
-  }
-  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isI(NOT_DEREFERENCED)) {
-    // ld A, I
-    host.addCode(0xed);
-    host.addCode(0x57);
   }
   else if (arg1.isHL(NOT_DEREFERENCED) && arg2.isDereferenced()) {
     // ld hl, (nn)
