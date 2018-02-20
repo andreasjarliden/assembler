@@ -49,6 +49,13 @@ void testDec_ss() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testDec_r() {
+  Assembler assembler;
+  assembler.command1("dec", identifierArg("a"));
+  Byte expectedBytes[] = { 0b00111101 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 } // unnamed namespace
 
 void testArithmeticGroup() {
@@ -57,6 +64,7 @@ void testArithmeticGroup() {
   testOr();
   testAnd_nn();
   testSrl();
+  testDec_r();
   testDec_ss();
 }
 

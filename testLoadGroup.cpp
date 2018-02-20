@@ -64,9 +64,10 @@ void test_ld_addr_a() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+// ld a, (nn)
 void test_ld_a_addr() {
   Assembler assembler;
-  assembler.command2("ld", identifierArg("a"), numberArg(0x1234));
+  assembler.command2("ld", identifierArg("a"), dereferencedValueArg(0x1234));
   Byte expectedBytes[] = { 0x3a, 0x34, 0x12 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }

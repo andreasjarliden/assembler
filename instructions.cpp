@@ -172,14 +172,20 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     host.addCode(0x32);
     host.add16BitAddress(arg1);
   }
+  // TODO ld a, (DE) must currently come before ld a, (nn)
+  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isDE(DEREFERENCED)) {
+    // ld a, (DE)
+    host.addCode(0x1a);
+  }
+  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isDereferenced()) {
+    // LD A, (nn)
+    host.addCode(0x3a);
+    host.add16BitAddress(arg2);
+  }
   else if (arg1.isDereferenced() && arg2.isHL(NOT_DEREFERENCED)) {
     // LD (nn), hl
     host.addCode(0x22);
     host.add16BitAddress(arg1);
-  }
-  else if (arg1.isA(NOT_DEREFERENCED) && arg2.isDE(DEREFERENCED)) {
-    // ld a, (DE)
-    host.addCode(0x1a);
   }
   else if (arg1.isHL(NOT_DEREFERENCED) && arg2.isDereferenced()) {
     // ld hl, (nn)
@@ -355,7 +361,7 @@ void exInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
 
 void decInstruction(InstructionsHost& host, const Argument& arg) {
   if (arg.is8BitRegister()) {
-    host.addCode(0b00000101 | registerBits(arg));
+    host.addCode(0b00000101 | registerBits(arg) << 3);
   }
   else if (arg.is16BitRegister()) {
     host.addCode(0b00001011 | register16Bits(arg));
