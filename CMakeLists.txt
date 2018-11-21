@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-find_package(bison REQUIRED)
-find_package(flex REQUIRED)
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
 
 bison_target(parser parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.c)
 flex_target(lexer lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lexer.c)
