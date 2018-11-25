@@ -13,6 +13,13 @@ void testJpToNumericAddress() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void testJpToHl() {
+  Assembler assembler;
+  assembler.command1("jp", dereferencedIdentifierArg("hl"));
+  Byte expectedBytes[] = { 0xe9 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 void testJpBackwardsToLabel() {
   Assembler assembler;
   assembler.label("aLabel");
@@ -81,6 +88,7 @@ void test_jr_nz_number_address() {
 
 void testJumpGroup() {
   testJpToNumericAddress();
+  testJpToHl();
   testJpBackwardsToLabel();
   testJpForwardsToLabel();
   test_jp_z_nn();

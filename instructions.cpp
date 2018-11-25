@@ -286,7 +286,7 @@ void jrUnaryInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void jpUnaryInstruction(InstructionsHost& host, const Argument& arg) {
-  if (arg.isDereferenced() && arg.isHL()) {
+  if (arg.isHL(DEREFERENCED)) {
     host.addCode(0xe9);
   }
   else {
