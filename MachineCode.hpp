@@ -16,7 +16,7 @@ public:
   bool isEqual(const Byte* expectedBytes, int expectedSizeInBytes) const;
   CodeIterator beginCode() const;
   CodeIterator endCode() const;
-  size_t size() const;
+  std::size_t size() const;
 
 protected:
   std::vector<Byte> _code;

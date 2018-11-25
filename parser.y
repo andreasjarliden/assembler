@@ -82,15 +82,15 @@ argument:
 	}
 	| number {
 		$$.type = VALUE_ARGUMENT;
-		$$.value = $1
+		$$.value = $1;
 	}
 	| '(' number ')' {
 		$$.type = DEREFERENCED_VALUE_ARGUMENT;
-		$$.value = $2
+		$$.value = $2;
 	}
 	| '(' IDENTIFIER ')' {
 		$$.type = DEREFERENCED_IDENTIFIER_ARGUMENT;
-		$$.identifier = $2
+		$$.identifier = $2;
 	}
 	| STRING {
 		$$.type = STRING_ARGUMENT;

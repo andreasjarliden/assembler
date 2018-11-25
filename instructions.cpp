@@ -7,6 +7,7 @@
 #include "Error.hpp"
 #include <cassert>
 #include <sstream>
+#include <cstring>
 
 namespace {
 

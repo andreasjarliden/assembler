@@ -3,6 +3,7 @@
 #include "Segments.hpp"
 #include "Segment.hpp"
 #include <iostream>
+#include <iterator>
 
 int NUM_FAILURES = 0;
 

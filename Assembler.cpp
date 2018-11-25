@@ -12,6 +12,7 @@
 #include <functional>
 #include <cassert>
 #include <iostream>
+#include <cstring>
 
 class RelocationsTable {
 public:
