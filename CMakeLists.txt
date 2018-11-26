@@ -9,7 +9,7 @@ ADD_FLEX_BISON_DEPENDENCY(lexer parser)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-set(commonSources
+add_library(common 
   Commands.cpp
   stringTable.cpp
   argumentHelpers.cpp
@@ -24,18 +24,22 @@ set(commonSources
   printHex.cpp
   )
 
-set(testSources
+add_executable(asm main.cpp command.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
+target_link_libraries(asm common)
+
+add_executable(unitTests
   test.cpp
   testUtilities.cpp
   testJumpGroup.cpp
   testLoadGroup.cpp
   testArithmeticGroup.cpp
   )
+target_link_libraries(unitTests common)
 
-add_executable(asm main.cpp command.cpp ${commonSources} ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
-add_executable(unitTests ${commonSources} ${testSources})
 add_executable(hex2i8hex hex2i8hex.cpp)
+
 add_executable(hex2h hex2h.cpp)
+
 add_executable(hex2bin hex2bin.cpp)
 
 #TODO duplication
