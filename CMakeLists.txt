@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
+set (CMAKE_CXX_STANDARD 11)
+
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 
