@@ -2,6 +2,7 @@
 #include <cassert>
 #include <ctype.h>
 #include <cstdio>
+#include <cstdlib>
 
 void readLine(char* line, unsigned char bytes[], int* bytesRead, int* offset) {
     int consumed;
