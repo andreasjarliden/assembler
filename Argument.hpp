@@ -27,7 +27,7 @@ public:
   bool isIdentifier(Dereferenced deref) const;
   // 8 bit register, possibly dereference (e.g. C or (C))
   bool is8BitRegister(Dereferenced deref = NOT_DEREFERENCED) const;
-  // 16 bit register, possibly dereference (e.g. BC or (BC))
+  // 16 bit register, possibly dereference (e.g. BC or (BC)), except IX/IY
   bool is16BitRegister(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isHL(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isDE(Dereferenced deref = NOT_DEREFERENCED) const;

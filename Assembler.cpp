@@ -104,7 +104,7 @@ struct Assembler::Impl : public InstructionsHost {
     addCode(high);
   }
 
-  void add16BitAddress(const Argument& arg) {
+  void add16BitValue(const Argument& arg) {
     int address;
     if (arg.hasValue()) {
       address = arg.value();
@@ -120,6 +120,10 @@ struct Assembler::Impl : public InstructionsHost {
     }
     relocationsTable.add(currentSegment().currentOffset());
     add16BitValue(address);
+  }
+
+  void add16BitAddress(const Argument& arg) {
+    add16BitValue(arg);
   }
 
   void add8BitRelativeAddress(const Argument& arg) {

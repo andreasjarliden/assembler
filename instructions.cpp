@@ -196,7 +196,19 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   else if (arg1.is16BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
     // LD dd, nn
     host.addCode(0b00000001 | register16Bits(arg1));
-    host.add16BitAddress(arg2);
+    host.add16BitValue(arg2);
+  }
+  else if (arg1.isIX(NOT_DEREFERENCED) && arg2.isValue()) {
+    // LD IX, nn
+    host.addCode(0xdd);
+    host.addCode(0x21);
+    host.add16BitValue(arg2);
+  }
+  else if (arg1.isIY(NOT_DEREFERENCED) && arg2.isValue()) {
+    // LD IY, nn
+    host.addCode(0xfd);
+    host.addCode(0x21);
+    host.add16BitValue(arg2);
   }
   else {
     std::stringstream what;
