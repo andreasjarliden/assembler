@@ -11,12 +11,14 @@ extern int yylineno;
 %union {
 	const char* symbol;
 	int numberValue;
+  char charValue;
 	struct RawArgument argumentValue;
 };
 
 %token <numberValue> DECNUMBER
 %token <numberValue> HEXNUMBER
 %token <numberValue> CHARNUMBER
+%token <charValue> PLUS_OR_MINUS
 %token <symbol> IDENTIFIER
 %token <symbol> NEWLINE
 %token <symbol> STRING
@@ -91,6 +93,14 @@ argument:
 	| '(' IDENTIFIER ')' {
 		$$.type = DEREFERENCED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
+	}
+	| '(' IDENTIFIER PLUS_OR_MINUS number ')' {
+		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
+		$$.identifier = $2;
+    if ($3 == '-') 
+      $$.value = -$4;
+    else
+      $$.value = $4;
 	}
 	| STRING {
 		$$.type = STRING_ARGUMENT;

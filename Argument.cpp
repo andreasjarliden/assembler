@@ -64,7 +64,7 @@ bool Argument::isValue() const {
 }
 
 bool Argument::hasValue() const {
-  return _type == VALUE_ARGUMENT || _type == DEREFERENCED_VALUE_ARGUMENT;
+  return _type == VALUE_ARGUMENT || _type == DEREFERENCED_VALUE_ARGUMENT || _type == DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 }
 
 bool Argument::isString() const {
@@ -72,12 +72,17 @@ bool Argument::isString() const {
 }
 
 bool Argument::isIdentifier() const {
-  return _type == IDENTIFIER_ARGUMENT || _type == DEREFERENCED_IDENTIFIER_ARGUMENT;
+  return _type == IDENTIFIER_ARGUMENT || _type == DEREFERENCED_IDENTIFIER_ARGUMENT || _type == DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 }
 
 bool Argument::isIdentifier(Dereferenced deref) const {
   return (deref == DEREFERENCED && _type == DEREFERENCED_IDENTIFIER_ARGUMENT) || 
     (deref == NOT_DEREFERENCED && _type == IDENTIFIER_ARGUMENT);
+}
+
+bool Argument::isIndexedDereferencedIdentifier(const char* i) const {
+  return _type == DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT && 
+    strcasecmp(identifier(), i) == 0;
 }
 
 bool Argument::is8BitRegister(Dereferenced deref) const {
@@ -173,6 +178,7 @@ std::string argumentTypeAsString(ArgumentType t) {
     case VALUE_ARGUMENT: return "VALUE_ARGUMENT";
     case DEREFERENCED_VALUE_ARGUMENT: return "DEREFERENCED_VALUE_ARGUMENT";
     case DEREFERENCED_IDENTIFIER_ARGUMENT: return "DEREFERENCED_IDENTIFIER_ARGUMENT";
+    case DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT: return "DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT";
     case STRING_ARGUMENT: return "STRING_ARGUMENT";
     default: return "Unknown argument type";
   }
@@ -181,17 +187,13 @@ std::string argumentTypeAsString(ArgumentType t) {
 std::ostream& operator<<(std::ostream& s, const Argument& arg) {
   s << argumentTypeAsString(arg.type()) << " ";
   if (arg.isDereferenced()) {
-    s << "dereferenced ";
+    s << "is dereferenced ";
   }
   if (arg.isValue()) {
-    s << "value ";
+    s << "is value ";
   }
-  if (arg.hasValue()) {
-    s << "has value " << arg.value() << " ";
-  }
-  if (arg.isIdentifier()) {
-    s << "identifier " << arg.identifier() << " ";
-  }
+  s << "value " << arg._value << " ";
+  s << "identifier " << arg._identifier << " ";
   return s;
 }
 

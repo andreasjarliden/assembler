@@ -27,3 +27,11 @@ RawArgument dereferencedIdentifierArg(const char* identifier) {
   argument.identifier = identifier;
   return argument;
 }
+
+RawArgument dereferencedIndexedIdentifierArg(const char* identifier, int index) {
+  RawArgument argument;
+  argument.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
+  argument.identifier = identifier;
+  argument.value = index;
+  return argument;
+}

@@ -25,6 +25,8 @@ public:
   // identifier or dereferenced identifier
   bool isIdentifier() const;
   bool isIdentifier(Dereferenced deref) const;
+  // deferenced & indexed identifier e.g. (ix+2)
+  bool isIndexedDereferencedIdentifier(const char*) const;
   // 8 bit register, possibly dereference (e.g. C or (C))
   bool is8BitRegister(Dereferenced deref = NOT_DEREFERENCED) const;
   // 16 bit register, possibly dereference (e.g. BC or (BC)), except IX/IY
@@ -45,6 +47,7 @@ public:
   Argument asAddressValue() const;
 
 private:
+  friend std::ostream& operator<<(std::ostream& s, const Argument& arg);
   const char* _identifier;
   int _value;
   ArgumentType _type;

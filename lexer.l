@@ -15,6 +15,7 @@ DECNUMBER [0-9]+
 STRING \"[^"]*\"
 HEXNUMBER [0-9a-fA-F]+h
 CHAR '[^']'
+PLUS_OR_MINUS [+\-]
 
 /* rules */
 %%
@@ -42,6 +43,11 @@ CHAR '[^']'
 {CHAR} {
 	yylval.numberValue = yytext[1];
 	return CHARNUMBER;
+}
+
+{PLUS_OR_MINUS} {
+  yylval.charValue = yytext[0];
+  return PLUS_OR_MINUS;
 }
 
 [ \t] /* ignore whitespace */
