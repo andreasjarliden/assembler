@@ -386,7 +386,20 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void incInstruction(InstructionsHost& host, const Argument& arg) {
-  host.addCode(0b00000011 | register16Bits(arg));
+  if (arg.is16BitRegister()) {
+    host.addCode(0b00000011 | register16Bits(arg));
+  }
+  else if (arg.isIX()) {
+    host.addCode(0xdd);
+    host.addCode(0x23);
+  }
+  else if (arg.isIY()) {
+    host.addCode(0xfd);
+    host.addCode(0x23);
+  }
+  else {
+    error("Unknown form of INC instruction");
+  }
 }
 
 void exInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {

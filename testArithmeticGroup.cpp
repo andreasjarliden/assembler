@@ -42,6 +42,20 @@ void testSrl() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testInc_ix() {
+  Assembler assembler;
+  assembler.command1("inc", identifierArg("ix"));
+  Byte expectedBytes[] = { 0xdd, 0x23 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void testInc_iy() {
+  Assembler assembler;
+  assembler.command1("inc", identifierArg("iy"));
+  Byte expectedBytes[] = { 0xfd, 0x23 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void testDec_ss() {
   Assembler assembler;
   assembler.command1("dec", identifierArg("sp"));
@@ -64,6 +78,8 @@ void testArithmeticGroup() {
   testOr();
   testAnd_nn();
   testSrl();
+  testInc_ix();
+  testInc_iy();
   testDec_r();
   testDec_ss();
 }
