@@ -20,6 +20,12 @@ void testAdd_A_nn() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testSbc_hl_ss() {
+  Assembler assembler;
+  assembler.command2("sbc", identifierArg("hl"), identifierArg("de"));
+  Byte expectedBytes[] = { 0xed, 0x52 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
 
 void testOr() {
   Assembler assembler;
@@ -75,6 +81,7 @@ void testDec_r() {
 void testArithmeticGroup() {
   testAdd_A_nn();
   testAddHlBc();
+  testSbc_hl_ss();
   testOr();
   testAnd_nn();
   testSrl();
