@@ -84,6 +84,13 @@ void test_jr_nz_number_address() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void test_jr_c_number_address() {
+  Assembler assembler;
+  assembler.command2("jr", identifierArg("c"), numberArg(0));
+  Byte expectedBytes[] = { 0x38, 0xfe };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 } // anonymous namespace
 
 void testJumpGroup() {
@@ -97,4 +104,5 @@ void testJumpGroup() {
   test_jr_forward_label();
   test_jr_z_number_address();
   test_jr_nz_number_address();
+  test_jr_c_number_address();
 }

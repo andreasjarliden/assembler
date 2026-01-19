@@ -331,6 +331,9 @@ void jrBinaryInstruction(InstructionsHost& host, const Argument& arg1, const Arg
   else if (arg1.isFlag("nz")) {
     host.addCode(0x20);
   }
+  else if (arg1.isFlag("c")) {
+    host.addCode(0x38);
+  }
   else {
     throw Error(std::string("Uknown flag to JR instruction: ") + arg1.identifier());
   }
