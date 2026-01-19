@@ -176,6 +176,20 @@ void test_pop_de() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void test_push_ix() {
+  Assembler assembler;
+  assembler.command1("push", identifierArg("ix"));
+  Byte expectedBytes[] = { 0xdd, 0xe5 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void test_push_iy() {
+  Assembler assembler;
+  assembler.command1("push", identifierArg("iy"));
+  Byte expectedBytes[] = { 0xfd, 0xe5 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void test_pop_ix() {
   Assembler assembler;
   assembler.command1("pop", identifierArg("ix"));
@@ -216,6 +230,8 @@ void testLoadGroup() {
   test_ld_ix_indexed_a();
   test_ld_iy_indexed_b();
   test_pop_de();
+  test_push_ix();
+  test_push_iy();
   test_pop_ix();
   test_pop_iy();
 }

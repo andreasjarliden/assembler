@@ -289,7 +289,17 @@ void sbcInstruction(InstructionsHost& host, const Argument& arg1, const Argument
 }
 
 void pushInstruction(InstructionsHost& host, const Argument& arg) {
-  host.addCode(0b11000101 | register16BitsQQ(arg));
+  if (arg.isIX()) {
+    host.addCode(0xdd);
+    host.addCode(0xe5);
+  }
+  else if (arg.isIY()) {
+    host.addCode(0xfd);
+    host.addCode(0xe5);
+  }
+  else {
+    host.addCode(0b11000101 | register16BitsQQ(arg));
+  }
 }
 
 void popInstruction(InstructionsHost& host, const Argument& arg) {
