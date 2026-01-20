@@ -13,6 +13,13 @@ void testAddHlBc() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testAdd_ix_sp() {
+  Assembler assembler;
+  assembler.command2("add", identifierArg("ix"), identifierArg("sp"));
+  Byte expectedBytes[] = { 0xdd, 0x39 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void testAdd_A_nn() {
   Assembler assembler;
   assembler.command2("add", identifierArg("a"), numberArg(123));
@@ -80,6 +87,7 @@ void testDec_r() {
 
 void testArithmeticGroup() {
   testAdd_A_nn();
+  testAdd_ix_sp();
   testAddHlBc();
   testSbc_hl_ss();
   testOr();

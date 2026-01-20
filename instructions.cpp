@@ -37,27 +37,31 @@ Byte registerBits(const Argument& arg1) {
 
 Byte register16BitsQQ(const Argument& arg) {
   assert(arg.type() == IDENTIFIER_ARGUMENT);
-  if (strcmp(arg.identifier(), "bc") == 0)
+  if (strcasecmp(arg.identifier(), "bc") == 0)
     return 0b00 << 4;
-  if (strcmp(arg.identifier(), "BC") == 0)
-    return 0b00 << 4;
-  if (strcmp(arg.identifier(), "de") == 0)
+  if (strcasecmp(arg.identifier(), "de") == 0)
     return 0b01 << 4;
-  if (strcmp(arg.identifier(), "DE") == 0)
-    return 0b01 << 4;
-  if (strcmp(arg.identifier(), "hl") == 0)
+  if (strcasecmp(arg.identifier(), "hl") == 0)
     return 0b10 << 4;
-  if (strcmp(arg.identifier(), "HL") == 0)
-    return 0b10 << 4;
-  if (strcmp(arg.identifier(), "af") == 0)
-    return 0b11 << 4;
-  if (strcmp(arg.identifier(), "AF") == 0)
+  if (strcasecmp(arg.identifier(), "af") == 0)
     return 0b11 << 4;
   throw Error(std::string("Expected 16 bit register bc, de, hl, or af, got ") + arg.identifier());
 }
 
+Byte register16BitsPP(const Argument& arg) {
+  assert(arg.type() == IDENTIFIER_ARGUMENT);
+  if (strcasecmp(arg.identifier(), "bc") == 0)
+    return 0b00 << 4;
+  if (strcasecmp(arg.identifier(), "de") == 0)
+    return 0b01 << 4;
+  if (strcasecmp(arg.identifier(), "ix") == 0)
+    return 0b10 << 4;
+  if (strcasecmp(arg.identifier(), "sp") == 0)
+    return 0b11 << 4;
+  throw Error(std::string("Expected 16 bit register bc, de, hl, or sp, got ") + arg.identifier());
+}
 
-Byte register16Bits(const Argument& arg) {
+Byte register16BitsSS(const Argument& arg) {
   assert(arg.type() == IDENTIFIER_ARGUMENT);
   if (strcmp(arg.identifier(), "bc") == 0)
     return 0b00 << 4;
@@ -195,7 +199,7 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
   }
   else if (arg1.is16BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
     // LD dd, nn
-    host.addCode(0b00000001 | register16Bits(arg1));
+    host.addCode(0b00000001 | register16BitsSS(arg1));
     host.add16BitValue(arg2);
   }
   else if (arg1.isIX(NOT_DEREFERENCED) && arg2.isValue()) {
@@ -243,22 +247,26 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
 
 void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
   if (arg1.isHL()) {
-    host.addCode(0b00001001 | register16Bits(arg2));
-    return;
+    host.addCode(0b00001001 | register16BitsSS(arg2));
   }
-  if (arg1.isA()) {
+  else if (arg1.isIX()) {
+    host.addCode(0xdd);
+    host.addCode(0b00001001 | register16BitsPP(arg2));
+  }
+  else if (arg1.isA()) {
     if (arg2.is8BitRegister()) {
       host.addCode(0b10000000 | registerBits(arg2));
-      return;
     }
-    else {
+    else if (arg2.isValue()) {
       host.addCode(0xc6);
       Byte byte = arg2.byteValue();
       host.addCode(byte);
-      return;
     }
+    else 
+      error("Unknown form off ADD A, ... instruction");
   }
-  error("Uknown form of add instruction");
+  else
+    error("Unknown form of add instruction");
 }
 
 void orInstruction(InstructionsHost& host, const Argument& arg) {
@@ -285,7 +293,7 @@ void sbcInstruction(InstructionsHost& host, const Argument& arg1, const Argument
     return;
   }
   host.addCode(0xed);
-  host.addCode(0b01000010 | register16Bits(arg2));
+  host.addCode(0b01000010 | register16BitsSS(arg2));
 }
 
 void pushInstruction(InstructionsHost& host, const Argument& arg) {
@@ -397,7 +405,7 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
 
 void incInstruction(InstructionsHost& host, const Argument& arg) {
   if (arg.is16BitRegister()) {
-    host.addCode(0b00000011 | register16Bits(arg));
+    host.addCode(0b00000011 | register16BitsSS(arg));
   }
   else if (arg.isIX()) {
     host.addCode(0xdd);
@@ -427,7 +435,7 @@ void decInstruction(InstructionsHost& host, const Argument& arg) {
     host.addCode(0b00000101 | registerBits(arg) << 3);
   }
   else if (arg.is16BitRegister()) {
-    host.addCode(0b00001011 | register16Bits(arg));
+    host.addCode(0b00001011 | register16BitsSS(arg));
   }
   else {
     throw Error("Unknown form of DEC instruction");
