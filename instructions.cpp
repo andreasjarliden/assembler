@@ -238,6 +238,20 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     host.addCode(0b01110000 | registerBits(arg2));
     host.addCode(arg1.byteValue());
   }
+  else if (arg1.isIndexedDereferencedIdentifier("ix") && arg2.isValue()) {
+    // LD (ix+n), n
+    host.addCode(0xdd);
+    host.addCode(0x36);
+    host.addCode(arg1.byteValue());
+    host.addCode(arg2.byteValue());
+  }
+  else if (arg1.isIndexedDereferencedIdentifier("iy") && arg2.isValue()) {
+    // LD (iy+n), n
+    host.addCode(0xfd);
+    host.addCode(0x36);
+    host.addCode(arg1.byteValue());
+    host.addCode(arg2.byteValue());
+  }
   else {
     std::stringstream what;
     what << "Unknown form of LD instruction\n\tArg 1:" << arg1 << "\n\tArg2 :" << arg2;

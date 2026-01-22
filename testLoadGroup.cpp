@@ -169,6 +169,22 @@ void test_ld_iy_indexed_b() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void test_ld_ix_indexed_n() {
+  Assembler assembler;
+  // ld (ix-2), 42
+  assembler.command2("ld", dereferencedIndexedIdentifierArg("ix", -2), numberArg(42));
+  Byte expectedBytes[] = { 0xdd, 0x36, 0xfe, 42 };
+  isEqualToBytes(assembler, expectedBytes, 4);
+}
+
+void test_ld_iy_indexed_n() {
+  Assembler assembler;
+  // ld (iy+2), 42
+  assembler.command2("ld", dereferencedIndexedIdentifierArg("iy", 2), numberArg(42));
+  Byte expectedBytes[] = { 0xfd, 0x36, 0x02, 42 };
+  isEqualToBytes(assembler, expectedBytes, 4);
+}
+
 void test_pop_de() {
   Assembler assembler;
   assembler.command1("pop", identifierArg("de"));
@@ -229,6 +245,8 @@ void testLoadGroup() {
   test_ld_b_iy_indexed();
   test_ld_ix_indexed_a();
   test_ld_iy_indexed_b();
+  test_ld_ix_indexed_n();
+  test_ld_iy_indexed_n();
   test_pop_de();
   test_push_ix();
   test_push_iy();
