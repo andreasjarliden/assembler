@@ -27,6 +27,20 @@ void testAdd_A_nn() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testAdd_a_ix_indexed() {
+  Assembler assembler;
+  assembler.command2("add", identifierArg("a"), dereferencedIndexedIdentifierArg("ix", 2));
+  Byte expectedBytes[] = { 0xdd, 0x86, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void testAdd_a_iy_indexed() {
+  Assembler assembler;
+  assembler.command2("add", identifierArg("a"), dereferencedIndexedIdentifierArg("iy", 2));
+  Byte expectedBytes[] = { 0xfd, 0x86, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
 void testSbc_hl_ss() {
   Assembler assembler;
   assembler.command2("sbc", identifierArg("hl"), identifierArg("de"));
@@ -89,6 +103,8 @@ void testArithmeticGroup() {
   testAdd_A_nn();
   testAdd_ix_sp();
   testAddHlBc();
+  testAdd_a_ix_indexed();
+  testAdd_a_iy_indexed();
   testSbc_hl_ss();
   testOr();
   testAnd_nn();

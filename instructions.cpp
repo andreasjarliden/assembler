@@ -276,6 +276,16 @@ void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument
       Byte byte = arg2.byteValue();
       host.addCode(byte);
     }
+    else if (arg2.isIndexedDereferencedIdentifier("ix")) {
+      host.addCode(0xdd);
+      host.addCode(0x86);
+      host.addCode(arg2.byteValue());
+    }
+    else if (arg2.isIndexedDereferencedIdentifier("iy")) {
+      host.addCode(0xfd);
+      host.addCode(0x86);
+      host.addCode(arg2.byteValue());
+    }
     else 
       error("Unknown form off ADD A, ... instruction");
   }
