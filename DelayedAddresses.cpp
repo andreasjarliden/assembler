@@ -4,9 +4,28 @@
 #include "Error.hpp"
 #include "errorChecking.hpp"
 #include <vector>
+#include <set>
 #include <iostream>
 
 struct DelayedAddresses::Impl {
+  Impl() {
+    // TODO add to the symbol table so we can check based on the pointer
+    reserved.insert(std::string("a"));
+    reserved.insert(std::string("b"));
+    reserved.insert(std::string("c"));
+    reserved.insert(std::string("d"));
+    reserved.insert(std::string("e"));
+    reserved.insert(std::string("h"));
+    reserved.insert(std::string("l"));
+    reserved.insert(std::string("af"));
+    reserved.insert(std::string("be"));
+    reserved.insert(std::string("de"));
+    reserved.insert(std::string("ix"));
+    reserved.insert(std::string("iy"));
+    reserved.insert(std::string("hl"));
+    reserved.insert(std::string("sp"));
+  }
+
   void resolve16(Segment& code, const LabelTable& table) {
     for (const auto& entry : entries16) {
       if (!table.contains(entry.identifier)) {
@@ -36,6 +55,12 @@ struct DelayedAddresses::Impl {
     }
   }
 
+  void verifyNotReserved(const char* identifier) {
+    if (reserved.find(std::string(identifier)) != reserved.end()) {
+      error(std::string("Identifier ") + identifier + " is reserved");
+    }
+  }
+
   struct Entry {
     int address;
     const char* identifier;
@@ -43,6 +68,7 @@ struct DelayedAddresses::Impl {
 
   std::vector<Entry> entries16;
   std::vector<Entry> entries8;
+  std::set<std::string> reserved;
 };
 
 DelayedAddresses::DelayedAddresses()
@@ -51,6 +77,7 @@ DelayedAddresses::DelayedAddresses()
 DelayedAddresses::~DelayedAddresses() {}
 
 void DelayedAddresses::add16Bit(const char* identifier, int address) {
+  _pimpl->verifyNotReserved(identifier);
   Impl::Entry entry;
   entry.address = address;
   entry.identifier = identifier;
@@ -58,6 +85,7 @@ void DelayedAddresses::add16Bit(const char* identifier, int address) {
 }
 
 void DelayedAddresses::add8BitRelative(const char* identifier, int address) {
+  _pimpl->verifyNotReserved(identifier);
   Impl::Entry entry;
   entry.address = address;
   entry.identifier = identifier;
