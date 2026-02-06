@@ -168,6 +168,11 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     // ld (hl), r
     host.addCode(0b01110000 | registerBits(arg2));
   }
+  else if (arg1.isHL(DEREFERENCED) && arg2.isValue()) {
+    // ld (hl), n
+    host.addCode(0x36);
+    host.addCode(arg2.byteValue());
+  }
   else if (arg1.isDE(DEREFERENCED) && arg2.isA(NOT_DEREFERENCED)) {
     // ld (DE), A
     host.addCode(0x12);
@@ -196,6 +201,15 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     // ld hl, (nn)
     host.addCode(0x2a);
     host.add16BitAddress(arg2);
+  }
+  else if (arg1.isSP() && arg2.isHL()) {
+    // LD sp, hl
+    host.addCode(0xf9);
+  }
+  else if (arg1.isSP() && arg2.isIX()) {
+    // LD sp, ix
+    host.addCode(0xdd);
+    host.addCode(0xf9);
   }
   else if (arg1.is16BitRegister(NOT_DEREFERENCED) && arg2.isValue()) {
     // LD dd, nn

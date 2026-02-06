@@ -13,6 +13,13 @@ void test_ld_deref_hl_8bitReg() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void test_ld_deref_hl_n() {
+  Assembler assembler;
+  assembler.command2("ld", dereferencedIdentifierArg("hl"), numberArg(42));
+  Byte expectedBytes[] = { 0x36, 42 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void test_ld_a_byte() {
   Assembler assembler;
   assembler.command2("ld", identifierArg("a"), numberArg(255));
@@ -185,6 +192,22 @@ void test_ld_iy_indexed_n() {
   isEqualToBytes(assembler, expectedBytes, 4);
 }
 
+void test_ld_sp_hl() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("sp"), identifierArg("hl"));
+  // TODO overload isEqualToBytes for 1-4 bytes
+  Byte expectedBytes[] = { 0xf9 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
+void test_ld_sp_ix() {
+  Assembler assembler;
+  assembler.command2("ld", identifierArg("sp"), identifierArg("ix"));
+  // TODO overload isEqualToBytes for 1-4 bytes
+  Byte expectedBytes[] = { 0xdd, 0xf9 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
+
 void test_pop_de() {
   Assembler assembler;
   assembler.command1("pop", identifierArg("de"));
@@ -224,6 +247,7 @@ void test_pop_iy() {
 
 void testLoadGroup() {
   test_ld_deref_hl_8bitReg(); // ld (hl),r
+  test_ld_deref_hl_n(); // ld (hl),n
   test_ld_a_byte();
   test_ld_d_byte();
   test_ld_a_address_hl();
@@ -247,6 +271,8 @@ void testLoadGroup() {
   test_ld_iy_indexed_b();
   test_ld_ix_indexed_n();
   test_ld_iy_indexed_n();
+  test_ld_sp_hl();
+  test_ld_sp_ix();
   test_pop_de();
   test_push_ix();
   test_push_iy();

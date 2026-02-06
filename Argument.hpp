@@ -35,6 +35,7 @@ public:
   bool isDE(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isIX(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isIY(Dereferenced deref = NOT_DEREFERENCED) const;
+  bool isSP(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isA(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isI(Dereferenced deref = NOT_DEREFERENCED) const;
   bool isFlag(const char* flag) const;

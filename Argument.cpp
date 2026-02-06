@@ -60,6 +60,7 @@ bool Argument::isDereferenced() const {
 }
 
 bool Argument::isValue() const {
+  // TODO would be great if we could avoid reserved words here
   return _type == VALUE_ARGUMENT || _type == IDENTIFIER_ARGUMENT;
 }
 
@@ -149,6 +150,10 @@ bool Argument::isIX(Dereferenced deref) const {
 
 bool Argument::isIY(Dereferenced deref) const {
   return isIdentifier(deref) && strcasecmp(identifier(), "iy") == 0;
+}
+
+bool Argument::isSP(Dereferenced deref) const {
+  return isIdentifier(deref) && strcasecmp(identifier(), "sp") == 0;
 }
 
 bool Argument::isA(Dereferenced deref) const {
