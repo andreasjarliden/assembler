@@ -30,6 +30,7 @@ std::string replaced(std::string s, const std::string& from, const std::string& 
 std::string replacedEscapes(std::string s) {
   s = replaced(s, "\\n", "\n");
   s = replaced(s, "\\t", "\t");
+  s = replaced(s, "\\0", "\0");
   return s;
 }
 
