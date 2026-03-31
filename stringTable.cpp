@@ -18,22 +18,6 @@ private:
 
 SymbolTable SYMBOL_TABLE;
 
-std::string replaced(std::string s, const std::string& from, const std::string& to) {
-  size_t startIndex = s.find(from);
-  while (startIndex != std::string::npos) {
-    s = s.replace(startIndex, from.length(), to);
-    startIndex = s.find(from);
-  }
-  return s;
-}
-
-std::string replacedEscapes(std::string s) {
-  s = replaced(s, "\\n", "\n");
-  s = replaced(s, "\\t", "\t");
-  s = replaced(s, "\\0", "\0");
-  return s;
-}
-
 } // anonymous namespace
 
 const char* addSymbol(const char* symbol) {
@@ -42,6 +26,5 @@ const char* addSymbol(const char* symbol) {
 
 const char* addString(const char* s) {
   const std::string strippedQuotes(s + 1, strlen(s) - 2);
-  const std::string processedString(replacedEscapes(strippedQuotes));
-  return SYMBOL_TABLE.add(processedString);
+  return SYMBOL_TABLE.add(strippedQuotes);
 }

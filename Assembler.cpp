@@ -14,6 +14,27 @@
 #include <iostream>
 #include <cstring>
 
+namespace {
+
+std::string replaced(std::string s, const std::string& from, const std::string& to) {
+  size_t startIndex = s.find(from);
+  while (startIndex != std::string::npos) {
+    s = s.replace(startIndex, from.length(), to);
+    startIndex = s.find(from);
+  }
+  return s;
+}
+
+std::string replacedEscapes(std::string s) {
+  s = replaced(s, "\\n", "\n");
+  s = replaced(s, "\\t", "\t");
+  s = replaced(s, "\\0", std::string("\0", 1)); // "\0" is difficult to pass!
+  // s = replaced(s, "\\0", std::string(1, '!')); // "\0" is difficult to pass!
+  return s;
+}
+
+}
+
 class RelocationsTable {
 public:
   void add(int offset);
@@ -86,7 +107,7 @@ struct Assembler::Impl : public InstructionsHost {
   }
 
   void addString(const Argument& argument) {
-    for (char c : argument.string()) {
+    for (char c : replacedEscapes(argument.string())) {
       addCode(c);
     }
   }
