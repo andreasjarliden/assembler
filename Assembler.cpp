@@ -273,6 +273,9 @@ void Assembler::command2(const char* mnemonic,
 
 void Assembler::label(const char* label) {
   int address = _pimpl->currentSegment().currentOffset();
+  if (_pimpl->labelTable.contains(label)) {
+    error(std::string("Label ") + label + std::string(" already defined"));
+  }
   _pimpl->labelTable.addLabel(label, address);
 }
 
