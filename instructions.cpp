@@ -442,7 +442,10 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void incInstruction(InstructionsHost& host, const Argument& arg) {
-  if (arg.is16BitRegister()) {
+  if (arg.is8BitRegister()) {
+    host.addCode(0b00000100 | registerBits(arg) << 3);
+  }
+  else if (arg.is16BitRegister()) {
     host.addCode(0b00000011 | register16BitsSS(arg));
   }
   else if (arg.isIX()) {
@@ -452,6 +455,9 @@ void incInstruction(InstructionsHost& host, const Argument& arg) {
   else if (arg.isIY()) {
     host.addCode(0xfd);
     host.addCode(0x23);
+  }
+  else if (arg.isHL(DEREFERENCED)) {
+    host.addCode(0x34);
   }
   else {
     error("Unknown form of INC instruction");
@@ -474,6 +480,9 @@ void decInstruction(InstructionsHost& host, const Argument& arg) {
   }
   else if (arg.is16BitRegister()) {
     host.addCode(0b00001011 | register16BitsSS(arg));
+  }
+  else if (arg.isHL(DEREFERENCED)) {
+    host.addCode(0x35);
   }
   else {
     throw Error("Unknown form of DEC instruction");

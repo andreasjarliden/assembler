@@ -69,6 +69,13 @@ void testSrl() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testInc_c() {
+  Assembler assembler;
+  assembler.command1("inc", identifierArg("c"));
+  Byte expectedBytes[] = { 0b00000100 | 0b00001000 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 void testInc_ix() {
   Assembler assembler;
   assembler.command1("inc", identifierArg("ix"));
@@ -81,6 +88,13 @@ void testInc_iy() {
   assembler.command1("inc", identifierArg("iy"));
   Byte expectedBytes[] = { 0xfd, 0x23 };
   isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void testInc_deref_hl() {
+  Assembler assembler;
+  assembler.command1("inc", dereferencedIdentifierArg("hl"));
+  Byte expectedBytes[] = { 0x34 };
+  isEqualToBytes(assembler, expectedBytes, 1);
 }
 
 void testDec_ss() {
@@ -97,6 +111,13 @@ void testDec_r() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testDec_deref_hl() {
+  Assembler assembler;
+  assembler.command1("dec", dereferencedIdentifierArg("hl"));
+  Byte expectedBytes[] = { 0x35 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 } // unnamed namespace
 
 void testArithmeticGroup() {
@@ -109,9 +130,12 @@ void testArithmeticGroup() {
   testOr();
   testAnd_nn();
   testSrl();
+  testInc_c();
   testInc_ix();
   testInc_iy();
+  testInc_deref_hl();
   testDec_r();
   testDec_ss();
+  testDec_deref_hl();
 }
 
