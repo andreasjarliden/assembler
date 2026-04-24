@@ -6,4 +6,4 @@ RawArgument identifierArg(const char* identifier);
 RawArgument numberArg(int byte);
 RawArgument dereferencedValueArg(int address);
 RawArgument dereferencedIdentifierArg(const char* identifier);
-RawArgument dereferencedIndexedIdentifierArg(const char* identifier, int index);
+RawArgument dereferencedIndexedIdentifierArg(const char* identifier, char index);

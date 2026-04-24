@@ -83,7 +83,8 @@ struct Assembler::Impl : public InstructionsHost {
     return f;
   }
 
-  Argument resolveArgument(const RawArgument& argument) {
+  Argument resolveArgument(const RawArgument& arg) {
+    RawArgument argument = arg;
     if (argument.type == IDENTIFIER_ARGUMENT) {
       auto t = eqTable.find(std::string(argument.identifier));
       if (t != eqTable.end()) {
@@ -95,6 +96,20 @@ struct Assembler::Impl : public InstructionsHost {
       if (t != eqTable.end()) {
         return t->second.asAddressValue();
       }
+    }
+    else if (argument.type == DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT) {
+      if (argument.indexIdentifier) {
+        auto t = eqTable.find(std::string(argument.indexIdentifier));
+        if (t != eqTable.end()) {
+          argument.indexValue = t->second.byteValue();
+        }
+        else {
+          std::cerr << "Did not find " << argument.indexIdentifier << std::endl;
+          assert(0);
+        }
+      }
+      if (argument.indexOperation == '-') 
+        argument.indexValue  = -argument.indexValue;
     }
     return Argument::createWithRawArgument(argument);
   }

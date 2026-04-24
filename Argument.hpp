@@ -43,6 +43,7 @@ public:
   int value() const;
   Byte byteValue() const;
   unsigned char ioAddress() const;
+  Byte indexValue() const;
   std::string string() const;
   ArgumentType type() const; // TODO remove?
   Argument asAddressValue() const;

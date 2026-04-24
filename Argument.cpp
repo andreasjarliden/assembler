@@ -54,6 +54,10 @@ unsigned char Argument::ioAddress() const {
   return value();
 }
 
+Byte Argument::indexValue() const {
+  return _indexValue;
+}
+
 ArgumentType Argument::type() const {
   return _type;
 }

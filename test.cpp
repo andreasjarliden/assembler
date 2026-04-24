@@ -9,8 +9,10 @@
 #include "testLoadGroup.hpp"
 #include "testArithmeticGroup.hpp"
 #include <iostream>
+#include <sstream>
+#include <cstring>
 
-int yylineno; // Usually defined by lexer
+// int yylineno; // Usually defined by lexer
 const char* filename = "test.txt";
 
 void testSingleOneByteInstruction() {
@@ -104,6 +106,33 @@ void testPrintTwoSegments() {
 
 void testNoSuchInstruction() {}
 
+Commands* COMMANDS;
+
+void testDereferencedIndexWithConstant() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler, ".eq FOO 42\nld a, (ix+FOO)\n");
+  std::cout << str << std::endl;
+  Byte expectedBytes[] = { 0xdd, 0x7e, 42 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void testDereferencedIndexWithConstantNegative() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler, ".eq FOO 1\nld a, (ix - FOO)\n");
+  std::cout << str << std::endl;
+  Byte expectedBytes[] = { 0xdd, 0x7e, 0xff };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void testDereferencedIndexWithConstantNegative2() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler, "ld a, (ix - 1)\n");
+  std::cout << str << std::endl;
+  Byte expectedBytes[] = { 0xdd, 0x7e, 0xff };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+
 int main() {
   testSingleOneByteInstruction();
   testSingleTwoByteInstruction();
@@ -119,6 +148,9 @@ int main() {
   testOneSegment();
   testTwoSegments();
   testPrintTwoSegments();
+  testDereferencedIndexWithConstant();
+  testDereferencedIndexWithConstantNegative();
+  testDereferencedIndexWithConstantNegative2();
   printTestSummary();
   return NUM_FAILURES;
 }

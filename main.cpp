@@ -17,7 +17,7 @@ int yyparse();
 }
 
 Assembler ASSEMBLER;
-Commands& COMMANDS = ASSEMBLER;
+Commands* COMMANDS = &ASSEMBLER;
 const char* filename = "STDIN";
 const char* outputFilename = "/dev/stdout";
 const char* symbolsFilename = nullptr;

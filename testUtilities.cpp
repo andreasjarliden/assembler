@@ -2,8 +2,18 @@
 #include "Assembler.hpp"
 #include "Segments.hpp"
 #include "Segment.hpp"
+#include "printHex.hpp"
 #include <iostream>
+#include <sstream>
+#include <cstring>
 #include <iterator>
+
+extern "C" {
+
+int yyparse();
+extern FILE* yyin;
+
+}
 
 int NUM_FAILURES = 0;
 
@@ -68,3 +78,16 @@ void printTestSummary() {
     std::cout << "\nFAIL " << NUM_FAILURES << " failed asserts\n" << std::endl;
   }
 }
+
+std::string compileProgram(Assembler& assembler, const char* p) {
+  extern Commands* COMMANDS;
+  COMMANDS = &assembler;
+  yyin = fmemopen((void*)p, strlen(p), "r");
+  yyparse();
+  fclose(yyin);
+  assembler.resolveRemaining();
+  std::stringstream outputStream;
+  printHex(assembler.segments(), outputStream);
+  return outputStream.str();
+}
+

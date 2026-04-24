@@ -98,15 +98,15 @@ argument:
 		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
     $$.indexOperation = $3;
-    if ($3 == '-') 
-      $$.value = -$4;
-    else
-      $$.value = $4;
+    $$.value = 0;
+    $$.indexValue = $4;
+    $$.indexIdentifier = 0;
 	}
 	| '(' IDENTIFIER PLUS_OR_MINUS IDENTIFIER ')' {
 		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
     $$.indexOperation = $3;
+    $$.indexValue = 0;
     $$.indexIdentifier = $4;
 	}
 	| STRING {
