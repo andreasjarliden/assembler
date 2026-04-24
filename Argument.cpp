@@ -12,6 +12,9 @@ Argument Argument::createWithRawArgument(const RawArgument& in) {
   out._type = in.type;
   out._value = in.value;
   out._identifier = in.identifier;
+  out._indexOperation = in.indexOperation;
+  out._indexValue = in.indexValue;
+  out._indexIdentifier = in.indexIdentifier;
   return out;
 }
 

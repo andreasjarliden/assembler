@@ -97,10 +97,17 @@ argument:
 	| '(' IDENTIFIER PLUS_OR_MINUS number ')' {
 		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
+    $$.indexOperation = $3;
     if ($3 == '-') 
       $$.value = -$4;
     else
       $$.value = $4;
+	}
+	| '(' IDENTIFIER PLUS_OR_MINUS IDENTIFIER ')' {
+		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
+		$$.identifier = $2;
+    $$.indexOperation = $3;
+    $$.indexIdentifier = $4;
 	}
 	| STRING {
 		$$.type = STRING_ARGUMENT;

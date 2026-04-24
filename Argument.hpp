@@ -50,6 +50,9 @@ public:
 private:
   friend std::ostream& operator<<(std::ostream& s, const Argument& arg);
   const char* _identifier;
+  const char* _indexIdentifier;
+  int _indexValue;
+  char _indexOperation;
   int _value;
   ArgumentType _type;
 };
