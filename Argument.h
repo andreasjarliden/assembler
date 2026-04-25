@@ -6,5 +6,8 @@ struct RawArgument {
   enum ArgumentType type;
   int value;
   const char* identifier;
+  char indexOperation;
+  int indexValue;
+  const char* indexIdentifier;
 };
 

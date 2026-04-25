@@ -232,38 +232,38 @@ void ldInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     // LD r, (ix+n)
     host.addCode(0xdd);
     host.addCode(0b01000110 | registerBits(arg1) << 3);
-    host.addCode(arg2.byteValue());
+    host.addCode(arg2.indexValue());
   }
   else if (arg1.is8BitRegister(NOT_DEREFERENCED) && arg2.isIndexedDereferencedIdentifier("iy")) {
     // LD r, (iy+n)
     host.addCode(0xfd);
     host.addCode(0b01000110 | registerBits(arg1) << 3);
-    host.addCode(arg2.byteValue());
+    host.addCode(arg2.indexValue());
   }
   else if (arg1.isIndexedDereferencedIdentifier("ix") && arg2.is8BitRegister(NOT_DEREFERENCED)) {
     // LD (ix+n), r
     host.addCode(0xdd);
     host.addCode(0b01110000 | registerBits(arg2));
-    host.addCode(arg1.byteValue());
+    host.addCode(arg1.indexValue());
   }
   else if (arg1.isIndexedDereferencedIdentifier("iy") && arg2.is8BitRegister(NOT_DEREFERENCED)) {
     // LD (iy+n), r
     host.addCode(0xfd);
     host.addCode(0b01110000 | registerBits(arg2));
-    host.addCode(arg1.byteValue());
+    host.addCode(arg1.indexValue());
   }
   else if (arg1.isIndexedDereferencedIdentifier("ix") && arg2.isValue()) {
     // LD (ix+n), n
     host.addCode(0xdd);
     host.addCode(0x36);
-    host.addCode(arg1.byteValue());
+    host.addCode(arg1.indexValue());
     host.addCode(arg2.byteValue());
   }
   else if (arg1.isIndexedDereferencedIdentifier("iy") && arg2.isValue()) {
     // LD (iy+n), n
     host.addCode(0xfd);
     host.addCode(0x36);
-    host.addCode(arg1.byteValue());
+    host.addCode(arg1.indexValue());
     host.addCode(arg2.byteValue());
   }
   else {
@@ -293,12 +293,12 @@ void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument
     else if (arg2.isIndexedDereferencedIdentifier("ix")) {
       host.addCode(0xdd);
       host.addCode(0x86);
-      host.addCode(arg2.byteValue());
+      host.addCode(arg2.indexValue());
     }
     else if (arg2.isIndexedDereferencedIdentifier("iy")) {
       host.addCode(0xfd);
       host.addCode(0x86);
-      host.addCode(arg2.byteValue());
+      host.addCode(arg2.indexValue());
     }
     else 
       error("Unknown form off ADD A, ... instruction");

@@ -8,6 +8,7 @@ class Segment;
 extern int NUM_FAILURES;
 
 void printTestSummary();
+std::string compileProgram(Assembler&, const char* p);
 
 void _isEqualToBytes(const Segment& segment,
     unsigned char expectedBytes[],

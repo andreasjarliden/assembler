@@ -43,6 +43,7 @@ public:
   int value() const;
   Byte byteValue() const;
   unsigned char ioAddress() const;
+  Byte indexValue() const;
   std::string string() const;
   ArgumentType type() const; // TODO remove?
   Argument asAddressValue() const;
@@ -50,6 +51,9 @@ public:
 private:
   friend std::ostream& operator<<(std::ostream& s, const Argument& arg);
   const char* _identifier;
+  const char* _indexIdentifier;
+  int _indexValue;
+  char _indexOperation;
   int _value;
   ArgumentType _type;
 };

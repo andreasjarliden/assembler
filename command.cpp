@@ -3,10 +3,10 @@
 #include <iostream>
 #include <cassert>
 
-extern Commands& COMMANDS;
+extern Commands* COMMANDS;
 
 int command0(const char* command) {
-  COMMANDS.command0(command);
+  COMMANDS->command0(command);
   return 1;
 }
 
@@ -23,25 +23,25 @@ void printArgument(RawArgument* arg) {
 }
 
 int command1(const char* command, RawArgument* arg) {
-  COMMANDS.command1(command, *arg);
+  COMMANDS->command1(command, *arg);
   return 0;
 }
 
 int command2(const char* command, RawArgument* arg1, RawArgument* arg2) {
-  COMMANDS.command2(command, *arg1, *arg2);
+  COMMANDS->command2(command, *arg1, *arg2);
   return 0;
 }
 
 void label(const char* label) {
-  COMMANDS.label(label);
+  COMMANDS->label(label);
 }
 
 void metaCommand1(const char* metaCommand, RawArgument* arg) {
-  COMMANDS.metaCommand1(metaCommand, *arg);
+  COMMANDS->metaCommand1(metaCommand, *arg);
 }
 
 void metaCommand2(const char* metaCommand, const char* identifier, RawArgument* arg) {
-  COMMANDS.metaCommand2(metaCommand, identifier, *arg);
+  COMMANDS->metaCommand2(metaCommand, identifier, *arg);
 }
 
 

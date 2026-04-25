@@ -27,7 +27,11 @@ add_library(common
   printHex.cpp
   )
 
-add_executable(asm main.cpp command.cpp ${BISON_parser_OUTPUTS} ${FLEX_lexer_OUTPUTS})
+add_executable(asm
+  main.cpp
+  command.cpp
+  ${BISON_parser_OUTPUTS}
+  ${FLEX_lexer_OUTPUTS})
 target_link_libraries(asm common)
 
 add_executable(unitTests
@@ -36,6 +40,9 @@ add_executable(unitTests
   testJumpGroup.cpp
   testLoadGroup.cpp
   testArithmeticGroup.cpp
+  command.cpp
+  ${BISON_parser_OUTPUTS}
+  ${FLEX_lexer_OUTPUTS}
   )
 target_link_libraries(unitTests common)
 

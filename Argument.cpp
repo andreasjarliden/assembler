@@ -12,6 +12,9 @@ Argument Argument::createWithRawArgument(const RawArgument& in) {
   out._type = in.type;
   out._value = in.value;
   out._identifier = in.identifier;
+  out._indexOperation = in.indexOperation;
+  out._indexValue = in.indexValue;
+  out._indexIdentifier = in.indexIdentifier;
   return out;
 }
 
@@ -49,6 +52,10 @@ unsigned char Argument::ioAddress() const {
   assert(value() >= 0);
   assert(value() <= 255);
   return value();
+}
+
+Byte Argument::indexValue() const {
+  return _indexValue;
 }
 
 ArgumentType Argument::type() const {
