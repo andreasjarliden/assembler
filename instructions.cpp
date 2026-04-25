@@ -439,6 +439,16 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
     host.addCode(0xfe);
     host.addCode(arg.byteValue());
   }
+  else if (arg.isIndexedDereferencedIdentifier("ix")) {
+    host.addCode(0xdd);
+    host.addCode(0xbe);
+    host.addCode(arg.indexValue());
+  }
+  else if (arg.isIndexedDereferencedIdentifier("iy")) {
+    host.addCode(0xfd);
+    host.addCode(0xbe);
+    host.addCode(arg.indexValue());
+  }
   else {
     error("Unknown form of CP instruction");
   }

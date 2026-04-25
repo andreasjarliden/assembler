@@ -59,6 +59,19 @@ void test_cp_c() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void test_cp_ix_indexed() {
+  Assembler assembler;
+  assembler.command1("cp", dereferencedIndexedIdentifierArg("ix", 2));
+  Byte expectedBytes[] = { 0xdd, 0xbe, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void test_cp_iy_indexed() {
+  Assembler assembler;
+  assembler.command1("cp", dereferencedIndexedIdentifierArg("iy", 2));
+  Byte expectedBytes[] = { 0xfd, 0xbe, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
 
 void test_inc_hl() {
   Assembler assembler;
@@ -137,6 +150,8 @@ int main() {
   test_out_20();
   test_out_using_eq();
   test_cp_c();
+  test_cp_ix_indexed();
+  test_cp_iy_indexed();
   test_inc_hl();
   test_dec_b();
   testLoadGroup();
