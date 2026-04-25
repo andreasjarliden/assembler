@@ -312,12 +312,15 @@ void orInstruction(InstructionsHost& host, const Argument& arg) {
 }
 
 void andInstruction(InstructionsHost& host, const Argument& arg) {
-  if (arg.isValue()) {
+  if (arg.is8BitRegister()) {
+    host.addCode(0b10100000 | registerBits(arg));
+  }
+  else if (arg.isValue()) {
     host.addCode(0xe6);
     host.addCode(arg.byteValue());
-    return;
   }
-  error("Unknown form of AND instruction");
+  else
+    error("Unknown form of AND instruction");
 }
 
 void srlInstruction(InstructionsHost& host, const Argument& arg) {
@@ -437,7 +440,7 @@ void cpInstruction(InstructionsHost& host, const Argument& arg) {
     host.addCode(arg.byteValue());
   }
   else {
-    assert(false);
+    error("Unknown form of CP instruction");
   }
 }
 
@@ -447,6 +450,16 @@ void incInstruction(InstructionsHost& host, const Argument& arg) {
   }
   else if (arg.is16BitRegister()) {
     host.addCode(0b00000011 | register16BitsSS(arg));
+  }
+  else if (arg.isIndexedDereferencedIdentifier("ix")) {
+    host.addCode(0xdd);
+    host.addCode(0x34);
+    host.addCode(arg.indexValue());
+  }
+  else if (arg.isIndexedDereferencedIdentifier("iy")) {
+    host.addCode(0xfd);
+    host.addCode(0x34);
+    host.addCode(arg.indexValue());
   }
   else if (arg.isIX()) {
     host.addCode(0xdd);
@@ -472,7 +485,6 @@ void exInstruction(InstructionsHost& host, const Argument& arg1, const Argument&
     error("Unknown form of EX instruction");
   }
 }
-
 
 void decInstruction(InstructionsHost& host, const Argument& arg) {
   if (arg.is8BitRegister()) {

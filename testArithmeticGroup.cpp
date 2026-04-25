@@ -55,6 +55,13 @@ void testOr() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testAnd_r() {
+  Assembler assembler;
+  assembler.command1("and", identifierArg("c"));
+  Byte expectedBytes[] = { 0b10100001 };
+  isEqualToBytes(assembler, expectedBytes, 1);
+}
+
 void testAnd_nn() {
   Assembler assembler;
   assembler.command1("and", numberArg(0x13));
@@ -81,6 +88,20 @@ void testInc_ix() {
   assembler.command1("inc", identifierArg("ix"));
   Byte expectedBytes[] = { 0xdd, 0x23 };
   isEqualToBytes(assembler, expectedBytes, 2);
+}
+
+void testInc_ix_indexed() {
+  Assembler assembler;
+  assembler.command1("inc", dereferencedIndexedIdentifierArg("ix", 2));
+  Byte expectedBytes[] = { 0xdd, 0x34, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void testInc_iy_indexed() {
+  Assembler assembler;
+  assembler.command1("inc", dereferencedIndexedIdentifierArg("iy", 2));
+  Byte expectedBytes[] = { 0xfd, 0x34, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
 }
 
 void testInc_iy() {
@@ -128,11 +149,14 @@ void testArithmeticGroup() {
   testAdd_a_iy_indexed();
   testSbc_hl_ss();
   testOr();
+  testAnd_r();
   testAnd_nn();
   testSrl();
   testInc_c();
   testInc_ix();
   testInc_iy();
+  testInc_ix_indexed();
+  testInc_iy_indexed();
   testInc_deref_hl();
   testDec_r();
   testDec_ss();

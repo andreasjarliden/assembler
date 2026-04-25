@@ -111,7 +111,6 @@ Commands* COMMANDS;
 void testDereferencedIndexWithConstant() {
   Assembler assembler;
   std::string str = compileProgram(assembler, ".eq FOO 42\nld a, (ix+FOO)\n");
-  std::cout << str << std::endl;
   Byte expectedBytes[] = { 0xdd, 0x7e, 42 };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
@@ -119,7 +118,6 @@ void testDereferencedIndexWithConstant() {
 void testDereferencedIndexWithConstantNegative() {
   Assembler assembler;
   std::string str = compileProgram(assembler, ".eq FOO 1\nld a, (ix - FOO)\n");
-  std::cout << str << std::endl;
   Byte expectedBytes[] = { 0xdd, 0x7e, 0xff };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
@@ -127,7 +125,6 @@ void testDereferencedIndexWithConstantNegative() {
 void testDereferencedIndexWithConstantNegative2() {
   Assembler assembler;
   std::string str = compileProgram(assembler, "ld a, (ix - 1)\n");
-  std::cout << str << std::endl;
   Byte expectedBytes[] = { 0xdd, 0x7e, 0xff };
   isEqualToBytes(assembler, expectedBytes, 3);
 }
