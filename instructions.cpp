@@ -503,6 +503,16 @@ void decInstruction(InstructionsHost& host, const Argument& arg) {
   else if (arg.is16BitRegister()) {
     host.addCode(0b00001011 | register16BitsSS(arg));
   }
+  else if (arg.isIndexedDereferencedIdentifier("ix")) {
+    host.addCode(0xdd);
+    host.addCode(0x35);
+    host.addCode(arg.indexValue());
+  }
+  else if (arg.isIndexedDereferencedIdentifier("iy")) {
+    host.addCode(0xfd);
+    host.addCode(0x35);
+    host.addCode(arg.indexValue());
+  }
   else if (arg.isHL(DEREFERENCED)) {
     host.addCode(0x35);
   }

@@ -139,6 +139,21 @@ void testDec_deref_hl() {
   isEqualToBytes(assembler, expectedBytes, 1);
 }
 
+void testDec_ix_indexed() {
+  Assembler assembler;
+  assembler.command1("dec", dereferencedIndexedIdentifierArg("ix", 2));
+  Byte expectedBytes[] = { 0xdd, 0x35, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+void testDec_iy_indexed() {
+  Assembler assembler;
+  assembler.command1("dec", dereferencedIndexedIdentifierArg("iy", 2));
+  Byte expectedBytes[] = { 0xfd, 0x35, 2 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
+
 } // unnamed namespace
 
 void testArithmeticGroup() {
@@ -161,5 +176,7 @@ void testArithmeticGroup() {
   testDec_r();
   testDec_ss();
   testDec_deref_hl();
+  testDec_ix_indexed();
+  testDec_iy_indexed();
 }
 
