@@ -307,6 +307,25 @@ void addInstruction(InstructionsHost& host, const Argument& arg1, const Argument
     error("Unknown form of add instruction");
 }
 
+void subInstruction(InstructionsHost& host, const Argument& arg1, const Argument& arg2) {
+  if (arg1.isA()) {
+    if (arg2.isIndexedDereferencedIdentifier("ix")) {
+      host.addCode(0xdd);
+      host.addCode(0x96);
+      host.addCode(arg2.indexValue());
+    }
+    else if (arg2.isIndexedDereferencedIdentifier("iy")) {
+      host.addCode(0xfd);
+      host.addCode(0x96);
+      host.addCode(arg2.indexValue());
+    }
+    else 
+      error("Unknown form off sub A, ... instruction");
+  }
+  else
+    error("Unknown form of sub instruction");
+}
+
 void orInstruction(InstructionsHost& host, const Argument& arg) {
   host.addCode(0b10110000 | registerBits(arg));
 }
