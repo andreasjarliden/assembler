@@ -142,6 +142,12 @@ void testDereferencedIndexWithConstantNegative2() {
   isEqualToBytes(assembler, expectedBytes, 3);
 }
 
+void testInt16() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler, ".int16 1234h\n");
+  Byte expectedBytes[] = { 0x34, 0x12 };
+  isEqualToBytes(assembler, expectedBytes, 2);
+}
 
 int main() {
   testSingleOneByteInstruction();
@@ -163,6 +169,7 @@ int main() {
   testDereferencedIndexWithConstant();
   testDereferencedIndexWithConstantNegative();
   testDereferencedIndexWithConstantNegative2();
+  testInt16();
   printTestSummary();
   return NUM_FAILURES;
 }
