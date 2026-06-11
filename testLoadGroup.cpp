@@ -20,6 +20,13 @@ void test_ld_deref_hl_n() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void test_ld_deref_nn_hl() {
+  Assembler assembler;
+  assembler.command2("ld", dereferencedValueArg(0x1234), identifierArg("hl"));
+  Byte expectedBytes[] = { 0x22, 0x34, 0x12 };
+  isEqualToBytes(assembler, expectedBytes, 3);
+}
+
 void test_ld_a_byte() {
   Assembler assembler;
   assembler.command2("ld", identifierArg("a"), numberArg(255));
@@ -248,6 +255,7 @@ void test_pop_iy() {
 void testLoadGroup() {
   test_ld_deref_hl_8bitReg(); // ld (hl),r
   test_ld_deref_hl_n(); // ld (hl),n
+  test_ld_deref_nn_hl(); // ld (nn), hl
   test_ld_a_byte();
   test_ld_d_byte();
   test_ld_a_address_hl();

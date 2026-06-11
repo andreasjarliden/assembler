@@ -26,6 +26,7 @@ extern int yylineno;
 %type <symbol> program
 %type <argumentValue> argument
 %type <numberValue> number
+%type <symbol> identifier
 
 %%
 
@@ -62,10 +63,21 @@ command:
 	;
 
 label:
+     globalLabel
+     | localLabel
+     ;
+
+globalLabel:
 	IDENTIFIER ':' {
 		label($1);
 	}
 	;
+
+localLabel:
+  '.' IDENTIFIER ':' {
+    localLabel($2);
+  }
+  ;
 
 metaCommand:
 	'.' IDENTIFIER argument {
@@ -78,23 +90,27 @@ metaCommand:
 	;
 
 argument:
-	IDENTIFIER {
+	identifier {
 		$$.type = IDENTIFIER_ARGUMENT;
 		$$.identifier = $1;
+    $$.value = 0;
 	}
 	| number {
 		$$.type = VALUE_ARGUMENT;
 		$$.value = $1;
+    $$.identifier = 0;
 	}
 	| '(' number ')' {
 		$$.type = DEREFERENCED_VALUE_ARGUMENT;
 		$$.value = $2;
+    $$.identifier = 0;
 	}
-	| '(' IDENTIFIER ')' {
+	| '(' identifier ')' {
 		$$.type = DEREFERENCED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
+    $$.value = 0;
 	}
-	| '(' IDENTIFIER PLUS_OR_MINUS number ')' {
+	| '(' identifier PLUS_OR_MINUS number ')' {
 		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
     $$.indexOperation = $3;
@@ -102,18 +118,26 @@ argument:
     $$.indexValue = $4;
     $$.indexIdentifier = 0;
 	}
-	| '(' IDENTIFIER PLUS_OR_MINUS IDENTIFIER ')' {
+	| '(' identifier PLUS_OR_MINUS IDENTIFIER ')' {
 		$$.type = DEREFERENCED_INDEXED_IDENTIFIER_ARGUMENT;
 		$$.identifier = $2;
     $$.indexOperation = $3;
+    $$.value = 0;
     $$.indexValue = 0;
     $$.indexIdentifier = $4;
 	}
 	| STRING {
 		$$.type = STRING_ARGUMENT;
 		$$.identifier = $1;
+    $$.value = 0;
 	}
 	;
+
+// Also support local labels .foo as identifiers
+identifier:
+    IDENTIFIER
+    | '.' IDENTIFIER { $$ = resolveLocalLabel($2); }
+    ;
 
 number:
 	DECNUMBER

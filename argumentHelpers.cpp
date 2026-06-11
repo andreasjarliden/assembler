@@ -11,6 +11,7 @@ RawArgument numberArg(int byte) {
   RawArgument argument;
   argument.type = VALUE_ARGUMENT;
   argument.value = byte;
+  argument.identifier = 0;
   return argument;
 }
 
@@ -18,6 +19,7 @@ RawArgument dereferencedValueArg(int address) {
   RawArgument argument;
   argument.type = DEREFERENCED_VALUE_ARGUMENT;
   argument.value = address;
+  argument.identifier = 0;
   return argument;
 }
 

@@ -3,6 +3,8 @@
 #include <string>
 #include <cstring>
 
+extern const char* CURRENT_LABEL;
+
 namespace {
 
 class SymbolTable {
@@ -22,6 +24,10 @@ SymbolTable SYMBOL_TABLE;
 
 const char* addSymbol(const char* symbol) {
   return SYMBOL_TABLE.add(symbol);
+}
+
+const char* addLocalLabel(const char* localLabel) {
+  return addSymbol((std::string(CURRENT_LABEL) + "_" + localLabel).c_str());
 }
 
 const char* addString(const char* s) {

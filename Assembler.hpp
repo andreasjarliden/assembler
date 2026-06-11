@@ -15,6 +15,7 @@ public:
   void command1(const char* mnemonic, const RawArgument&);
   void command2(const char* mnemonic, const RawArgument&, const RawArgument&);
   void label(const char* label);
+  void localLabel(const char* label);
   void metaCommand1(const char* command,
       const RawArgument& argument);
   void metaCommand2(const char* command,

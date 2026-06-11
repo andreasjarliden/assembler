@@ -7,12 +7,15 @@
 #include "DelayedAddresses.hpp"
 #include "Error.hpp"
 #include "Segments.hpp"
+#include "stringTable.hpp"
 #include <map>
 #include <string>
 #include <functional>
 #include <cassert>
 #include <iostream>
 #include <cstring>
+
+const char* CURRENT_LABEL;
 
 namespace {
 
@@ -288,6 +291,16 @@ void Assembler::command2(const char* mnemonic,
 }
 
 void Assembler::label(const char* label) {
+  int address = _pimpl->currentSegment().currentOffset();
+  if (_pimpl->labelTable.contains(label)) {
+    error(std::string("Label ") + label + std::string(" already defined"));
+  }
+  _pimpl->labelTable.addLabel(label, address);
+  CURRENT_LABEL = label;
+}
+
+void Assembler::localLabel(const char* localLabel) {
+  const char* label = addLocalLabel(localLabel);
   int address = _pimpl->currentSegment().currentOffset();
   if (_pimpl->labelTable.contains(label)) {
     error(std::string("Label ") + label + std::string(" already defined"));

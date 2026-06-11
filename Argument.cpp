@@ -1,8 +1,10 @@
 #include "Argument.hpp"
 #include "Error.hpp"
+#include "stringTable.hpp"
 #include <cassert>
 #include <cstring>
 #include <string>
+#include <iostream>
 
 Argument::Argument()
   : _identifier(nullptr) {}
@@ -11,7 +13,11 @@ Argument Argument::createWithRawArgument(const RawArgument& in) {
   Argument out;
   out._type = in.type;
   out._value = in.value;
-  out._identifier = in.identifier;
+  if (in.identifier && in.identifier[0] == '.') {
+    out._identifier = addLocalLabel(in.identifier);
+  }
+  else
+    out._identifier = in.identifier;
   out._indexOperation = in.indexOperation;
   out._indexValue = in.indexValue;
   out._indexIdentifier = in.indexIdentifier;

@@ -149,6 +149,17 @@ void testInt16() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testLocalLabel() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler,
+      "foo:\n"
+      ".label:\n"
+      "jp .label\n"
+      "jp foo_label\n");
+  Byte expectedBytes[] = { 0xc3, 0x00, 0x00, 0xc3, 0x00, 0x00 };
+  isEqualToBytes(assembler, expectedBytes, 6);
+}
+
 int main() {
   testSingleOneByteInstruction();
   testSingleTwoByteInstruction();
@@ -170,6 +181,7 @@ int main() {
   testDereferencedIndexWithConstantNegative();
   testDereferencedIndexWithConstantNegative2();
   testInt16();
+  testLocalLabel();
   printTestSummary();
   return NUM_FAILURES;
 }

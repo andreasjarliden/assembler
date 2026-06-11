@@ -1,5 +1,6 @@
 #include "command.hpp"
 #include "Commands.hpp"
+#include "stringTable.hpp"
 #include <iostream>
 #include <cassert>
 
@@ -34,6 +35,14 @@ int command2(const char* command, RawArgument* arg1, RawArgument* arg2) {
 
 void label(const char* label) {
   COMMANDS->label(label);
+}
+
+void localLabel(const char* label) {
+  COMMANDS->localLabel(label);
+}
+
+const char* resolveLocalLabel(const char* localLabel) {
+  return addLocalLabel(localLabel);
 }
 
 void metaCommand1(const char* metaCommand, RawArgument* arg) {
