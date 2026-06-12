@@ -149,6 +149,13 @@ void testInt16() {
   isEqualToBytes(assembler, expectedBytes, 2);
 }
 
+void testString() {
+  Assembler assembler;
+  std::string str = compileProgram(assembler, ".string \"ab\\e\\t\\n\"");
+  Byte expectedBytes[] = { 'a', 'b', 0x1b, '\t', '\n' };
+  isEqualToBytes(assembler, expectedBytes, 5);
+}
+
 void testLocalLabel() {
   Assembler assembler;
   std::string str = compileProgram(assembler,
@@ -181,6 +188,7 @@ int main() {
   testDereferencedIndexWithConstantNegative();
   testDereferencedIndexWithConstantNegative2();
   testInt16();
+  testString();
   testLocalLabel();
   printTestSummary();
   return NUM_FAILURES;

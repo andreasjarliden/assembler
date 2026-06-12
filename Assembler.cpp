@@ -31,6 +31,7 @@ std::string replaced(std::string s, const std::string& from, const std::string& 
 std::string replacedEscapes(std::string s) {
   s = replaced(s, "\\n", "\n");
   s = replaced(s, "\\t", "\t");
+  s = replaced(s, "\\e", std::string("\e", 1));
   s = replaced(s, "\\0", std::string("\0", 1)); // "\0" is difficult to pass!
   // s = replaced(s, "\\0", std::string(1, '!')); // "\0" is difficult to pass!
   return s;
